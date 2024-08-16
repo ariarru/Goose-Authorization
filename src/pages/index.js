@@ -1,12 +1,25 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import Synchronize from "ol-ext/interaction/Synchronize";
+import { useEffect, useState } from 'react';
+import Map1 from '../components/Map';
 
 export default function Home() {
+  const [mapObject, setMapObject] = useState(null);
+  useEffect(() => {
+    if(!mapObject) return;
+    var synchronize = new Synchronize({ maps: [mapObject] });
+    mapObject.addInteraction( synchronize );
+    return () => {
+      if(mapObject) mapObject.removeInteraction(synchronize);
+    }
+  }, [mapObject])
   return (
     <div className={styles.container}>
       <Head>
         <title>Goose Authorization</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="../styles/output.css" />
       </Head>
 
       <main>
@@ -18,34 +31,10 @@ export default function Home() {
           Get started by editing <code>pages/index.js</code>
         </p>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className="flex h-[100vh] gap-[2px] bg-white/70" >
+          <div className='relative w-1/2   border border-transparent'>
+          <Map1 setMap1Object={setMapObject}/>
+          </div>
         </div>
       </main>
 
