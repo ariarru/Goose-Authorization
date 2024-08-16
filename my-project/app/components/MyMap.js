@@ -18,8 +18,9 @@ const map1Container = useRef();
       ],
       view: new View({
         //Coordinate System: WGS 84 / Pseudo-Mercator-EPSG:3857
-        center: [1450175.243912, 5367775.979384], // Longitude, Latitude
-        zoom: 15
+        //https://epsg.io/map
+        center: [1263045.455384, 5542735.559814], // Longitude, Latitude
+        zoom: 14
       }),
     });
     map1.setTarget(map1Container.current);

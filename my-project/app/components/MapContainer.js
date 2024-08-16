@@ -15,7 +15,7 @@ export default function MapContainer(){
     }, [mapObject]);
 
     return(
-        <div className="flex h-[100vh] gap-[2px] bg-white/70" >
+        <div className="flex h-[70vh] gap-[2px] bg-white/70 m-8" >
           <div className='relative w-[70vw] border border-transparent'>
             <MyMap setMap1Object={setMapObject}/>
           </div>
