@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { createClient } from '@supabase/supabase-js'
 
 
 export const metadata: Metadata = {

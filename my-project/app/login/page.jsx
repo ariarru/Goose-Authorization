@@ -1,10 +1,11 @@
-import LoginForm from '../components/forms/Login-Form';
+'use server';
+import LoginFormContainer from '../components/LoginFormContainer'
 
-export default function LoginPage(){
-    //questo teoricamente è solo per gli amministratori
+export default async function LoginPage(){
+    
     return(
         <main className='w-full p-8 flex vertical center items-center justify-items-center'>
-            <LoginForm></LoginForm>
+            <LoginFormContainer></LoginFormContainer>
         </main>
     );
 
