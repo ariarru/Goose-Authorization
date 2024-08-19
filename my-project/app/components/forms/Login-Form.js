@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Card from '../Card';
+import Card from '../layout/Card';
 
 export default function LoginForm({loginFunction}){
     const [email, setEmail] = useState('');
@@ -46,13 +46,7 @@ export default function LoginForm({loginFunction}){
                 >
                     Login
                 </button>
-                <button
-                    type='button'
-                    onClick={null}//{handleLoginModerator}
-                    className='shadow-sm shadow-slate-300 w-fit p-2 px-3 mt-3 -mb-3 text-slate-400 rounded self-center'
-                >
-                    Login as Moderator
-                </button>
+                
                 </div>
             </form>
         </Card>

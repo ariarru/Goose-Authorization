@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Icon from "./components/Icon";
+import Icon from "./components/layout/Icon";
 import MapContainer from "./components/MapContainer";
 import styles from "./page.module.css";
 
@@ -21,7 +21,7 @@ export default function Home() {
       <section>
         <h1 className="text-4xl text-center">Welcome to Goose Authorization</h1>
         <p className="text-center">Please <Link href="/login" className="text-sky-500">log in</Link> to use the platform...</p>
-        <MapContainer />
+        <MapContainer width={"70vw"} height={"70vh"}/>
       </section>
       
     </main>
