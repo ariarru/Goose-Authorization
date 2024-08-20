@@ -6,7 +6,7 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 
-export default function MyMap({setMap1Object}){
+export default function MyMap({setMap1Object, lat, long, zoom}){
 const map1Container = useRef();
   // on component mount create the map and set the map refrences to the state
   useEffect(() => {
@@ -19,8 +19,8 @@ const map1Container = useRef();
       view: new View({
         //Coordinate System: WGS 84 / Pseudo-Mercator-EPSG:3857
         //https://epsg.io/map
-        center: [1263045.455384, 5542735.559814], // Longitude, Latitude
-        zoom: 14
+        center: [long, lat], // Longitude, Latitude
+        zoom: zoom
       }),
     });
     map1.setTarget(map1Container.current);

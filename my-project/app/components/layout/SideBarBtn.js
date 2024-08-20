@@ -1,7 +1,12 @@
-export default function SideBarBtn({text}){
+import Link from "next/link";
 
-return(
-    <button className="p-2 hover:bg-sky-600 hover:text-white hover:cursor-pointer">
-        {text}
-    </button>
+export default function SideBarBtn({text, dst}){
+    return(
+        <Link href={`${dst}`} 
+        className="p-2 hover:bg-sky-600 hover:text-white hover:cursor-pointer rounded">
+            <button >
+                {text}
+            </button>
+        </Link>
+        
 )};
