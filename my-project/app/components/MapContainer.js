@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import Synchronize from "ol-ext/interaction/Synchronize";
 import MyMap from "./MyMap";
+import { useGeographic } from "ol/proj";
 
 export default function MapContainer({width, height, latitute, longitude, zoomIn}){
+  useGeographic();
+  
     const [mapObject, setMapObject] = useState(null);
     useEffect(() => {
         if(!mapObject) return;
