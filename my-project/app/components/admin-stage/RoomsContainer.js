@@ -15,12 +15,13 @@ export default async function RoomsContainer(){
     }
 
    //const {data, error} = await supabase.rpc();
+  /* let data = 'rooms: id';
    const roomsData = new VectorSource({
     features: new GeoJSON({
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857',
     }).readFeatures(JSON.stringify(data)),
-   });
+   });*/
     return(
         <Card>
             <ManageRooms></ManageRooms>

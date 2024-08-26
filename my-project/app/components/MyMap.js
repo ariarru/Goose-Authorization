@@ -16,7 +16,7 @@ const map1Container = useRef();
         new TileLayer({
           source: new OSM(),
         }),
-        new VectorLayer({
+        /*new VectorLayer({
           source: data,
           style: new Stroke({
             color: 'red',
@@ -24,7 +24,7 @@ const map1Container = useRef();
           fill: new Fill({
             color: 'rgba(255, 0, 0, 0.25)',
           }),
-        }),
+        }),*/
       ],
       view: new View({
         //Coordinate System: WGS 84 / Pseudo-Mercator-EPSG:3857
@@ -41,6 +41,12 @@ const map1Container = useRef();
       setMap1Object(null);
     };
   }, []);
+  
+  function getCoord(e){
+    console.log(e);
+    console.log("long:"+e.coordinates[0]+"-lat:"+e.coordinates[1]);
+  }
+  
 
   return (<div ref={map1Container} className="absolute inset-0"></div>);
 };

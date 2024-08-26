@@ -6,7 +6,7 @@ import { useGeographic } from "ol/proj";
 
 export default function MapContainer({width, height, latitute, longitude, zoomIn}){
   useGeographic();
-  
+
     const [mapObject, setMapObject] = useState(null);
     useEffect(() => {
         if(!mapObject) return;
@@ -18,10 +18,13 @@ export default function MapContainer({width, height, latitute, longitude, zoomIn
     }, [mapObject]);
 
     
+
     return(
         <div className={`flex gap-[2px] bg-white/70 m-8`} >
           <div className={`relative ${width} ${height} border border-transparent`}>
             <MyMap setMap1Object={setMapObject} lat={latitute} long={longitude} zoom={zoomIn}/>
+
+            
           </div>
         </div>
     );
