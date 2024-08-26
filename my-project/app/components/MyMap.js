@@ -6,7 +6,8 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 
-export default function MyMap({setMap1Object, lat, long, zoom}){
+export default function MyMap({setMap1Object, lat, long, zoom, data}){
+
 const map1Container = useRef();
   // on component mount create the map and set the map refrences to the state
   useEffect(() => {
@@ -14,6 +15,15 @@ const map1Container = useRef();
       layers: [
         new TileLayer({
           source: new OSM(),
+        }),
+        new VectorLayer({
+          source: data,
+          style: new Stroke({
+            color: 'red',
+          }),
+          fill: new Fill({
+            color: 'rgba(255, 0, 0, 0.25)',
+          }),
         }),
       ],
       view: new View({

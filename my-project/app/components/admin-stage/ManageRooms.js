@@ -2,7 +2,7 @@
 import { useState } from "react";
 import MapContainer from "../MapContainer";
 
-export default function ManageRooms(){
+export default function ManageRooms({roomsData}){
     //mostra mappa
     //mostra stanze
     //pulsante aggiungi stanza
@@ -10,12 +10,14 @@ export default function ManageRooms(){
     //pulsante elimina stanza
     //pulsante modifica stanza
 
+    
+
     //GoToBtn
     const [lat, setLat] = useState(11.356414); //11.356414
     const [long, setLong] = useState(44.497213); //1263045.455384
 
-    let completeLat = 5542735.559814; //lat bolo
-    let completeLong =1263045.455384; //long bolo
+    let completeLat = 11.356345; //lat bolo   
+    let completeLong =44.497439; //long bolo
 
     function goTo(){ 
         completeLat=lat;
