@@ -1,11 +1,10 @@
+//it doesnt work inside other client components
 'use client';
 import { useEffect, useState } from "react";
 import Synchronize from "ol-ext/interaction/Synchronize";
 import MyMap from "./MyMap";
-import { useGeographic } from "ol/proj";
 
-export default function MapContainer({width, height, latitute, longitude, zoomIn}){
-  useGeographic();
+export default function MapContainer({width, height, latitute, longitude, zoomIn, datas}){
 
     const [mapObject, setMapObject] = useState(null);
     useEffect(() => {
@@ -13,18 +12,25 @@ export default function MapContainer({width, height, latitute, longitude, zoomIn
         var synchronize = new Synchronize({ maps: [mapObject] });
         mapObject.addInteraction( synchronize );
         return () => {
-        if(mapObject) mapObject.removeInteraction(synchronize);
+          if(mapObject) mapObject.removeInteraction(synchronize);
         }
     }, [mapObject]);
 
+    if(datas){
+      return(
+        <div className={`flex gap-[2px] bg-white/70 m-8`} >
+          <div className={`relative ${width} ${height} border border-transparent`}>
+            <MyMap setMyMapObject={setMapObject} lat={latitute} long={longitude} z={zoomIn} data={datas} />
+          </div>
+        </div>
+    );
+    }
     
 
     return(
         <div className={`flex gap-[2px] bg-white/70 m-8`} >
           <div className={`relative ${width} ${height} border border-transparent`}>
-            <MyMap setMap1Object={setMapObject} lat={latitute} long={longitude} zoom={zoomIn}/>
-
-            
+            <MyMap setMyMapObject={setMapObject} lat={latitute} long={longitude} z={zoomIn} />
           </div>
         </div>
     );

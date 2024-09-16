@@ -22,7 +22,7 @@ export default function Home() {
         <h1 className="text-4xl text-center">Welcome to Goose Authorization</h1>
         <p className="text-center">Please <Link href="/login" className="text-sky-500">log in</Link> to use the platform...</p>
         <MapContainer width={"w-[70vw]"} height={"h-[70vh]"} 
-        latitute={5542735.559814} longitude={1263045.455384} zoomIn={14}/>
+        latitute={5542735.559814} longitude={1263045.455384} zoomIn={14} datas={null}/>
       </section>
       
     </main>
