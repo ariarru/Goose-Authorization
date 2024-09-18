@@ -14,6 +14,7 @@ export default function StageContainer({children}){
                             <SideBarBtn dst={"/stage/rooms"} text={"Manage Rooms"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/devices"} text={"Manage Devices"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/users"} text={"Manage Users"}></SideBarBtn>
+                            <SideBarBtn dst={"/"} text={"Logout"}></SideBarBtn>
                         </SideBar>
                     </section>
                     <section className='my-8 w-full h-full mx-4 mr-12'>

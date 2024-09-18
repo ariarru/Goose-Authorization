@@ -9,10 +9,11 @@ export default async function UserStage(){
     const supabase = createClient();
     const session = async () => {await supabase.auth.getSession();}
 
-    const {data, error} = await supabase.from('Users').select();
+    const {data, error} = await supabase.rpc("get_all_users");
 
+    console.log(data);
     if(error){
-        alert(error);
+        console.log(error);
     }
 
 

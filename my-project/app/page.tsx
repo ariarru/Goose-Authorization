@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Icon from "./components/layout/Icon";
-import MapContainer from "./components/MapContainer";
+import MapContainer from "./components/maps/MapContainer";
 import styles from "./page.module.css";
 
 export default function Home() {

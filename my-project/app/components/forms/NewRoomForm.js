@@ -1,27 +1,24 @@
 'use client';
 import { useState } from "react";
-import { addNewUser } from "./adminServerActions";
+import { addNewUser } from "../admin-stage/adminServerActions";
 
-export default function NewUsersForm(){
+export default function NewRoomForm(){
 
-    const [username, setUsername] = useState();
-    const [email, setEmail] = useState();
-    const [firstPassword, setFirstPassword] = useState();
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [name, setName] = useState();
+    //select categories with checkbox? -> then getDeviceCategories from supabase
+
 
     async function sendData(){
-        const result = await addNewUser(username, email, firstPassword, isAdmin);
+        const result = await addNewRoom();
+        console.log("result");
         console.log(result);
         if(result){
-            alert("User successfully added");
+            alert("Room successfully added");
         } else {
-            alert("Could not insert user");
+            alert("Could not insert room");
         }
 
-        setUsername('');
-        setFirstPassword('');
-        setEmail('');
-        setIsAdmin(false);
+        setName('');
     }
 
     const btnClasses ="my-2 p-2 rounded text-white bg-indigo-500 hover:bg-indigo-600";
@@ -30,11 +27,11 @@ export default function NewUsersForm(){
     return(
         <div>
             <form onSubmit={e => {e.preventDefault(); sendData();}} className="flex flex-col gap-2 p-5 text-sm w-fit border-2 border-gray-200 rounded">
-                <p className="text-gray-400">Create a new user</p>
-                <label htmlFor="username"> Username: </label>
+                <p className="text-gray-400">Add a new room</p>
+                <label htmlFor="username"> Room's name: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='text' id="username" 
-                    onChange={e => setUsername(e.target.value)} value={username} ></input>
-
+                    onChange={e => setName(e.target.value)} value={name} ></input>
+{/*
                 <label htmlFor="email"> E-mail: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='text' id="email" 
                     onChange={e => setEmail(e.target.value)} value={email}></input>
@@ -48,8 +45,11 @@ export default function NewUsersForm(){
                     <input type="checkbox" id="adminBool" 
                         onChange={e => setIsAdmin(e.target.checked)} checked={isAdmin}></input>
                 </div>
+*/
+}
                 
-                <button type='submit' className={`${btnClasses}`}>Add User</button> 
+                
+                <button type='submit' className={`${btnClasses}`}>Add New Room</button> 
             </form>
         </div>
     );
