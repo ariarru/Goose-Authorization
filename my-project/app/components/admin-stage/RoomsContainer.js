@@ -2,8 +2,6 @@ import { createClient } from '@/app/utils/supabaseClient';
 import Card from '../layout/Card'
 import ManageRooms from './ManageRooms'
 import { redirect } from 'next/navigation';
-import VectorSource from 'ol/source/Vector';
-import GeoJSON from 'ol/format/GeoJSON';
 
 export default async function RoomsContainer(){
     const supabase = createClient();
@@ -13,18 +11,11 @@ export default async function RoomsContainer(){
     if (!session) {
       redirect("./");
     }
+    const rooms = await supabase.from("Rooms").select();
 
-   //const {data, error} = await supabase.rpc();
-  /* let data = 'rooms: id';
-   const roomsData = new VectorSource({
-    features: new GeoJSON({
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857',
-    }).readFeatures(JSON.stringify(data)),
-   });*/
     return(
         <Card>
-            <ManageRooms></ManageRooms>
+            <ManageRooms roomsData={rooms.data}></ManageRooms>
         </Card>
     );
 }
