@@ -2,12 +2,10 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import SelectablePolygon from './SelectablePolygon'
+
+
 export default function MyMap({width, height, children}){
 
-  children?.forEach(room => {
-    console.log(room);
-    console.log(room.vertices.coordinates[0]);
-  })
 
   const testPolygon = [
       [ 44.497088262070264, 11.356317361310317], 

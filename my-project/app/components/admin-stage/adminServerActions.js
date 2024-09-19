@@ -27,3 +27,16 @@ export async function addNewRoom(){
         return null;
     }
 }
+
+export async function deleteRoom(roomId){
+    const supabase = createClient();
+    const session = async () => {await supabase.auth.getSession();}
+
+    if(session){
+        //const result = await supabase.rpc("insert_user", {_username: username, _email: email, _password: pw, _admin: isAdmin});
+        //result.error ? console.log(result.error) : 0;
+        //return result;
+    } else{
+        return null;
+    }
+}

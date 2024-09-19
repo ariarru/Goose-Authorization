@@ -11,8 +11,7 @@ export default function NewUsersForm(){
 
     async function sendData(){
         const result = await addNewUser(username, email, firstPassword, isAdmin);
-        console.log("result");
-        console.log(result);
+  
         if(result){
             alert("User successfully added");
         } else {
