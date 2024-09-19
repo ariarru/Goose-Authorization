@@ -1,3 +1,4 @@
+'use server';
 import { createClient } from '@/app/utils/supabaseClient';
 import Card from '../layout/Card'
 import ManageRooms from './ManageRooms'

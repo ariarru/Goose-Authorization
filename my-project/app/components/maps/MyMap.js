@@ -1,14 +1,10 @@
-'use client'
+'use client';
 import "leaflet/dist/leaflet.css";
-import { MapContainer, Polygon, Polyline, SVGOverlay, TileLayer } from "react-leaflet";
-
+import { MapContainer, TileLayer } from "react-leaflet";
+import SelectablePolygon from './SelectablePolygon'
 export default function MyMap({width, height, children}){
 
-  // Impedisce il rendering su SSR
-  if (typeof window === 'undefined') {
-    return null; // Evita l'errore, il codice non verrà eseguito lato server
-  }
-  children.forEach(room => {
+  children?.forEach(room => {
     console.log(room);
     console.log(room.vertices.coordinates[0]);
   })
@@ -20,9 +16,7 @@ export default function MyMap({width, height, children}){
       [ 44.497095830705774, 11.356535029682021], 
       [44.497088262070264, 11.356317361310317],
   ];
-  
-  const purpleOptions = { color: 'purple'};
-  
+    
 
   return (
     <div className={`${width} ${height}`}>
@@ -32,25 +26,9 @@ export default function MyMap({width, height, children}){
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={25}
       />
+      
+        <SelectablePolygon coords={testPolygon} name="room 1"></SelectablePolygon>
 
-  <Polygon pathOptions={purpleOptions} positions={testPolygon}/>
-    <SVGOverlay attributes={purpleOptions} bounds={testPolygon}>
-      <text x="20%" y="50%" >text </text>
-    </SVGOverlay>
-
-
-      {/*<LocationMarker/>}
-      {
-          children.forEach(room => {
-            let color = 0;
-            if(room.)
-            <Polygon pathOptions={purpleOptions} positions={testPolygon}/>
-            <SVGOverlay attributes={purpleOptions} bounds={room.vertices.coordinates[0]} key={room.room_id}>
-              <text x="20%" y="50%" > {room.name} </text>
-            </SVGOverlay>
-            
-          }) */
-      }
       </MapContainer>
     </div>
       );

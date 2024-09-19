@@ -1,9 +1,12 @@
 import Link from "next/link";
 import Icon from "./components/layout/Icon";
 import styles from "./page.module.css";
-import MyMap from "./components/maps/MyMap";
+import React from "react";
+import dynamic from "next/dynamic";
 
 export default function Home() {
+
+  const MyMap = dynamic(() => import('./components/maps/MyMap'), {ssr: false});
   
   return (
     <main className={styles.main}>
@@ -21,7 +24,7 @@ export default function Home() {
       <section>
         <h1 className="text-4xl text-center">Welcome to Goose Authorization</h1>
         <p className="text-center">Please <Link href="/login" className="text-sky-500">log in</Link> to use the platform...</p>
-        <MyMap width={"w-[70vw]"} height={"h-[80vh]"}></MyMap>
+        <MyMap width={"w-[70vw]"} height={"h-[80vh]"} children={null}></MyMap>
       </section>
       
     </main>

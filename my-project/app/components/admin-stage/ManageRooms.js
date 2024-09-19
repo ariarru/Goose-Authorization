@@ -1,5 +1,4 @@
-import NewRoomForm from "../forms/NewRoomForm";
-import MyMap from "../maps/MyMap";
+import dynamic from "next/dynamic";
 
 export default function ManageRooms({roomsData}){
     //mostra mappa x
@@ -9,6 +8,7 @@ export default function ManageRooms({roomsData}){
     //pulsante elimina stanza
     //pulsante modifica stanza
 
+    const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
 
     const btnClasses ="my-0 p-2 rounded text-white bg-indigo-500 hover:bg-indigo-600 w-64";
     
