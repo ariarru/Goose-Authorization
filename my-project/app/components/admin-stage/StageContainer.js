@@ -1,9 +1,16 @@
 'use client'
+import { createClient } from '@/app/utils/supabaseClient';
 import SideBar from '../layout/SideBar';
 import SideBarBtn from '../layout/SideBarBtn';
 
 
 export default function StageContainer({children}){
+
+    async function logout(){
+        const supabase = createClient();
+        await supabase.auth.signOut();
+        location.reload();
+    }
 
     return(
         <div className='flex w-full'>
@@ -14,7 +21,7 @@ export default function StageContainer({children}){
                             <SideBarBtn dst={"/stage/rooms"} text={"Manage Rooms"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/devices"} text={"Manage Devices"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/users"} text={"Manage Users"}></SideBarBtn>
-                            <SideBarBtn dst={"/"} text={"Logout"}></SideBarBtn>
+                            <button className="text-left p-2 hover:bg-sky-600 hover:text-white hover:cursor-pointer rounded" onClick={logout}>Logout</button>
                         </SideBar>
                     </section>
                     <section className='my-8 w-full h-full mx-4 mr-12'>

@@ -1,3 +1,4 @@
+'use client'
 import { Polygon, Popup, SVGOverlay, useMapEvent } from "react-leaflet";
 import { useState } from "react";
 
@@ -5,9 +6,7 @@ import { useState } from "react";
 export default function SelectablePolygon({ coords, name, id }) {
   const [isSelected, setIsSelected] = useState(false);
 
-  // Usa Map Events per gestire il click
   useMapEvent('click', (event) => {
-    // Controlla se il click è avvenuto all'interno del poligono
     const layerPoint = event.latlng;
     
     const insidePolygon = coords.some(point => {
@@ -15,13 +14,12 @@ export default function SelectablePolygon({ coords, name, id }) {
     });
 
     if (insidePolygon) {
-      setIsSelected(!isSelected);  // Inverte lo stato di selezione
+      setIsSelected(!isSelected);  
 
     }
   });
 
 
-  // Cambia colore se selezionato
   const polygonOptions = { color: isSelected ? "blue" : "purple" };
 
   return isSelected ? (

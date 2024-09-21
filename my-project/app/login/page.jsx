@@ -1,14 +1,16 @@
 'use server';
 import { redirect } from 'next/navigation';
 import LoginFormContainer from '../components/LoginFormContainer'
-import { createClient } from '../utils/supabaseServer';
+import { createClient } from '../utils/supabaseClient';
+
 
 export default async function LoginPage(){
 
     const supabase = createClient();
-    const {session} = await supabase.auth.getSession();
-
-    if(session) {
+    const {user} = await supabase.auth.getUser();
+    console.log("login session:");
+    console.log(user);
+    if(user) {
       redirect("/stage");
     }
     

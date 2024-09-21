@@ -20,8 +20,11 @@ export default function LoginFormContainer(){
           })
 
         if(data){
+            console.log(data)
             alert("Welcome");
-            router.refresh();
+            const session = await supabase.auth.getSession();
+            console.log(session);
+            router.push('/stage');
         }
         if(error){
           alert("Wrong credentials, please retry\n"+error);

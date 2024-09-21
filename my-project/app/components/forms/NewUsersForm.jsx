@@ -1,6 +1,7 @@
 'use client';
 import { useState } from "react";
 import { addNewUser } from "../admin-stage/adminServerActions";
+import { useRouter } from "next/navigation";
 
 export default function NewUsersForm(){
 
@@ -8,12 +9,14 @@ export default function NewUsersForm(){
     const [email, setEmail] = useState();
     const [firstPassword, setFirstPassword] = useState();
     const [isAdmin, setIsAdmin] = useState(false);
+    const router= useRouter()
 
     async function sendData(){
         const result = await addNewUser(username, email, firstPassword, isAdmin);
   
         if(result){
             alert("User successfully added");
+            router.refresh();
         } else {
             alert("Could not insert user");
         }
@@ -33,20 +36,20 @@ export default function NewUsersForm(){
                 <p className="text-gray-400">Create a new user</p>
                 <label htmlFor="username"> Username: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='text' id="username" 
-                    onChange={e => setUsername(e.target.value)} value={username} ></input>
+                    onChange={e => {e.preventDefault(); setUsername(e.target.value)}} value={username} ></input>
 
                 <label htmlFor="email"> E-mail: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='text' id="email" 
-                    onChange={e => setEmail(e.target.value)} value={email}></input>
+                    onChange={e => {e.preventDefault(); setEmail(e.target.value)}} value={email}></input>
 
                 <label htmlFor="pw"> First password: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='password' id="pw" 
-                    onChange={e => setFirstPassword(e.target.value)} value={firstPassword}></input>
+                    onChange={e => {e.preventDefault();  setFirstPassword(e.target.value)}} value={firstPassword}></input>
 
                 <div className="flex flex-row gap-2 items-center">
                     <label htmlFor="adminBool">Admin: </label>
                     <input type="checkbox" id="adminBool" 
-                        onChange={e => setIsAdmin(e.target.checked)} checked={isAdmin}></input>
+                        onChange={e => {e.preventDefault(); setIsAdmin(e.target.checked)}} checked={isAdmin}></input>
                 </div>
                 
                 <button type='submit' className={`${btnClasses}`}>Add User</button> 

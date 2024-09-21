@@ -7,7 +7,6 @@ import { createClient } from "@/app/utils/supabaseServer";
 
 export default async function UserStage(){
     const supabase = createClient();
-    const session = async () => {await supabase.auth.getSession();}
 
     const {data, error} = await supabase.rpc("get_all_users");
 
