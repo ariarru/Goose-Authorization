@@ -1,19 +1,14 @@
 'use client'
 import { createClient } from '../utils/supabaseClient';
 import LoginForm from '../components/forms/Login-Form';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 
 export default function LoginFormContainer(){
     const supabase = createClient();
     const router = useRouter();
 
-    const session = async () => {await supabase.auth.getSession();}
-
-    if (session) {
-      redirect("/stage");
-    }
-    var hasLogged = false;
+        
     //questo teoricamente è solo per gli amministratori
     async function login(email, pw){
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -24,7 +19,6 @@ export default function LoginFormContainer(){
             }
           })
 
-          console.log(data);
         if(data){
             alert("Welcome");
             router.refresh();

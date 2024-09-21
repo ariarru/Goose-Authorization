@@ -4,8 +4,9 @@ import { createClient } from '../utils/supabaseClient';
 
 export default async function StagePage(){
     const supabase = createClient();
-    const session = async () => {await supabase.auth.getSession();}
-
+    const {session} = await supabase.auth.getSession();
+    console.log(session);
+    
     if(!session){
         redirect("./");
     } 

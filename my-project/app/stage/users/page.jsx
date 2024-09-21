@@ -11,7 +11,6 @@ export default async function UserStage(){
 
     const {data, error} = await supabase.rpc("get_all_users");
 
-    console.log(data);
     if(error){
         console.log(error);
     }
