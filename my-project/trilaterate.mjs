@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import numeric from 'numeric';
+import  {NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } from './.env.local';
 
 
 // Configura Supabase - crea una connessione a Supabase
-const supabaseUrl = 'https://cdutvkhtyqcsorzvmuzg.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkdXR2a2h0eXFjc29yenZtdXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1NDMwOTYsImV4cCI6MjAzOTExOTA5Nn0.rE0B4Uvj6083r_QgGJy_KtizUfjY2bO8SMcmZFf3LRI';
+const supabaseUrl = NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 /*if (!supabase) {
