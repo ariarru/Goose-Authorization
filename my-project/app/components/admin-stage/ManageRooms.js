@@ -22,8 +22,9 @@ export default async function ManageRooms(){
     if (!session) {
       redirect("./");
     }
-    const rooms = await supabase.rpc("get_all_rooms");
 
+    const rooms = await supabase.from("Rooms").select();
+    console.log("ROOMS", rooms);
     const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
 
 
@@ -34,23 +35,25 @@ export default async function ManageRooms(){
             {rooms.data ? (<p className="text-sm text-center"></p>) : 
             (<p className="text-sm text-center text-gray-400 pt-2">There are no data availables, please insert new values</p>)}
 
-            <div className="flex flex-row gap-2 p-2">
-            <section className="grid-cols-2 gap-4 mt-8 w-1/2">  
-                    {rooms.data?.map(r => (
-                        <RoomCards rm={r} key={r.room_id}></RoomCards>
-                    ))}
+            <div className=" grid grid-cols-2 gap-2 p-2 w-full">
+                <section className="grid-cols-2 gap-4 mt-8">  
+                        {rooms.data?.map(r => (
+                            <RoomCards rm={r} key={r.room_id}></RoomCards>
+                        ))}
 
-            </section>
-                <MyMap width={"w-[40vw] h-[30vh] mt-4"} >
-                    {rooms.data?.map( rm => (
-                        <SelectablePolygon coords={rm.geojson_vertices} name={rm.room_name} key={rm.room_id}></SelectablePolygon>
-                        
-                    ))}
-
-                </MyMap>
-                
+                </section>
+                <section className="flex flex-col gap-1 text-right w-fit relative right-0">
+                    <MyMap width={"w-[30vw] h-[30vh] mt-4"} >
+                        {rooms.data?.map( rm => (
+                            <SelectablePolygon coords={rm.geojson_vertices} name={rm.room_name} key={rm.room_id}></SelectablePolygon>
+                            
+                        ))}
+                    </MyMap>
+                   { //<AddRoomComponent></AddRoomComponent>
+}
+                </section>
             </div>
-            <AddRoomComponent></AddRoomComponent>
+            
         </div>
     );
 }

@@ -8,8 +8,13 @@ import { CircleMarker } from "react-leaflet";
 import { addNewRoom } from "../admin-stage/adminServerActions";
 import { useRouter } from "next/navigation";
 
+const MyMap = dynamic(() => import('../maps/MyMap'), {
+        ssr: false,
+        loading: () => <p>Loading map...</p>
+    });
+
 export default function AddRoom(){
-    const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
+
     const router =useRouter();
 
     const [hidden, setHidden] = useState(true);

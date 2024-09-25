@@ -55,6 +55,22 @@ export async function deleteRoom(roomId){
     }
 }
 
+export async function getAuthUsersFromRoomId(roomId){
+    const supabase = createClient();
+    const session = await supabase.auth.getSession();
+    const result = await supabase.rpc("get_users_from_room_id", {id: roomId});
+    result.error ? console.log(result.error) : 0;
+    return result; 
+}
+
+export async function getDevicesFromRoomId(roomId){
+    const supabase = createClient();
+    //const session = await supabase.auth.getSession();
+    const result = await supabase.rpc("get_devices_from_room_id", {id: roomId});
+    result.error ? console.log(result.error) : 0;
+    return result; 
+}
+
 export async function addUserDevice(userId, deviceName){
     const supabase = createClient();
     const session = await supabase.auth.getSession();
