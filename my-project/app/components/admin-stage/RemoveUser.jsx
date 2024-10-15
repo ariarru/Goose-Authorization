@@ -1,20 +1,19 @@
 'use client'
 import { useRouter } from "next/navigation";
-import {deleteDevFromRoom} from "../admin-stage/adminServerActions";
-
+import {deleteUserFromRoom} from "./adminServerActions";
 
 export default function RemoveDevices(id, room){
 
     const router = useRouter();
 
     async function del(){
-        const result = deleteDevFromRoom(id, room)
+        const result = deleteUserFromRoom(id, room)
         console.log(result);
         if(result != true){
-            alert("Device removed");
+            alert("User removed from authorized");
             router.refresh();
         } else {
-            alert("Could not remove device from room");
+            alert("Could not remove user");
         }
     }
 

@@ -18,7 +18,7 @@ export default function AddDevices({devs, roomId}){
     return(
     <div className='w-fit items-center bg-slate-100 rounded-xl p-1 h-fit py-2 justify-items-center flex flex-col relative left-1/4 '>
         {devs?.map((d) =>(
-            <button onClick={(e)=>{ e.preventDefault; add(d.device_s_id);}} className="text-black text-sm h:bg-slate-200 p-1" key={d.device_s_id}>{d.device_s_name} - {d.category}</button>
+            <button onClick={(e)=>{ e.preventDefault; add(d.device_s_id);}} className="text-black text-sm hover:bg-slate-200 p-1 min-w-11" key={d.device_s_id}>{d.device_s_name} - {d.category}</button>
         )
         )}
     </div>

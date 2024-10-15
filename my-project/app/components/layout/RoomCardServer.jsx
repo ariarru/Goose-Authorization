@@ -1,8 +1,9 @@
 'use server'
 import { createServer } from "@/app/utils/supabaseServer";
 import RemoveDevices from "../admin-stage/RemoveDevices";
-import AddDevicesBtn from "../admin-stage/AddDeviceBtn"
-export default async function RoomCardServer({roomId, allDevs}){
+import AddDevicesBtn from "../admin-stage/AddDeviceBtn";
+import AddUserBtn from "../admin-stage/AddUserBtn"
+export default async function RoomCardServer({roomId, allDevs, allUsers}){
     const supabase = createServer();
 
     var result = await supabase.rpc("get_users_from_room_id", {id: roomId});
@@ -20,9 +21,9 @@ export default async function RoomCardServer({roomId, allDevs}){
                 </div>
                 
                 {devices?.length > 0 ? devices?.map(d => (
-                    <div className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center">
+                    <div  className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center">
                         <p className="text-gray-700 text-sm" key={d.dev_id}>{d.name} - {d.category}</p>
-                        <RemoveDevices id={d.dev_id} key={d.name}/>
+                        <RemoveDevices id={d.dev_id} room={roomId} key={d.name}/>
                         
                     </div>
                 )) : (<p></p>)
@@ -31,10 +32,13 @@ export default async function RoomCardServer({roomId, allDevs}){
             <div>
                 <div className="flex flex-row gap-2 align-middle items-center mb-2">
                         <p className="text-gray-400">List of Users</p>
-                        <AddDevicesBtn devices={allDevs} roomId={roomId.roomId}/>
+                        <AddUserBtn allUs={allUsers} roomId={roomId}/>
                     </div>
                 {users?.map(u => (
-                    <p key={u.user_id}>{u.name}</p>
+                    <div className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center">
+                        <p key={u.user_id}>{u.name}</p>
+                        <RemoveUser id={u.iser_id} room={roomId} key={u.name}/>
+                    </div>
                 ))}
             </div>
         </div>

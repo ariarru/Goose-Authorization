@@ -8,10 +8,6 @@ import { CircleMarker } from "react-leaflet";
 import { addNewRoom } from "../admin-stage/adminServerActions";
 import { useRouter } from "next/navigation";
 
-const MyMap = dynamic(() => import('../maps/MyMap'), {
-        ssr: false,
-        loading: () => <p>Loading map...</p>
-    });
 
 export default function AddRoom(){
 
@@ -20,6 +16,7 @@ export default function AddRoom(){
     const [name, setName] = useState();
     const [floor, setFloor] = useState();
     const [vertices, setVertices] = useState([]);
+    const [isRestricted, setIsRestricted] = useState(false);
 
     const handleMapClick = (newCoordinate) => {
         setVertices([...vertices, newCoordinate]);
@@ -32,7 +29,7 @@ export default function AddRoom(){
         if(!name){
             alert("Please insert the room's name")
         }
-        const result = await addNewRoom(name, vertices, floor);
+        const result = await addNewRoom(name, vertices, floor, isRestricted);
         if(!result.error){
             alert("Room successfully added");
             router.refresh();
@@ -42,24 +39,33 @@ export default function AddRoom(){
         setName('');
         setFloor('');
         setVertices([]);
+        setIsRestricted(false);
         setHidden(true);
+        
     }
 
+    const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
+
+
     return(
-        <div>
-            <div className={`flex relative w-[32rem]`}>
-               <Card add="w-fit border-2 border-indigo-100">
+            <div className={`contents w-full`}>
+               <Card add="border-2 border-indigo-100">
                     <form className="flex flex-col gap-2 text-left" onSubmit={(e)=> {e.preventDefault(); add();}}>
                         <p className="text-base text-gray-600 text-center">Compile form to insert a new room</p>
                         <div className="flex flex-row gap-4 items-center">
                             <label htmlFor="name" >Room's name:</label>
-                            <input id="name" type="text" value={name} className="border-2 rounded border-gray-200" 
+                            <input id="name" type="text" value={name} className="border-2 rounded border-gray-200 px-1" 
                                 placeholder="Insert room's name" onChange={(e)=> {e.preventDefault(); setName(e.target.value);}}/>
                         </div>
                         <div className="flex flex-row gap-4 items-center">
                             <label htmlFor="floor" >Floor:</label>
-                            <input id="floor" type="text" value={floor} className="border-2 rounded border-gray-200" 
+                            <input id="floor" type="text" value={floor} className="border-2 rounded border-gray-200 px-1" 
                                 placeholder="Insert floor's number" onChange={(e)=> {e.preventDefault(); setFloor(e.target.value);}}/>
+                        </div>
+                        <div className="flex flex-row gap-4 items-center">
+                            <label htmlFor="restr" >Restricted access:</label>
+                            <input id="restr" type="checkbox" value={isRestricted} checked={isRestricted} className="border-2 rounded border-gray-200 px-1" 
+                                 onChange={(e)=> {e.preventDefault(); setIsRestricted(!isRestricted);}}/>
                         </div>
                         
                         <p className="text-sm text-gray-400">To select vertices, please click on the map below</p>
@@ -80,7 +86,5 @@ export default function AddRoom(){
                     </form>
                </Card>
             </div>
-
-        </div>
     );
 }
