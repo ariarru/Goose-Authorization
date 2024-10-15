@@ -4,6 +4,7 @@ import AddRoomComponent from '../forms/AddRoomComponent';
 import SelectablePolygon from '../maps/SelectablePolygon';
 import { createClient } from '@/app/utils/supabaseClient';
 import { redirect } from 'next/navigation';
+import { createServer } from "@/app/utils/supabaseServer";
 
 
 
@@ -12,19 +13,21 @@ export default async function ManageRooms(){
     //mostra mappa x
     //mostra stanze x
     //pulsante aggiungi stanza
-    //pulsante seleziona stanza
-    //pulsante elimina stanza
+    //pulsante seleziona stanza x
+    //pulsante elimina stanza x
     //pulsante modifica stanza
-    const supabase = createClient();
+    const supabase = createServer();
 
-    const session = async () => {await supabase.auth.getSession();}
+    const {data, error} = await supabase.auth.getSession();
 
-    if (!session) {
+    if (!data.session) {
+        alert(error);
       redirect("./");
     }
 
-    const rooms = await supabase.from("Rooms").select();
-    console.log("ROOMS", rooms);
+    const rooms = await supabase.rpc("get_all_rooms");
+    const allDevices = await supabase.rpc("get_all_sdevices");
+
     const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
 
 
@@ -36,21 +39,21 @@ export default async function ManageRooms(){
             (<p className="text-sm text-center text-gray-400 pt-2">There are no data availables, please insert new values</p>)}
 
             <div className=" grid grid-cols-2 gap-2 p-2 w-full">
-                <section className="grid-cols-2 gap-4 mt-8">  
+                <section className="grid grid-cols-2 gap-4 mt-8">  
                         {rooms.data?.map(r => (
-                            <RoomCards rm={r} key={r.room_id}></RoomCards>
+                            <RoomCards rm={r} key={r.room_id}> {allDevices.data} </RoomCards>
                         ))}
 
                 </section>
                 <section className="flex flex-col gap-1 text-right w-fit relative right-0">
                     <MyMap width={"w-[30vw] h-[30vh] mt-4"} >
                         {rooms.data?.map( rm => (
-                            <SelectablePolygon coords={rm.geojson_vertices} name={rm.room_name} key={rm.room_id}></SelectablePolygon>
+                            <SelectablePolygon coords={rm.vertices} name={rm.room_name} key={rm.room_id}></SelectablePolygon>
                             
                         ))}
                     </MyMap>
-                   { //<AddRoomComponent></AddRoomComponent>
-}
+                   <AddRoomComponent></AddRoomComponent>
+
                 </section>
             </div>
             

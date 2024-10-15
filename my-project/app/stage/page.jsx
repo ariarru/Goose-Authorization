@@ -1,17 +1,15 @@
 import { redirect } from 'next/navigation';
 import StageContainer from '../components/admin-stage/StageContainer'
-import { createClient } from '../utils/supabaseClient';
+import { createServer } from '../utils/supabaseServer';
 
 export default async function StagePage(){
-    console.log('IN HERE');
-    const supabase = createClient();
-    const {user} = await supabase.auth.getUser();
-    console.log("session");
-    console.log(user);
+    const supabase = createServer();
+    const {data, error} = await supabase.auth.getSession();
 
-   /*if(!user){
+   if(!data.session){
+        alert(error);
        redirect("./");
-    } */
+    } 
 
     return(
         <main className='flex flex-row'>

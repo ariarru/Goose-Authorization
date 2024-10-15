@@ -85,3 +85,30 @@ export async function addUserDevice(userId, deviceName){
 }
 
 
+export async function getRooms(){
+    const supabase = createClient();
+    const result = await supabase.rpc("get_rooms");
+    result.error ? console.log(result.error) : 0;
+    return result; 
+}
+
+
+
+export default async function deleteDevFromRoom(id){
+    console.log("im' hereee")
+    const supabase = createClient();
+    const {data, error} = await supabase.rpc("delete_dev_device", {d_id:id}); 
+    console.log(data);
+    return error ? error : true;
+}
+
+export async function addDevFromRoom(devId, roomId){
+    console.log("room", roomId)
+    console.log("dev", devId)
+    const supabase = createClient();
+    const {data, error} = await supabase.rpc("insert_room_sdevice", {_room_id : roomId, _device_s_id : devId}); 
+    console.log("room", roomId)
+    console.log(data);
+    console.log(error);
+    return error ? error : true;
+}

@@ -16,7 +16,6 @@ const MyMap = dynamic(() => import('../maps/MyMap'), {
 export default function AddRoom(){
 
     const router =useRouter();
-
     const [hidden, setHidden] = useState(true);
     const [name, setName] = useState();
     const [floor, setFloor] = useState();
@@ -48,10 +47,10 @@ export default function AddRoom(){
 
     return(
         <div>
-            <div className={`${hidden ? 'hidden' : 'flex'} relative w-[32rem]`}>
-               <Card add="w-full border-2 border-indigo-500">
-                    <form className="flex flex-col gap-2" onSubmit={(e)=> {e.preventDefault(); add();}}>
-                        <p className="text-base text-gray-400">Compile form to insert a new room</p>
+            <div className={`flex relative w-[32rem]`}>
+               <Card add="w-fit border-2 border-indigo-100">
+                    <form className="flex flex-col gap-2 text-left" onSubmit={(e)=> {e.preventDefault(); add();}}>
+                        <p className="text-base text-gray-600 text-center">Compile form to insert a new room</p>
                         <div className="flex flex-row gap-4 items-center">
                             <label htmlFor="name" >Room's name:</label>
                             <input id="name" type="text" value={name} className="border-2 rounded border-gray-200" 
@@ -70,17 +69,17 @@ export default function AddRoom(){
                                         <li key={index}>Lat: {vertex[0]}, Lng: {vertex[1]}</li>
                                     ))}
                             </ol> 
-                        <MyMap width={"w-96"} height={"h-48"} zoom={18}>
+                        <button onClick={(e) => {e.preventDefault(); setHidden(!hidden);}} className="w-fit bg-indigo-300 rounded p-2 text-white text-sm">show map</button>
+                        <MyMap width={"w-96"} height={`${hidden ? 'h-0' : 'h-48'}`} zoom={18}>
                             <ClickOnMapEvent onMapClick={handleMapClick}/>
                             {vertices.map((vertex, index) => (
                                         <CircleMarker center={vertex} key={index} pathOptions={{ fillColor: 'blue' }} radius={3}/>
                                     ))};
                         </MyMap>
-                        <button type="submit" className="my-0 p-2 rounded text-white bg-blue-500 hover:bg-blue-600 w-64 text-center" >Add</button>
+                        <button type="submit" className="my-0 p-2 rounded text-white bg-indigo-500 hover:bg-indigo-600 w-64 text-center self-center" >Add New Room</button>
                     </form>
                </Card>
             </div>
-            <button onClick={(e) => {e.preventDefault(); setHidden(!hidden);}} className="my-0 p-2 rounded text-white bg-indigo-500 hover:bg-indigo-600 w-64">Add New Room</button>
 
         </div>
     );
