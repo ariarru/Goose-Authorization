@@ -15,6 +15,20 @@ export async function addNewUser(username, email, pw, isAdmin){
     }
 }
 
+export async function deleteUser(userId){
+    const supabase = createClient();
+    const session = await supabase.auth.getSession();
+
+    if(session){
+        const result = await supabase.rpc("delete_user", {_user_id: userId});
+        console.log(result);
+        result.error ? console.log(result.error) : 0;
+        return true;
+    } else{
+        return false;
+    }
+}
+
 export async function addNewRoom(name, vertices, piano, restricted){
     const supabase = createClient();
     const session = await supabase.auth.getSession();

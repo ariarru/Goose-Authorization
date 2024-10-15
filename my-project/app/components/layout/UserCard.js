@@ -1,8 +1,24 @@
+'use client'
 import Card from './Card';
 import AddDevice from '../forms/AddDevice'
+import { deleteUser } from '../admin-stage/adminServerActions';
+import { useRouter } from 'next/navigation';
 
 
 export default function UserCard({userInfo}){
+
+    const router = useRouter();
+
+    async function delete_user(){
+        const result = await deleteUser(userInfo.user_id);
+        if(result){
+            alert("User sucessfully removed")
+            router.refresh();
+        } else {
+            alert("User not removed due to error")
+        }
+    }
+
     return(
         <Card add='border-2 border-gray-200 rounded p-2 h-fit'>
            <div className='flex flex-col gap-4'>
@@ -21,6 +37,7 @@ export default function UserCard({userInfo}){
                         (<p>{dev}</p>))}
                 </p>
                 <AddDevice id={userInfo.id} room={false} user={true}></AddDevice>
+                <button className='rounded bg-rose-400 text-white px-4 py-1 hover:bg-red-600' onClick={(e)=>{e.preventDefault; delete_user();}}>Delete user</button>
             </div> 
         </Card>
     );
