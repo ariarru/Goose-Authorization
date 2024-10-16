@@ -168,8 +168,21 @@ export async function updateRoom(roomId, name, floor, restricted){
     const supabase = createClient();
     const session = await supabase.auth.getSession();
     if(session){
-        //const {data, error} = await supabase.rpc("insert_room_authorizations", {_room_id : roomId, _user_id : userId}); 
-        //return error ? error : true;
+        const {data, error} = await supabase.rpc("update_room", {_room_id : roomId, new_room_name : name, new_piano : floor, new_is_restricted: restricted}); 
+        return error ? error : true;
+    } else{
+        return false;
+    }
+
+}
+
+export async function updateRoomStatus(roomId, restricted){
+    const supabase = createClient();
+    const session = await supabase.auth.getSession();
+    if(session){
+        const {data, error} = await supabase.rpc("update_room_restriction", {new_is_restricted: restricted, r_id : roomId}); 
+
+        return error ? error : true;
     } else{
         return false;
     }

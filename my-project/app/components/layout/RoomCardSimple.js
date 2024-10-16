@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { deleteRoom } from '../admin-stage/adminServerActions';
+import { deleteRoom, updateRoom } from '../admin-stage/adminServerActions';
 import Card from './Card';
 import { useRouter } from 'next/navigation';
 
@@ -14,9 +14,10 @@ export default function RoomCardSimple({rm}){
 
     async function saveEdits(){
         setEdit(false);
-        const result = await updateRoom(id, name, floor, isRestricted);
+        const result = await updateRoom(rm.id, name, floor, isRestricted);
         if(result){
             alert("Updated Successfully!");
+            router.refresh();
         } else {
             alert("Something went wrong!");
         }
@@ -25,7 +26,6 @@ export default function RoomCardSimple({rm}){
 
     async function del(){
         const result = await deleteRoom(id);
-        console.log(result);
         if(result != true){
             alert("Room deleted");
             router.refresh();

@@ -12,9 +12,8 @@ export default async function DeviceStage(){
     } 
 
     const devices = await supabase.rpc("get_all_categories");
-    const devicesForRooms = await supabase.rpc("get_device_categories_each_room");
 
-    console.log(devicesForRooms);
+    console.log("devices", devices);
 
     return(
         <StageContainer>

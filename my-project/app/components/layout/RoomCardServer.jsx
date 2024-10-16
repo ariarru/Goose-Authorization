@@ -1,8 +1,10 @@
 'use server'
 import { createServer } from "@/app/utils/supabaseServer";
 import RemoveDevices from "../admin-stage/RemoveDevices";
+import RemoveUser from "../admin-stage/RemoveUser";
 import AddDevicesBtn from "../admin-stage/AddDeviceBtn";
 import AddUserBtn from "../admin-stage/AddUserBtn"
+
 export default async function RoomCardServer({roomId, allDevs, allUsers}){
     const supabase = createServer();
 
@@ -21,7 +23,7 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
                 </div>
                 
                 {devices?.length > 0 ? devices?.map(d => (
-                    <div  className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center">
+                    <div  className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center" key={d.dev_id + roomId}>
                         <p className="text-gray-700 text-sm" key={d.dev_id}>{d.name} - {d.category}</p>
                         <RemoveDevices id={d.dev_id} room={roomId} key={d.name}/>
                         
@@ -29,15 +31,15 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
                 )) : (<p></p>)
             }
             </div>
-            <div>
+            <div className="flex flex-col gap-1">
                 <div className="flex flex-row gap-2 align-middle items-center mb-2">
                         <p className="text-gray-400">List of Users</p>
                         <AddUserBtn allUs={allUsers} roomId={roomId}/>
                     </div>
                 {users?.map(u => (
-                    <div className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center">
-                        <p key={u.user_id}>{u.name}</p>
-                        <RemoveUser id={u.iser_id} room={roomId} key={u.name}/>
+                    <div className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center" key={u.user_id + roomId}>
+                        <p className="text-gray-700 text-sm" key={u.user_id}>{u.username} - {u.notification_preference}</p>
+                        <RemoveUser id={u.iser_id} room={roomId} key={u.username}/>
                     </div>
                 ))}
             </div>
