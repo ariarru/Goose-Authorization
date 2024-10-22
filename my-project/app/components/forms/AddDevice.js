@@ -2,18 +2,15 @@
 import { useState } from "react";
 
 
-export default function AddDevice({id, room, user}){
+export default function AddDevice({id, user}){
 
     const [hidden, setHidden] = useState(true);
-    const [nameDevice, setNameDevice] = useState();
+    const [nameDevice, setNameDevice] = useState('');
 
     function add(){
         if(hidden){
             setHidden(false);
         } else{
-            if(room){
-                //aggiungi dispositivo a stanza
-            }
             if(user){
                 //aggiungi dispositivo a utente
             }

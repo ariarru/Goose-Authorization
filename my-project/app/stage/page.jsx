@@ -7,7 +7,7 @@ export default async function StagePage(){
     const {data, error} = await supabase.auth.getSession();
 
    if(!data.session){
-    console.log(error);
+        console.log(error);
        redirect("./");
     } 
 
