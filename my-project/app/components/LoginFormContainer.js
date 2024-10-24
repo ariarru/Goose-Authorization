@@ -2,6 +2,7 @@
 import { createClient } from '../utils/supabaseClient';
 import LoginForm from '../components/forms/Login-Form';
 import { useRouter } from 'next/navigation';
+import LoginUserForm from './forms/LoginUserForm';
 
 
 export default function LoginFormContainer(){
@@ -30,12 +31,28 @@ export default function LoginFormContainer(){
           alert("Wrong credentials, please retry\n"+error);
           return;
         }
-        
+    }
+
+    async function loginUser(username, pw){
+      const {data, error} = await supabase.rpc('login', {_username: username, _password: pw});
+
+      console.log(data);
+      if(!error){
+        router.push('./user');
+      }
     }
     
     return(
-        <div className='mx-auto'>
-            <LoginForm loginFunction={login}></LoginForm>
+        <div className='mx-auto h-full flex flex-row gap-10 mt-8'>
+            <section className='flex flex-col'>
+            <p className='text-3xl font-bold mx-auto mb-2 text-gray-600'>Login as User</p>
+            <LoginUserForm fun={loginUser}></LoginUserForm>
+            </section>
+            <p className='self-center justify-self-center my-auto mx-auto text-sm text-gray-400'>or</p>
+            <section className='flex flex-col'>
+              <p className='text-3xl font-bold mx-auto mb-2  text-gray-600'>Login as Admin</p>
+              <LoginForm loginFunction={login}></LoginForm>
+            </section>
         </div>
     );
 }

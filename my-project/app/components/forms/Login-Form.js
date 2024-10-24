@@ -15,7 +15,7 @@ export default function LoginForm({loginFunction}){
 
 
     return(
-        <Card add="justify-center flex">
+        <Card add="justify-center flex w-80 py-8">
             <form className='flex flex-col py-4 px-8 gap-2.5'>
                 <label htmlFor='email' className='text-gray-500'>
                 Insert your email:
@@ -42,9 +42,9 @@ export default function LoginForm({loginFunction}){
                 <button
                     type='button'
                     onClick={handleLogin}
-                    className='shadow-sm shadow-slate-300 bg-sky-800 w-fit p-2 px-3 mt-3 -mb-3 mr-3 rounded text-white self-center'
+                    className='shadow-sm shadow-slate-300 bg-indigo-400 hover:bg-indigo-500 w-fit p-2 px-3 mt-3 -mb-3 mr-3 rounded text-white self-center'
                 >
-                    Login
+                    Login as Admin
                 </button>
                 
                 </div>
