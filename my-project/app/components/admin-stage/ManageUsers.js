@@ -1,8 +1,19 @@
+import { createServer } from '@/app/utils/supabaseServer';
 import NewUsersForm from '../forms/NewUsersForm';
 import UserCard from '../layout/UserCard';
+import { redirect } from 'next/navigation';
 
-export default function ManageUsers({children}){
+export default async function ManageUsers({children}){
     //TODO: aggiungi dispositivo utente
+
+    const supabase = createServer();
+
+    const {data, error} = await supabase.auth.getSession();
+
+    if (!data.session) {
+        console.log(error);
+        redirect("./");
+    }
 
     let thereIsData = (children?.length > 0);
  
