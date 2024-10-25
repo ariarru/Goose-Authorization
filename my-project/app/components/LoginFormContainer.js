@@ -43,12 +43,7 @@ export default function LoginFormContainer(){
     }
     
     return(
-        <div className='mx-auto h-full flex flex-row gap-10 mt-8'>
-            <section className='flex flex-col'>
-            <p className='text-3xl font-bold mx-auto mb-2 text-gray-600'>Login as User</p>
-            <LoginUserForm fun={loginUser}></LoginUserForm>
-            </section>
-            <p className='self-center justify-self-center my-auto mx-auto text-sm text-gray-400'>or</p>
+        <div className='mx-auto h-full flex flex-col items-center gap-10 mt-8 md:flex-row'>
             <section className='flex flex-col'>
               <p className='text-3xl font-bold mx-auto mb-2  text-gray-600'>Login as Admin</p>
               <LoginForm loginFunction={login}></LoginForm>

@@ -2,10 +2,7 @@ import NewUsersForm from '../forms/NewUsersForm';
 import UserCard from '../layout/UserCard';
 
 export default function ManageUsers({children}){
-    //vedi elenco utenti x
-    //aggiungi utente x
-    //elimina utente -> policy cla
-    //gestisci accessi utente -> not important
+    //TODO: aggiungi dispositivo utente
 
     let thereIsData = (children?.length > 0);
  
@@ -17,11 +14,11 @@ export default function ManageUsers({children}){
         
             }
            
-           <section className='flex flex-row gap-8'>
+           <section className='flex flex-row gap-8 w-fit'>
                 <section className="flex flex-col gap-4 mt-8">
                     <NewUsersForm></NewUsersForm>               
                 </section>
-                <section className='grid p-2 mt-6 grid-cols-4 gap-10'>
+                <section className='flex flex-col md:grid p-2 mt-6 md:grid-cols-4 md:gap-10'>
                     {children?.map(user => (
                     <UserCard userInfo={user} key={user.user_id}></UserCard>
                     ))}

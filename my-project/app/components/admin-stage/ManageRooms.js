@@ -32,8 +32,8 @@ export default async function ManageRooms(){
             (<p className="text-sm text-center text-gray-400 pt-2">There are no data availables, please insert new values</p>)}
 
             <div className=" flex flex-col gap-2 p-2 w-full">
-            <section className="flex flex-row gap-4 text-right w-full items-center justify-center justify-items-center">
-                    <MyMap width={"w-[30vw] h-[30vh] mt-4"} >
+            <section className="flex flex-col md:flex-row gap-4 text-right w-full items-center justify-center justify-items-center">
+                    <MyMap width={"w-10/12 md:w-[30vw] h-[30vh] mt-4"} >
                         {rooms.data?.map( rm => (
                             <SelectablePolygon coords={rm.geojson_vertices} name={rm.name} key={rm.id}></SelectablePolygon>
                             

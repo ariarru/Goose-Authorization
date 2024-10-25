@@ -51,7 +51,7 @@ export default function AddRoom(){
             <div className={`contents w-full`}>
                <Card add="border-2 border-indigo-100">
                     <form className="flex flex-col gap-2" onSubmit={(e)=> {e.preventDefault(); add();}}>
-                        <div className="flex flex-row gap-4">
+                        <div className="flex flex-col md:flex-row gap-4">
                             <div className="flex flex-col gap-2 text-left w-fit">
                                 <p className="text-base text-gray-600 text-center">Compile form to insert a new room</p>
                                 <div className="flex flex-row gap-4 items-center">

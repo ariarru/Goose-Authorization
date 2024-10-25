@@ -23,8 +23,8 @@ export default function Home() {
       </header>
       <section className="mb-3">
         <h1 className="text-4xl text-center">Welcome to Goose Authorization</h1>
-        <p className="text-center">Please <Link href="/login" className="text-sky-500">log in</Link> to use the platform...</p>
-        <MyMap width={"w-[70vw]"} height={"h-[80vh]"} children={null} zoom={null}></MyMap>
+        <p className="text-center mb-2">Please <Link href="/login" className="text-sky-500">log in</Link> to use the platform...</p>
+        <MyMap width={"w-11/12"} height={"h-[80vh]"} children={null} zoom={null}></MyMap>
       </section>
       
     </main>

@@ -14,9 +14,9 @@ export default function StageContainer({children}){
 
     return(
         <div className='flex w-full'>
-                <article className='flex flex-row w-full my-4'>  
+                <article className='flex flex-col md:flex-row w-full my-4'>  
                     <section className='w-[20%] mx-8'>
-                        <p className="text-2xl py-4 px-6">Admin Stage</p>
+                        <p className="text-2xl py-4 px-6 w-52">Admin Stage</p>
                         <SideBar>
                             <SideBarBtn dst={"/stage/rooms"} text={"Manage Rooms"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/devices"} text={"Manage Devices"}></SideBarBtn>
