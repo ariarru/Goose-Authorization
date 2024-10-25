@@ -1,7 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import { updateRoomStatus } from '../admin-stage/adminServerActions';
-import { useState } from 'react';
 
 export default function RoomCardClient({id}){
     const router = useRouter();

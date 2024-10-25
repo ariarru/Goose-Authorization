@@ -13,8 +13,8 @@ export default function AddRoom(){
 
     const router =useRouter();
     const [hidden, setHidden] = useState(true);
-    const [name, setName] = useState();
-    const [floor, setFloor] = useState();
+    const [name, setName] = useState('');
+    const [floor, setFloor] = useState('');
     const [vertices, setVertices] = useState([]);
     const [isRestricted, setIsRestricted] = useState(false);
 
@@ -27,7 +27,7 @@ export default function AddRoom(){
             alert("Please insert floor")
         }
         if(!name){
-            alert("Please insert the room's name")
+            alert("Please insert the room&#39;s name")
         }
         const result = await addNewRoom(name, vertices, floor, isRestricted);
         if(!result.error){
@@ -55,7 +55,7 @@ export default function AddRoom(){
                             <div className="flex flex-col gap-2 text-left w-fit">
                                 <p className="text-base text-gray-600 text-center">Compile form to insert a new room</p>
                                 <div className="flex flex-row gap-4 items-center">
-                                    <label htmlFor="name" className="text-sm max-w-40" >Room's name:</label>
+                                    <label htmlFor="name" className="text-sm max-w-40" >Room&#39;s name:</label>
                                     <input id="name" type="text" value={name} className="border-2 rounded border-gray-200 px-1" 
                                         placeholder="Insert room's name" onChange={(e)=> {e.preventDefault(); setName(e.target.value);}}/>
                                 </div>

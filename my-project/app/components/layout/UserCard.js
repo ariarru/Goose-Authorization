@@ -34,7 +34,7 @@ export default function UserCard({userInfo}){
            <p className='text-sm text-gray-500'>Associates devices:</p>
                 <p>
                     {userInfo.devices?.map(dev => 
-                        (<p>{dev}</p>))}
+                        (<p key={dev.id}>{dev}</p>))}
                 </p>
                 <AddDevice id={userInfo.id} room={false} user={true}></AddDevice>
                 <button className='rounded bg-rose-400 text-white px-4 py-1 hover:bg-red-600' onClick={(e)=>{e.preventDefault; delete_user();}}>Delete user</button>

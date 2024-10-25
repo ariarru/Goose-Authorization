@@ -26,7 +26,7 @@ export default function RoomCardEdit({roomInfo}){
         <div>
         { editMode ? (
             <form action={(e) => { e.preventDefault; saveEdits();}} className='flex flex-col gap-2 text-sm w-fit'>
-            <p className='text-center text-slate-500'>editMode the room's specific:</p>
+            <p className='text-center text-slate-500'>Edit the room&#39;s specific:</p>
             <div className='flex flex-row gap-3'>
                 <label htmlFor='name'>Name:</label>
                 <input id='name' type='text' value={name} onChange={(e)=> {e.preventDefault(); setName(e.target.value);}}
