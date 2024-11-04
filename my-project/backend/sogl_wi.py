@@ -1,10 +1,7 @@
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
-from shapely.geometry import Point, Polygon
 import numpy as np
-import pandas as pd
-import json
 
 # Carica le variabili dal file .env
 load_dotenv(dotenv_path='.env.local')
@@ -12,13 +9,15 @@ load_dotenv(dotenv_path='.env.local')
 # Recupera le variabili
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 supabase_key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+"""print(f"URL di Supabase: {supabase_url}")
+print(f"Chiave di Supabase: {supabase_key}")"""
 
 # Configura Supabase - crea una connessione a Supabase
 supabase: Client = create_client(supabase_url, supabase_key)
 
 def recupero_dati():
     # Recupera i dati storici delle stanze dal database
-    response = supabase.table("Rooms").select("room_name, vertices, rilevazione").execute()
+    response = supabase.table("Rooms").select("room_name, rilevazione").execute()
     return response.data
 
 # Rimuove eventuali caratteri finali dai MAC address
@@ -30,6 +29,11 @@ def calc_similarity(current_scan, dati_db):
     best_similarity_score = float('-inf')
     
     for room in dati_db:
+        # Verifica se la chiave 'rilevazione' è presente e non è None
+        if room['rilevazione'] is None:
+            #print("Rilevazione mancante per la stanza:", room['room_name'])
+            continue  # Salta questa stanza se non c'è rilevazione
+
         room_similarity_score = 0
         access_point_count = 0  # Inizializza il conteggio degli access point
 
@@ -63,6 +67,10 @@ def calc_soglia():
     lista_best_similarity_score = []
 
     for room in dati_db:
+        if room['rilevazione'] is None:  
+            #print("Rilevazione mancante per la stanza:", room['room_name'])  
+            continue 
+
         for rilevazione_key, rilevazione_data in room['rilevazione'].items():
             if isinstance(rilevazione_data, dict):
                 current_scan = rilevazione_data
@@ -73,8 +81,6 @@ def calc_soglia():
                 # Aggiungi il nome della stanza e il relativo punteggio di similarità migliore alla lista
                 lista_best_similarity_score.append((room_name, best_similarity_score))
 
-                # Stampa il punteggio di similarità migliore con il nome della stanza
-                print(f"Stanza: {room_name}, Punteggio di Similarità Migliore: {best_similarity_score}")
 
     # Calcola e stampa la media dei punteggi
     media = np.mean([score for _, score in lista_best_similarity_score])
