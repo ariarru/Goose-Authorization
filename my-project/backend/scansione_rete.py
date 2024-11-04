@@ -73,7 +73,7 @@ def save_data_to_file(wifi_data, filename):
 if __name__ == "__main__":
     wifi_data = scan_wifi()  
     if wifi_data:
-        save_data_to_file(wifi_data, filename=r'C:\Users\claud\Documents\GitHub\my-project\rilevazioni\E2.json')
+        save_data_to_file(wifi_data, filename=r'C:\Users\claud\Documents\GitHub\my-project\rilevazioni\new.json')
     else:
         print("Nessun dato Wi-Fi trovato. Il file non è stato creato.")
 
