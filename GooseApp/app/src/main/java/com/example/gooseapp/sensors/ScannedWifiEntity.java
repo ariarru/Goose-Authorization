@@ -1,4 +1,4 @@
-package com.example.gooseapp;
+package com.example.gooseapp.sensors;
 
 public class ScannedWifiEntity {
 

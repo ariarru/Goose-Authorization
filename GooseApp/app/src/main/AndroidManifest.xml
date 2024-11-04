@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- BLE status-->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
 
     <application
         android:allowBackup="true"
@@ -22,7 +25,7 @@
         android:theme="@style/Theme.GooseApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.HomeActivity"
             android:exported="false"
             android:label="@string/title_home"/>
     </application>

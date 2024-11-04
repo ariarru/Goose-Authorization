@@ -1,24 +1,22 @@
-package com.example.gooseapp
+package com.example.gooseapp.activity
 
 import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
 import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
+import com.example.gooseapp.R
+import com.example.gooseapp.sensors.ScannedWifiEntity
+import com.example.gooseapp.sensors.SensorHelper
 
 
 class HomeActivity : AppCompatActivity() {
@@ -29,21 +27,21 @@ class HomeActivity : AppCompatActivity() {
     private val arrayList = ArrayList<ScannedWifiEntity>()
     private var isReceiverRegistered = false
 
-
-
-    public final val PERMISSION_FINE_LOCATION = 99
-    public final val PERMISSION_COARSE_LOCATION = 98
-    public final val PERMISSION_WIFI = 97
-    public final val PERMISSION_CHANGE_WIFI = 96
+    private val sensorHelper = SensorHelper()
 
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
         //chiedi permessi
-        hasWifiPermission()
-        hasLocationPermission()
+        if(!sensorHelper.hasWifiPermission(applicationContext, this)) {
+            Toast.makeText(this, "I don't have any wifi permission, try again", Toast.LENGTH_SHORT).show()
+        }
+        if(!sensorHelper.hasLocationPermission(applicationContext, this)){
+            Toast.makeText(applicationContext, "I don't have any location permission, try again", Toast.LENGTH_LONG).show()
+        }
         //definisci receiver
         registerReceiver(wifiReceiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
         //definisci wifi
@@ -64,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this, "wifi is disabled.. You need to enable it in order to use the application", Toast.LENGTH_LONG).show()
             // richiedi permesso attivazione wifi
         }
-        if (!isReceiverRegistered && hasWifiPermission()) {
+        if (!isReceiverRegistered) {
             isReceiverRegistered = true
             wifiManager.startScan()
             println("scanning started")
@@ -127,32 +125,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    fun hasWifiPermission(): Boolean {
-        return if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(arrayOf(Manifest.permission.CHANGE_WIFI_STATE), PERMISSION_CHANGE_WIFI)
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_WIFI_STATE), PERMISSION_WIFI)
-
-            Toast.makeText(this, "I don't have any wifi permission, try again", Toast.LENGTH_SHORT).show()
-            false
-        } else {
-            true
-        }
-    }
-
-    fun hasLocationPermission(): Boolean {
-        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_FINE_LOCATION)
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_COARSE_LOCATION)
-
-            Toast.makeText(applicationContext, "I don't have any location permission, try again", Toast.LENGTH_LONG).show()
-            return false
-        }
-        return true
-    }
 
 
 

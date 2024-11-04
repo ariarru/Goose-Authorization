@@ -1,6 +1,7 @@
-package com.example.gooseapp
+package com.example.gooseapp.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,12 +13,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.gooseapp.LoginError
+import com.example.gooseapp.R
+import com.example.gooseapp.service.BackgroundService
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
@@ -51,7 +53,16 @@ class MainActivity : AppCompatActivity() {
 
 
                 if(result.data.toBoolean()){
+
                     Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
+                    val startServiceIntent = Intent(
+                        this,
+                        BackgroundService::class.java
+                    )
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(startServiceIntent)
+                    }
+
                     val goToHome = Intent(this, HomeActivity::class.java)
                     startActivity(goToHome)
                 }
