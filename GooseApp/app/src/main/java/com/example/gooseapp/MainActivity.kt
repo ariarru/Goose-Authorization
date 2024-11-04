@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     public final suspend fun login(username: String, password: String) {
         // Verifica se username o password sono vuoti
         if (username.isBlank() || password.isBlank()) {
-            throw LoginError.EmptyFields
+            throw LoginError.EMPTY_FIELDS
         }
             try {
                 val credentials =  buildJsonObject {
@@ -46,8 +46,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val result = supabase.postgrest.rpc("login", credentials)
-                println("ritorna:")
-                println(result.data)
+                println("ritorna: ${result.data}")
+                println("----------------------------------------------")
+
 
                 if(result.data.toBoolean()){
                     Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
@@ -63,12 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    suspend fun getPosition() {
-        // Simula la logica per ottenere la posizione o le informazioni WiFi
-        withContext(Dispatchers.IO) {
-            // Implementazione per restituire SSID, MAC e RSSI di ogni WiFi trovato
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +82,11 @@ class MainActivity : AppCompatActivity() {
 
             // Chiama la funzione di login del ViewModel
             runBlocking {
-                login(username, password)
+                try{
+                    login(username, password)
+                } catch (e: LoginError) {
+                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
