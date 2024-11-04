@@ -1,0 +1,79 @@
+{
+    "wifi_data": {
+        "AP1": {
+            "SSID": "ALMAWIFI",
+            "MAC": "c4:b9:cd:f2:a6:21:",
+            "RSSI": -64
+        },
+        "AP2": {
+            "SSID": "ALMAWIFI",
+            "MAC": "8c:1e:80:51:e3:01:",
+            "RSSI": -79
+        },
+        "AP3": {
+            "SSID": "ALMAWIFI",
+            "MAC": "dc:f7:19:09:08:01:",
+            "RSSI": -72
+        },
+        "AP4": {
+            "SSID": "ALMAWIFI",
+            "MAC": "c4:b9:cd:f2:a6:21:",
+            "RSSI": -64
+        },
+        "AP5": {
+            "SSID": "ALMAWIFI",
+            "MAC": "8c:1e:80:51:e3:01:",
+            "RSSI": -79
+        },
+        "AP6": {
+            "SSID": "ALMAWIFI",
+            "MAC": "dc:f7:19:09:08:01:",
+            "RSSI": -72
+        },
+        "AP7": {
+            "SSID": "",
+            "MAC": "02:71:47:cf:a2:70:",
+            "RSSI": -81
+        },
+        "AP8": {
+            "SSID": "eduroam",
+            "MAC": "c4:b9:cd:f2:a6:20:",
+            "RSSI": -53
+        },
+        "AP9": {
+            "SSID": "eduroam",
+            "MAC": "2c:31:24:c0:bc:00:",
+            "RSSI": -81
+        },
+        "AP10": {
+            "SSID": "eduroam",
+            "MAC": "dc:f7:19:09:08:00:",
+            "RSSI": -71
+        },
+        "AP11": {
+            "SSID": "eduroam",
+            "MAC": "8c:1e:80:51:e3:00:",
+            "RSSI": -79
+        },
+        "AP12": {
+            "SSID": "Notebook",
+            "MAC": "1c:b7:2c:82:1c:50:",
+            "RSSI": -78
+        },
+        "AP13": {
+            "SSID": "TIM-45424657",
+            "MAC": "c2:2d:06:4c:ac:71:",
+            "RSSI": -90
+        },
+        "AP14": {
+            "SSID": "TIM-19876615",
+            "MAC": "20:b0:01:2f:4b:07:",
+            "RSSI": -102
+        },
+        "AP15": {
+            "SSID": "admstaff",
+            "MAC": "ac:9e:17:50:ca:cc:",
+            "RSSI": -76
+        }
+    }
+}
