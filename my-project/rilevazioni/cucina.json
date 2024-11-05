@@ -1,0 +1,76 @@
+{
+
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -42
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -44
+            },
+            "AP3": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -77
+            },
+            "AP4": {
+                "SSID": "ADB-E03D1D",
+                "MAC": "20:83:f8:e0:3d:1e:",
+                "RSSI": -71
+            },
+            "AP5": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -42
+            },
+            "AP6": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -44
+            },
+            "AP7": {
+                "SSID": "D-Link-3CB2DD",
+                "MAC": "a8:63:7d:3c:b2:de:",
+                "RSSI": -80
+            },
+            "AP8": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:cf:",
+                "RSSI": -86
+            },
+            "AP9": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -61
+            },
+            "AP10": {
+                "SSID": "HiSmart-01-ca2c4fa26762",
+                "MAC": "ca:2c:4f:a2:67:62:",
+                "RSSI": -86
+            },
+            "AP11": {
+                "SSID": "HiSmart-01-ca2c4fa24da0",
+                "MAC": "ca:2c:4f:a2:4d:a0:",
+                "RSSI": -84
+            },
+            "AP12": {
+                "SSID": "ALHN-ECEB_EXT",
+                "MAC": "cc:32:e5:9f:93:55:",
+                "RSSI": -86
+            },
+            "AP13": {
+                "SSID": "TP-Link_5D79",
+                "MAC": "c0:06:c3:60:5d:79:",
+                "RSSI": -86
+            },
+            "AP14": {
+                "SSID": "ADB-DAFB20",
+                "MAC": "20:83:f8:da:fb:21:",
+                "RSSI": -82
+            }
+        }
+
+}

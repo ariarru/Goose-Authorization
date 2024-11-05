@@ -1,0 +1,66 @@
+{
+
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -44
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -46
+            },
+            "AP3": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -73
+            },
+            "AP4": {
+                "SSID": "ADB-DAF4CC",
+                "MAC": "20:83:f8:da:f4:cd:",
+                "RSSI": -80
+            },
+            "AP5": {
+                "SSID": "ADB-E03D1D",
+                "MAC": "20:83:f8:e0:3d:1e:",
+                "RSSI": -62
+            },
+            "AP6": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -44
+            },
+            "AP7": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -46
+            },
+            "AP8": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -70
+            },
+            "AP9": {
+                "SSID": "HiSmart-01-ca2c4fa264a4",
+                "MAC": "ca:2c:4f:a2:64:a4:",
+                "RSSI": -84
+            },
+            "AP10": {
+                "SSID": "HiSmart-01-ca2c4fa24da0",
+                "MAC": "ca:2c:4f:a2:4d:a0:",
+                "RSSI": -82
+            },
+            "AP11": {
+                "SSID": "HiSmart-01-ca2c4fa250a6",
+                "MAC": "ca:2c:4f:a2:50:a6:",
+                "RSSI": -80
+            },
+            "AP12": {
+                "SSID": "TIM-27371385",
+                "MAC": "10:13:31:a1:a7:79:",
+                "RSSI": -80
+            }
+        }
+
+}
