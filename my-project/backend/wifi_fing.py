@@ -138,41 +138,74 @@ def calcola_posizione(current_scan, dati_db):
         return None
 
 def access_log(user_id, room_id):
-    # se l'utente è presente, prendendo in caso il suo ultimo acesso
-    presenza= supabase.table("Access_Logs")\
-    .select("*")\
-    .eq("user_id", user_id)\
-    .order("created_at", desc=True)\
-    .limit(1)\
-    .execute()
-    # se l'utente non è in Access_logs oppure il suo ultimo log ha segnati sia timestap che returned_time allora faccio un nuovo insert
-    if len(presenza)==0 or (presenza["timestamp"] is not None and presenza["returned_time"] is not None):
+    msg = None
+    
+    # Controlla se l'utente è presente, prendendo in caso il suo ultimo accesso
+    presenza = supabase.table("Access_Logs")\
+        .select("*")\
+        .eq("user_id", user_id)\
+        .order("log_id", desc=True)\
+        .limit(1)\
+        .execute()
+
+    # Se l'utente non è in Access_logs oppure il suo ultimo log ha segnati sia timestamp che returned_time allora faccio un nuovo insert
+    if not presenza.data:  # Se non ci sono log per questo utente
+        if room_id == -1:
+            msg = "Nessuna azione necessaria"
+            return msg
+
         insert = supabase.table("Access_Logs").insert({
-                    "user_id": user_id,
-                    "room_id": room_id,
-                    "timestamp": current_time.strftime("%H:%M:%S"),
-                    "returned_time": None  # Imposta il returned_time come None per un nuovo accesso
-                }).execute()
+            "user_id": user_id,
+            "room_id": room_id,
+            "timestamp": current_time.strftime("%H:%M:%S"),
+            "returned_time": None  # Imposta il returned_time come None per un nuovo accesso
+        }).execute()
+
+        print("insert data: ", insert.data)
 
         # Controlla se l'operazione è andata a buon fine
-        if insert.status_code == 201:  # 201 indica che è stato creato un nuovo record
+        if insert.data is not None:
             msg = "Record inserito con successo"
         else:
-            msg="Errore nell'inserimento del record"
+            msg = f"Errore nell'inserimento del record"
 
-    if (len(presenza) != 0) and (presenza["timestamp"] is not None and presenza["returned_time"] is None) and (presenza["room_id"] != room_id):
-        aggiorna = supabase.table("Access_Logs").update("returned_time", current_time.strftime("%H:%M:%S")).eq("log_id", presenza["log_id"]).execute()
+    elif presenza.data and presenza.data[0].get("returned_time") is not None:
+        # L'utente esiste e l'ultimo accesso ha timestamp e returned_time
+        if room_id == -1:
+            msg = "Nessuna azione necessaria"
+            return msg
 
-        # Controlla se l'operazione è andata a buon fine
-        if aggiorna.status_code == 200: 
-            msg="Record aggiornato con successo"
+        # Inserisci un nuovo log
+        insert = supabase.table("Access_Logs").insert({
+            "user_id": user_id,
+            "room_id": room_id,
+            "timestamp": current_time.strftime("%H:%M:%S"),
+            "returned_time": None
+        }).execute()
+        
+        print("insert data: ", insert.data)
+        
+        if insert.data is not None:
+            msg = "Record inserito con successo"
         else:
-            msg="Errore nell'aggiornamento del record"
-    
-    if msg is None: 
-        msg= "Nessuna azione necessaria"
-            
-    return msg 
+            msg = f"Errore nell'inserimento del record"
+
+    elif presenza.data and (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and (presenza.data[0].get("room_id") != room_id):
+        # Aggiorna il returned_time per la stanza precedente
+        aggiorna = supabase.table("Access_Logs").update({
+            "returned_time": current_time.strftime("%H:%M:%S")
+        }).eq("log_id", presenza.data[0].get("log_id")).execute()
+        
+        print("agg data:", aggiorna.data)
+        
+        if aggiorna.data is not None:
+            msg = "Record aggiornato con successo"
+        else:
+            msg = "Errore nell'aggiornamento del record: " 
+
+              
+    return msg
+
 
 
 def fingerprinting(file_name,user_id):
@@ -195,6 +228,8 @@ def fingerprinting(file_name,user_id):
     if best_match is not None and best_similarity_score > SIMILARITY_THRESHOLD:
         print(f"La stanza più probabile è: {best_match['room_name']} con un punteggio di similarità di {best_similarity_score:.2f}.")
     else:
+        best_match['room_name'] =None
+        room_id =-1
         print("L'utente è fuori dalla stanza.")
 
     estimated_position = calcola_posizione(current_scan, dati_db)
@@ -210,9 +245,9 @@ def fingerprinting(file_name,user_id):
         #print("room_id=", room_id)
         #print("user_id=",user_id)
         
-        #controlla e aggiorna Access log
-        msg = access_log(user_id, room_id)
-        print(msg)
+    #controlla e aggiorna Access log
+    msg = access_log(user_id, room_id)
+    print(msg)
 
 
     
