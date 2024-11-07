@@ -13,7 +13,8 @@ from sklearn.preprocessing import LabelEncoder
 current_time = datetime.datetime.now()
 
 # Carica le variabili dall'ambiente
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), 'frontend' '.env.local'))
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', '.env.local')
+load_dotenv(dotenv_path)
 
 # Recupera le variabili
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
@@ -173,16 +174,15 @@ def predict_room(model, le, json_data):
     return room_prediction
 
 # Funzione principale
-def fingerprinting(file_name, user_id):
+def fingerprinting(json_data, user_id):
+    # Assumi che `json_data` contenga i dati JSON da elaborare.
     try:
-        with open(file_name, "r") as file:
-            current_scan = json.load(file)
-    except FileNotFoundError:
-        print(f"File non trovato: {file_name}")
-        return
+        current_scan = json_data  # Non leggiamo più da un file, ma prendiamo i dati direttamente
+    except Exception as e:
+        print(f"Errore nel caricamento dei dati: {e}")
+        return None, None
 
     dati_db = recupero_dati()
-
     dati_db = [dato for dato in dati_db if dato.get('vertices') is not None]
 
     estimated_position = calcola_posizione(current_scan, dati_db)
@@ -204,14 +204,4 @@ def fingerprinting(file_name, user_id):
     #msg = access_log(user_id, room_id)
     #print(msg)
 
-
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Utilizzo: python wi.py <nome_file_json> <user_id>")
-        sys.exit(1)
-    
-    file_name = sys.argv[1]
-    user_id = sys.argv[2]
-
-    if check_user_exists(user_id):
-        fingerprinting(file_name, user_id)
+    return predicted_room, contr_ble
