@@ -40,36 +40,33 @@ def controlloBle():
     # Ottieni i dati dal corpo della richiesta JSON
     data = request.get_json()
 
+    # Log dei dati ricevuti per il debug
+    print(f"Dati ricevuti: {data}")
+
     # Assicurati che i dati siano corretti
     if 'room_id' not in data or 'lista-disp' not in data:
         return jsonify({"error": "Input room_id e lista_disp richiesti"}), 400
 
     room_id = data['room_id']
-    lista_disp = data['lista_disp']
-    
+    lista_disp = data['lista-disp']  # Modificato per usare la chiave corretta
+
     # Converti room_id in intero
     try:
         room_id = int(room_id)  # Conversione di room_id in intero
     except ValueError:
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
 
-    # Log dei dati ricevuti
-    #print(f"Received room_id: {room_id}")
-    #print(f"Received lista_disp: {lista_disp}")
-
     # Esegui il calcolo dei dati
     risposta = controllo_dispositivi(room_id, lista_disp)
     
-    # Log del risultato
     if isinstance(risposta, bool):
-        print("L'utente ha tutti i dispositivi")
         response = {"return": True}
         return jsonify(response)
     
     else:
-        print("Lista dispositivi mancanti:", risposta)
         response = {"return": risposta}
         return jsonify(response)
+
 
 
 if __name__ == '__main__':
