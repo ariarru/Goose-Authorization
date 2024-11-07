@@ -13,7 +13,7 @@ from sklearn.preprocessing import LabelEncoder
 current_time = datetime.datetime.now()
 
 # Carica le variabili dall'ambiente
-load_dotenv(dotenv_path='.env.local')
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), 'frontend' '.env.local'))
 
 # Recupera le variabili
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
@@ -173,7 +173,7 @@ def predict_room(model, le, json_data):
     return room_prediction
 
 # Funzione principale
-def main(file_name, user_id):
+def fingerprinting(file_name, user_id):
     try:
         with open(file_name, "r") as file:
             current_scan = json.load(file)
@@ -214,4 +214,4 @@ if __name__ == "__main__":
     user_id = sys.argv[2]
 
     if check_user_exists(user_id):
-        main(file_name, user_id)
+        fingerprinting(file_name, user_id)

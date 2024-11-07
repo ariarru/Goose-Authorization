@@ -17,6 +17,7 @@ import androidx.core.content.PermissionChecker
 import com.example.gooseapp.R
 import com.example.gooseapp.sensors.ScannedWifiEntity
 import com.example.gooseapp.sensors.SensorHelper
+import com.example.gooseapp.service.BackgroundService
 
 
 class HomeActivity : AppCompatActivity() {
@@ -42,6 +43,18 @@ class HomeActivity : AppCompatActivity() {
         if(!sensorHelper.hasLocationPermission(applicationContext, this)){
             Toast.makeText(applicationContext, "I don't have any location permission, try again", Toast.LENGTH_LONG).show()
         }
+        if(!sensorHelper.hasBluetoothPermission(applicationContext, this)){
+            Toast.makeText(applicationContext, "I don't have any bluetooth permission, try again", Toast.LENGTH_LONG).show()
+        }
+
+        val startServiceIntent = Intent(this, BackgroundService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(startServiceIntent)
+            println("Inviato intent servizio background")
+            println("----------------------------------------------")
+
+        }
+
         //definisci receiver
         registerReceiver(wifiReceiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
         //definisci wifi
@@ -98,9 +111,9 @@ class HomeActivity : AppCompatActivity() {
                 for (scanResult in results) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                         val swe = ScannedWifiEntity(
-                            scanResult.wifiSsid.toString(),
-                            scanResult.apMldMacAddress.toString(),
-                            scanResult.level.toString()
+                            scanResult.wifiSsid,
+                            scanResult.apMldMacAddress,
+                            scanResult.level
                         )
                         println("Scan successful: $swe")
                     }

@@ -48,9 +48,22 @@ public class BackgroundService extends Service {
     private NotificationCompat.Builder builderGeneral;
     private static final String CHANNEL_ID = "GOOSE";
 
+    //check ogni 3 secondi
+    int time = 3 * 1000 *60;
+
     //WIFI
     private boolean isWiFiScanning = false;
     private WifiManager wifiManager;
+    private Handler wifiHandler = new Handler();
+    private Runnable wifiScanRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // Avvia la scansione Wi-Fi
+            backgroundMeasureWifi();
+            // Pianifica la prossima scansione tra 3 secondi
+            wifiHandler.postDelayed(this, time);
+        }
+    };
     private BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -58,9 +71,10 @@ public class BackgroundService extends Service {
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intent.getAction())) {
                 boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
                 if (success) {
-                    handleScanSuccess();
+                    isWiFiScanning = false;
+                    handleWifiSuccess();
                 } else {
-                    handleScanFailure();
+                    handleWifiFailure();
                 }
             }
             isWiFiScanning = false;
@@ -69,8 +83,8 @@ public class BackgroundService extends Service {
 
 
     //BLE
-    private BluetoothAdapter bluetoothAdapter = getSystemService(BluetoothManager.class).getAdapter();
-    private BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothLeScanner bluetoothLeScanner;
     private boolean isBLEScanning;
     private Handler handler = new Handler();
     // Device scan callback.
@@ -80,6 +94,9 @@ public class BackgroundService extends Service {
                 public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
                     super.onScanResult(callbackType, result);
                     Log.i("SIGNAL BLE RESULT", String.valueOf(result));
+                    isBLEScanning = false;
+                    isWiFiScanning = false;
+                   // bluetoothLeScanner.stopScan(leScanCallback);
                 }
             };
 
@@ -113,12 +130,14 @@ public class BackgroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         startForeground(1, builderGeneral.build());
 
-        //check ogni 3 secondi
-        int N = 3 * 60 ;
-
-        //inizia misurazione wifi
+        // Inizializzazione manager
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        backgroundMeasureWifi();
+        registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+
+        bluetoothAdapter = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
+        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        // Avvia loop di scansione
+        wifiHandler.post(wifiScanRunnable);
 
 
         return Service.START_STICKY;
@@ -143,7 +162,6 @@ public class BackgroundService extends Service {
 
     //misura ble
     private void backgroundMeasureBLE(){
-        Log.i("BACKGROUND SIGNAL", "measuring BLE");
 
         if (!isBLEScanning) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
@@ -162,20 +180,15 @@ public class BackgroundService extends Service {
                     bluetoothLeScanner.stopScan(leScanCallback);
                 }
             }, SCAN_PERIOD);
-
+            isWiFiScanning = true;
             isBLEScanning = true;
+            Log.i("BACKGROUND SIGNAL", "measuring BLE");
             bluetoothLeScanner.startScan(leScanCallback);
-        } else {
-            isBLEScanning = false;
-            bluetoothLeScanner.stopScan(leScanCallback);
         }
-
     }
 
     // misura wifi
     private void backgroundMeasureWifi(){
-        Log.i("BACKGROUND SIGNAL", "measuring Wi-Fi");
-        registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         if(!isWiFiScanning){
             wifiManager.startScan();
             isWiFiScanning= true;
@@ -183,36 +196,43 @@ public class BackgroundService extends Service {
         }
     }
 
-    private void handleScanSuccess() {
+    private void handleWifiSuccess() {
         if (PermissionChecker.checkCallingOrSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) == PermissionChecker.PERMISSION_GRANTED) {
             List<ScanResult> results = wifiManager.getScanResults();
             if (!results.isEmpty()) {
                 for (ScanResult scanResult : results) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         ScannedWifiEntity swe = new ScannedWifiEntity(
-                                scanResult.getWifiSsid().toString(),
-                                scanResult.getApMldMacAddress().toString(),
-                                String.valueOf(scanResult.level)
+                                scanResult.getWifiSsid(),
+                                scanResult.getApMldMacAddress(),
+                                scanResult.level
                         );
                         notificationManager.notify(1, builderGeneral.setContentText("Scanned Wi-Fi successfully").build());
-
+                        System.out.println("----------------------------------------------");
+                        backgroundMeasureBLE();
                     }
                 }
             } else {
                 System.out.println("No Wi-Fi networks found.");
-                System.out.println("----------------------------------------------");
             }
         } else {
             System.out.println("Permissions not granted.");
-            System.out.println("----------------------------------------------");
         }
     }
 
-    private void handleScanFailure() {
+    private void handleWifiFailure() {
         System.out.println("Wi-Fi scan failed. Retrying or handling the failure.");
         System.out.println("----------------------------------------------");
 
         Log.e("BACKGROUND SIGNAL", "Wi-Fi scan failed. Please try again.");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        wifiHandler.removeCallbacks(wifiScanRunnable);  // Ferma il loop Wi-Fi
+        unregisterReceiver(wifiReceiver); // Deregistra il ricevitore Wi-Fi
+        Log.i("GOOSE QUACK", "background service destroyed");
     }
 
 }

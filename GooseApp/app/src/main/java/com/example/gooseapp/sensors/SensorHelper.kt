@@ -44,5 +44,13 @@ class SensorHelper {
         return true
     }
 
+    public fun hasBluetoothPermission(context: Context, activity: Activity): Boolean {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(activity, arrayOf(Manifest.permission.BLUETOOTH_SCAN), PERMISSION_BLE)
+            return false
+        }
+        return true
+    }
+
 
 }

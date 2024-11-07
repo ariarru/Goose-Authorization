@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 
 # Carica le variabili d'ambiente dal file .env
-load_dotenv(dotenv_path='.env.local')
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env.local'))
 
 # Recupera le variabili d'ambiente
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")

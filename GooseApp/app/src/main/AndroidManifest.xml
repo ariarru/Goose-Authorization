@@ -12,6 +12,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!-- BLE status-->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <!-- servizio background -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+
+
 
 
     <application
@@ -37,6 +42,14 @@
             android:name=".activity.HomeActivity"
             android:exported="false"
             android:label="@string/title_home"/>
+
+        <service
+            android:name=".service.BackgroundService"
+            android:foregroundServiceType="location"
+            android:enabled="true"
+            android:exported="false"
+            android:icon="@drawable/standby" />
+
     </application>
 
 </manifest>

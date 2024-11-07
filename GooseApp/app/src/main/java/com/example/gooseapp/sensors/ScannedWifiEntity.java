@@ -1,15 +1,19 @@
 package com.example.gooseapp.sensors;
 
+import android.net.MacAddress;
+import android.net.wifi.WifiSsid;
+
 public class ScannedWifiEntity {
 
     private String SSIDValue;
     private String MACValue;
     private String RSSIValue;
 
-    public ScannedWifiEntity(String ssid, String mac, String rssi){
-        this.SSIDValue = ssid;
-        this.MACValue = mac;
-        this.RSSIValue = rssi;
+    public ScannedWifiEntity(WifiSsid ssid, MacAddress mac, int rssi){
+
+        this.SSIDValue = ssid == null ? null : ssid.toString();
+        this.MACValue = mac == null ? null : mac.toString();
+        this.RSSIValue = String.valueOf(rssi);
     }
 
     @Override

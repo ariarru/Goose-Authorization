@@ -55,14 +55,6 @@ class MainActivity : AppCompatActivity() {
                 if(result.data.toBoolean()){
 
                     Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
-                    val startServiceIntent = Intent(
-                        this,
-                        BackgroundService::class.java
-                    )
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(startServiceIntent)
-                    }
-
                     val goToHome = Intent(this, HomeActivity::class.java)
                     startActivity(goToHome)
                 }
