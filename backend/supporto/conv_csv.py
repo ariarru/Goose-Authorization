@@ -3,11 +3,16 @@ import pandas as pd
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-# Carica le variabili dal file .env
-dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', '.env.local')
+# Calcola il percorso relativo
+dotenv_path = os.path.join(os.path.dirname(__file__), '..','..', 'frontend', '.env.local')
+
+# Risolvi il percorso relativo in un percorso assoluto
+dotenv_path = os.path.abspath(dotenv_path)
+
+# Carica il file .env.local dal percorso assoluto
 load_dotenv(dotenv_path)
 
-# Recupera le variabili
+# Recupera le variabili di ambiente
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 supabase_key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
