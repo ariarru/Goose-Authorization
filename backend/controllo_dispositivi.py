@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 
 # Carica le variabili d'ambiente dal file .env
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env.local'))
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', '.env.local')
+load_dotenv(dotenv_path)
 
 # Recupera le variabili d'ambiente
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
@@ -43,46 +44,20 @@ def recupera_disp(_room_id):
 
 # Funzione per controllare se ci sono dispositivi necessari per una stanza data
 def controllo_dispositivi(_room_id, lista_disp):
-    disp_manc=[]
+    disp_manc = []
     devices_s = recupera_disp(_room_id)
     
     if devices_s is None: 
         print("Nessun dispositivo necessario")
-        return True
+        return True, "L'utente ha tutti i dispositivi"
     else:
         for disp_necessari in devices_s:
             if disp_necessari not in lista_disp:
-               disp_manc.append(disp_necessari)
+                disp_manc.append(disp_necessari)
     
-    if len(disp_manc)==0:
+    if len(disp_manc) == 0:
         print("L'utente ha tutti i dispositivi")
         return True
     else:
-        print ("A l'utente mancano i seguenti:", disp_manc) 
+        print("A l'utente mancano i seguenti:", disp_manc)
         return disp_manc
-
-
-if __name__ == "__main__":    
-    # Verifica che sia stato fornito un argomento
-    if len(sys.argv) < 3:
-        print("Utilizzo: python controllo_dispositivi.py <room_id> <device_list>")
-        sys.exit(1)
-    
-    # Prendi l'ID della stanza dal primo argomento e converti in intero
-    try:
-        _room_id = int(sys.argv[1])
-    except ValueError:
-        print("L'ID della stanza deve essere un numero intero.")
-        sys.exit(1)
-    
-    device_list = sys.argv[2].split(',')
-    lista_disp = [device.strip() for device in device_list]  # Pulisci gli spazi
-
-    """print("File nella directory:", os.listdir(os.getcwd()))
-    print("Directory Corrente:", os.getcwd())
-    print("ID della Stanza:", _room_id)
-    print("Lista dei Dispositivi:", lista_disp)"""
-
-    # Chiama la funzione controllo_dispositivi
-    controllo_dispositivi(_room_id,lista_disp)  
-
