@@ -73,7 +73,7 @@ def save_data_to_file(wifi_data, filename):
 if __name__ == "__main__":
     wifi_data = scan_wifi()  
     if wifi_data:
-        save_data_to_file(wifi_data, filename='backend/rilevazioni/E1.json') #rilevazione
+        save_data_to_file(wifi_data, filename='backend/rilevazioni/Garden.json') #rilevazione
     else:
         print("Nessun dato Wi-Fi trovato. Il file non è stato creato.")
 
