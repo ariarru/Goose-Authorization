@@ -31,6 +31,7 @@ import androidx.core.content.PermissionChecker;
 
 import com.example.gooseapp.R;
 import com.example.gooseapp.activity.HomeActivity;
+import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class BackgroundService extends Service {
     private static final String CHANNEL_ID = "GOOSE";
 
     //check ogni 3 secondi
-    int time = 3 * 1000 *60;
+    private static final long RESTART_SCAN_PERIOD = 3 * 1000 *60;
 
     //WIFI
     private boolean isWiFiScanning = false;
@@ -61,7 +62,7 @@ public class BackgroundService extends Service {
             // Avvia la scansione Wi-Fi
             backgroundMeasureWifi();
             // Pianifica la prossima scansione tra 3 secondi
-            wifiHandler.postDelayed(this, time);
+            wifiHandler.postDelayed(this, RESTART_SCAN_PERIOD);
         }
     };
     private BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
@@ -82,26 +83,50 @@ public class BackgroundService extends Service {
     };
 
 
-    //BLE
+    //BLUETOOTH
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
+    private static final long STOP_SCAN_PERIOD = 3 * 1000; //3 SECONDI
+    private boolean scanFoundResults = false;
     private boolean isBLEScanning;
-    private Handler handler = new Handler();
+    private Handler bluetoothHandler = new Handler();
     // Device scan callback.
-    private ScanCallback leScanCallback =
-            new ScanCallback() {
+    private ScanCallback leScanCallback = new ScanCallback() {
                 @Override
                 public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
                     super.onScanResult(callbackType, result);
-                    Log.i("SIGNAL BLE RESULT", String.valueOf(result));
+                    scanFoundResults= true;
+                    ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice());
+                    Log.i("BACKGROUND GOOSE SIGNAL", scannedBLE.toString());
                     isBLEScanning = false;
                     isWiFiScanning = false;
-                   // bluetoothLeScanner.stopScan(leScanCallback);
+                    //definisci cosa fare con i ble results
+                    //...
+                    scanFoundResults= false;
+                }
+
+                @Override
+                public void onScanFailed(int errorCode){
+                        super.onScanFailed(errorCode);
+                        Log.e("GOOSE SIGNAL BLE RESULT", "Scan endend in error with code:"+errorCode);
+                }
+
+                @Override
+                public void onBatchScanResults (List<android.bluetooth.le.ScanResult> results){
+                    super.onBatchScanResults(results);
+                    Log.i("BLE GOOSE", "sono dentro il batch con questi valori:");
+                    Log.i("BLE GOOSE", results.toString());
+
                 }
             };
 
-    // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 10000;
+
+
+
+
+
+
+
 
     @Nullable
     @Override
@@ -137,9 +162,9 @@ public class BackgroundService extends Service {
         bluetoothAdapter = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         // Avvia loop di scansione
-        wifiHandler.post(wifiScanRunnable);
+        //wifiHandler.post(wifiScanRunnable);
 
-
+        backgroundMeasureBLE();
         return Service.START_STICKY;
     }
 
@@ -162,14 +187,13 @@ public class BackgroundService extends Service {
 
     //misura ble
     private void backgroundMeasureBLE(){
-
         if (!isBLEScanning) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
                 Log.e("BLE SIGNAL", "Non ho i permessi bluetooth");
                 return;
             }
             // Stops scanning after a predefined scan period.
-            handler.postDelayed(new Runnable() {
+            bluetoothHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     isBLEScanning = false;
@@ -178,11 +202,17 @@ public class BackgroundService extends Service {
                         return;
                     }
                     bluetoothLeScanner.stopScan(leScanCallback);
+                    //controlla se ha trovato qualcosa
+                    if (!scanFoundResults) {
+                        Log.i("BLE GOOSE", "non ho trovato nulla");
+                    } else {
+                        Log.i("BLE GOOSE", "Dispositivi trovati durante la scansione");
+                    }
                 }
-            }, SCAN_PERIOD);
+            }, STOP_SCAN_PERIOD);
             isWiFiScanning = true;
             isBLEScanning = true;
-            Log.i("BACKGROUND SIGNAL", "measuring BLE");
+            Log.i("BACKGROUND GOOSE SIGNAL", "start measuring BLE");
             bluetoothLeScanner.startScan(leScanCallback);
         }
     }
@@ -192,7 +222,7 @@ public class BackgroundService extends Service {
         if(!isWiFiScanning){
             wifiManager.startScan();
             isWiFiScanning= true;
-            Log.i("BACKGROUND SIGNAL", "start scanning Wi-Fi");
+            Log.i("BACKGROUND GOOSE SIGNAL", "start scanning Wi-Fi");
         }
     }
 
@@ -209,7 +239,6 @@ public class BackgroundService extends Service {
                         );
                         notificationManager.notify(1, builderGeneral.setContentText("Scanned Wi-Fi successfully").build());
                         System.out.println("----------------------------------------------");
-                        backgroundMeasureBLE();
                     }
                 }
             } else {
@@ -224,7 +253,7 @@ public class BackgroundService extends Service {
         System.out.println("Wi-Fi scan failed. Retrying or handling the failure.");
         System.out.println("----------------------------------------------");
 
-        Log.e("BACKGROUND SIGNAL", "Wi-Fi scan failed. Please try again.");
+        Log.e("BACKGROUND GOOSE SIGNAL", "Wi-Fi scan failed. Please try again.");
     }
 
     @Override
