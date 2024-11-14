@@ -44,11 +44,11 @@ def controlloBle():
     print(f"Dati ricevuti: {data}")
 
     # Assicurati che i dati siano corretti
-    if 'room_id' not in data or 'lista-disp' not in data:
+    if 'room_id' not in data or 'lista_disp' not in data:
         return jsonify({"error": "Input room_id e lista_disp richiesti"}), 400
 
     room_id = data['room_id']
-    lista_disp = data['lista-disp']  # Modificato per usare la chiave corretta
+    lista_disp = data['lista_disp']  # Modificato per usare la chiave corretta
 
     # Converti room_id in intero
     try:
