@@ -1,17 +1,20 @@
 # Usa un'immagine base di Python
 FROM python:3.12-slim
 
-# Imposta la cartella di lavoro nel container
+# Imposta la cartella di lavoro all'interno del container
 WORKDIR /app
 
-# Copia i file del progetto
-COPY . /app
+# Copia il file requirements.txt nella cartella di lavoro del container
+COPY requirements.txt ./
 
-# Installa le dipendenze
-RUN pip install -r requirements.txt
+# Installa le dipendenze da requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-#esponi la porta
+# Copia tutti i file del backend nel container
+COPY backend/ ./
+
+# Esponi la porta sulla quale Flask ascolterà (5001)
 EXPOSE 5001
 
-# Comando per eseguire il server del backend (modifica a seconda del framework che usi, ad esempio Flask o FastAPI)
+# Comando per eseguire l'applicazione Flask
 CMD ["python", "app.py"]

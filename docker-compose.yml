@@ -1,21 +1,25 @@
 version: '3.8'
 
 services:
-  backend:
+  frontend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: frontend/Dockerfile
     ports:
-      - "8000:8000"       # Esponi la porta del backend
+      - "3000:3000"
+    env_file:
+      - frontend/.env.local  # Carica variabili da .env nella cartella frontend
     networks:
       - app-network
 
-  frontend:
+  backend:
     build:
-      context: ./frontend
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
-      - "8000:8000"       # Porta del frontend
-    environment:
-      - REACT_APP_API_URL=http://backend:5001 # Variabile d'ambiente per comunicare con il backend
+      - "5001:5001"
+    env_file:
+      - frontend/.env.local  # Carica variabili da .env nella cartella principale
     networks:
       - app-network
 

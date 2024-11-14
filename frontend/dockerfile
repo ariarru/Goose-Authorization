@@ -1,20 +1,23 @@
 # Usa un'immagine base di Node.js
-FROM node:16
+FROM node:18 AS build
 
-# Imposta la cartella di lavoro nel container
+# Imposta la cartella di lavoro all'interno del container
 WORKDIR /app
+
+# Copia il file package.json e package-lock.json nella cartella di lavoro
+COPY frontend/package*.json ./
 
 # Installa le dipendenze
 RUN npm install
 
-# Copia i file del progetto
-COPY . /app
+# Copia tutti i file del frontend nel container
+COPY frontend/ ./
 
-# Costruisce l'app (se necessario)
+# Costruisci l'applicazione Next.js
 RUN npm run build
 
-# Espone la porta
-EXPOSE 8000
+# Espone la porta su cui Next.js verrà eseguito (3000 è la porta predefinita)
+EXPOSE 3000
 
-# Comando per eseguire l'app
-CMD ["npm", "start"]
+# Comando per avviare il server di Next.js
+CMD ["npm", "run", "start"]
