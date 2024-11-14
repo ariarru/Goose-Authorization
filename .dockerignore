@@ -1,0 +1,9 @@
+*.pyc
+*.pyo
+*.git
+*.idea
+node_modules/
+*.log
+*.bak
+*.swp
+.DS_Store

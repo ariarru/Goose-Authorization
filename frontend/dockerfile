@@ -1,0 +1,20 @@
+# Usa un'immagine base di Node.js
+FROM node:16
+
+# Imposta la cartella di lavoro nel container
+WORKDIR /app
+
+# Installa le dipendenze
+RUN npm install
+
+# Copia i file del progetto
+COPY . /app
+
+# Costruisce l'app (se necessario)
+RUN npm run build
+
+# Espone la porta
+EXPOSE 8000
+
+# Comando per eseguire l'app
+CMD ["npm", "start"]
