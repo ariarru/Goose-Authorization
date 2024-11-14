@@ -39,7 +39,7 @@ def fingerprint():
 def controlloBle():
     # Ottieni i dati dal corpo della richiesta JSON
     data = request.get_json()
-
+    
     # Log dei dati ricevuti per il debug
     print(f"Dati ricevuti: {data}")
 
