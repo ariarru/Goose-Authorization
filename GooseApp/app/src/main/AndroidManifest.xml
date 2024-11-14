@@ -43,6 +43,7 @@
         <activity
             android:name=".activity.HomeActivity"
             android:exported="false"
+            android:parentActivityName=".activity.MainActivity"
             android:label="@string/title_home"/>
 
         <service

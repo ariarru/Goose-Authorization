@@ -5,11 +5,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -23,18 +27,21 @@ import com.example.gooseapp.service.BackgroundService
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var wifiManager: WifiManager
-    private var size = 0
-    private lateinit var results: List<ScanResult>
-    private val arrayList = ArrayList<ScannedWifiEntity>()
+     private lateinit var results: List<ScanResult>
     private var isReceiverRegistered = false
 
     private val sensorHelper = SensorHelper()
 
+    private lateinit var sharedPreferences : SharedPreferences
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        // Abilita il pulsante "Up" nella barra superiore
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_logout_24)
 
         //chiedi permessi
         if(!sensorHelper.hasWifiPermission(applicationContext, this)) {
@@ -59,6 +66,13 @@ class HomeActivity : AppCompatActivity() {
         registerReceiver(wifiReceiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
         //definisci wifi
         wifiManager = getSystemService(WIFI_SERVICE) as WifiManager
+
+        //shared preferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val userText = findViewById<TextView>(R.id.user_text)
+        println(sharedPreferences.getString(R.string.username.toString(), ""))
+        val newText = "Benvenuta/o "+ sharedPreferences.getString(R.string.username.toString(), "")
+        userText.setText(newText)
 
         //prendi riferimento bottone
         val getLocationButton = findViewById<Button>(R.id.getLocationButton)
@@ -89,8 +103,6 @@ class HomeActivity : AppCompatActivity() {
     private val wifiReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             // Controlla se l'intento ricevuto è per i risultati della scansione Wi-Fi
-            println("sono qui dentro")
-            println("----------------------------------------------")
 
             if (intent.action == WifiManager.SCAN_RESULTS_AVAILABLE_ACTION) {
                 val success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
@@ -116,6 +128,7 @@ class HomeActivity : AppCompatActivity() {
                             scanResult.level
                         )
                         println("Scan successful: $swe")
+                        //TODO: invia al backend inserendo id da sharedPreferences
                     }
                 }
             } else {
@@ -135,6 +148,22 @@ class HomeActivity : AppCompatActivity() {
 
         // Puoi decidere di rilanciare la scansione o gestire il fallimento diversamente
         Toast.makeText(this, "Wi-Fi scan failed. Please try again.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                with( sharedPreferences.edit()){
+                    putInt(R.string.session.toString(), -1)
+                    putString(R.string.username.toString(), "")
+                    putBoolean(R.string.logged.toString(), false)
+                    apply()
+                }
+                onBackPressed() // Torna alla schermata precedente
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 

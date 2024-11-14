@@ -1,8 +1,9 @@
 package com.example.gooseapp.activity
 
 import android.content.Intent
-import android.os.Build
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -11,23 +12,20 @@ import android.widget.Toast
 
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.gooseapp.LoginError
 import com.example.gooseapp.R
-import com.example.gooseapp.service.BackgroundService
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
 
-    // LiveData per controllare se l'utente è autenticato
-    private val _isAuthenticated = MutableLiveData(false)
-    val isAuthenticated: LiveData<Boolean> get() = _isAuthenticated
+    private lateinit var sharedPreferences : SharedPreferences
 
     val supabase = createSupabaseClient(
         supabaseUrl = "https://cdutvkhtyqcsorzvmuzg.supabase.co",
@@ -51,8 +49,15 @@ class MainActivity : AppCompatActivity() {
                 println("ritorna: ${result.data}")
                 println("----------------------------------------------")
 
+                if(result.data.isNotEmpty()){
+                    val jsonInfo = JSONArray(result.data).getJSONObject(0)
 
-                if(result.data.toBoolean()){
+                    with (sharedPreferences.edit()) {
+                        putInt(R.string.session.toString(), jsonInfo.getInt("u_id"))
+                        putString(R.string.username.toString(), jsonInfo.getString("user_name"))
+                        putBoolean(R.string.logged.toString(), true)
+                        apply()
+                    }
 
                     Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
                     val goToHome = Intent(this, HomeActivity::class.java)
@@ -71,6 +76,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        with (sharedPreferences.edit()){
+            putInt(R.string.session.toString(), -1)
+            putString(R.string.username.toString(), "")
+            putBoolean(R.string.logged.toString(), false)
+            apply()
+        }
 
         val title: TextView = findViewById(R.id.title)
         val gooseImage: ImageView = findViewById(R.id.gooseImage)
@@ -82,7 +95,8 @@ class MainActivity : AppCompatActivity() {
         loginButton.setOnClickListener {
             val username = usernameField.text.toString()
             val password = passwordField.text.toString()
-
+            usernameField.setText("")
+            passwordField.setText("")
             // Chiama la funzione di login del ViewModel
             runBlocking {
                 try{
@@ -93,13 +107,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Osserva lo stato di autenticazione dal ViewModel
-       isAuthenticated.observe(this) { isAuthenticated ->
-            if (isAuthenticated) {
-                // Passa alla Home se autenticato
-                Toast.makeText(this, "Accesso eseguito", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun showAlert(title: String, message: String) {

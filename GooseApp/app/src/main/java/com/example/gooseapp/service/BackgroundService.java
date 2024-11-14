@@ -162,9 +162,8 @@ public class BackgroundService extends Service {
         bluetoothAdapter = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         // Avvia loop di scansione
-        //wifiHandler.post(wifiScanRunnable);
+        wifiHandler.post(wifiScanRunnable);
 
-        backgroundMeasureBLE();
         return Service.START_STICKY;
     }
 
@@ -205,6 +204,7 @@ public class BackgroundService extends Service {
                     //controlla se ha trovato qualcosa
                     if (!scanFoundResults) {
                         Log.i("BLE GOOSE", "non ho trovato nulla");
+                        System.out.println("ora dovrei inviare i dati al backend e gestire la risposta");
                     } else {
                         Log.i("BLE GOOSE", "Dispositivi trovati durante la scansione");
                     }
@@ -238,7 +238,7 @@ public class BackgroundService extends Service {
                                 scanResult.level
                         );
                         notificationManager.notify(1, builderGeneral.setContentText("Scanned Wi-Fi successfully").build());
-                        System.out.println("----------------------------------------------");
+                        System.out.println("ora dovrei inviare i dati al back end e gestire eventuale chiamate al BLE");
                     }
                 }
             } else {

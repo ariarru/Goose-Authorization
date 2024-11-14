@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="notif_title">Quack</string>
     <string name="notif_text">...</string>
+    <string name="session">USER SESSION</string>
+    <string name="username">username</string>
+    <string name="logged">has logged in</string>
+
 </resources>
