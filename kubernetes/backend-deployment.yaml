@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: backend-image:latest
+          image: cla01/backend-image:latest  # Usa il tuo nome utente e l'immagine appena caricata
           ports:
             - containerPort: 5001
 ---
