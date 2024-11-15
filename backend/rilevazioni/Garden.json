@@ -4226,5 +4226,726 @@
                 "RSSI": -76
             }
         }
+    },
+    "rilevazione28": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -67
+            },
+            "AP2": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -80
+            },
+            "AP3": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:10:c7:41:",
+                "RSSI": -77
+            },
+            "AP4": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:51:e3:01:",
+                "RSSI": -68
+            },
+            "AP5": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:46:11:c1:",
+                "RSSI": -67
+            },
+            "AP6": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -80
+            },
+            "AP7": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:1e:",
+                "RSSI": -88
+            },
+            "AP8": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:0e:",
+                "RSSI": -82
+            },
+            "AP9": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:51:e3:0e:",
+                "RSSI": -76
+            },
+            "AP10": {
+                "SSID": "ALMAWIFI",
+                "MAC": "38:91:b7:3d:b9:2e:",
+                "RSSI": -88
+            },
+            "AP11": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:46:11:ce:",
+                "RSSI": -69
+            },
+            "AP12": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:7e:",
+                "RSSI": -86
+            },
+            "AP13": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:7e:",
+                "RSSI": -81
+            },
+            "AP14": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:2e:",
+                "RSSI": -67
+            },
+            "AP15": {
+                "SSID": "TP-Link_7F6B",
+                "MAC": "24:2f:d0:44:7f:6b:",
+                "RSSI": -80
+            },
+            "AP16": {
+                "SSID": "Wifi-Cec",
+                "MAC": "b0:4e:26:60:b3:c2:",
+                "RSSI": -84
+            },
+            "AP17": {
+                "SSID": "admstaff",
+                "MAC": "ac:9e:17:50:ca:cc:",
+                "RSSI": -76
+            },
+            "AP18": {
+                "SSID": "DIRECT-1Gp0tEB28CC07GOfD",
+                "MAC": "fa:25:51:66:0a:a6:",
+                "RSSI": -76
+            },
+            "AP19": {
+                "SSID": "A25 di Antonio",
+                "MAC": "92:62:6b:ea:4a:8d:",
+                "RSSI": -86
+            },
+            "AP20": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -67
+            },
+            "AP21": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -80
+            },
+            "AP22": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:10:c7:41:",
+                "RSSI": -77
+            },
+            "AP23": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:51:e3:01:",
+                "RSSI": -68
+            },
+            "AP24": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:46:11:c1:",
+                "RSSI": -67
+            },
+            "AP25": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -80
+            },
+            "AP26": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:1e:",
+                "RSSI": -88
+            },
+            "AP27": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:0e:",
+                "RSSI": -82
+            },
+            "AP28": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:51:e3:0e:",
+                "RSSI": -76
+            },
+            "AP29": {
+                "SSID": "ALMAWIFI",
+                "MAC": "38:91:b7:3d:b9:2e:",
+                "RSSI": -88
+            },
+            "AP30": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:46:11:ce:",
+                "RSSI": -69
+            },
+            "AP31": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:7e:",
+                "RSSI": -86
+            },
+            "AP32": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:7e:",
+                "RSSI": -81
+            },
+            "AP33": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:2e:",
+                "RSSI": -67
+            },
+            "AP34": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:10:c7:40:",
+                "RSSI": -78
+            },
+            "AP35": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:6a:10:",
+                "RSSI": -74
+            },
+            "AP36": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:45:36:20:",
+                "RSSI": -60
+            },
+            "AP37": {
+                "SSID": "eduroam",
+                "MAC": "2c:31:24:c0:bc:00:",
+                "RSSI": -80
+            },
+            "AP38": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:6a:1f:",
+                "RSSI": -89
+            },
+            "AP39": {
+                "SSID": "eduroam",
+                "MAC": "c4:b9:cd:f2:a6:2f:",
+                "RSSI": -90
+            },
+            "AP40": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:10:c8:0f:",
+                "RSSI": -75
+            },
+            "AP41": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:09:08:0f:",
+                "RSSI": -84
+            },
+            "AP42": {
+                "SSID": "eduroam",
+                "MAC": "8c:1e:80:51:e3:0f:",
+                "RSSI": -76
+            },
+            "AP43": {
+                "SSID": "eduroam",
+                "MAC": "38:91:b7:3d:b9:2f:",
+                "RSSI": -88
+            },
+            "AP44": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:45:36:2f:",
+                "RSSI": -86
+            },
+            "AP45": {
+                "SSID": "eduroam",
+                "MAC": "8c:1e:80:46:11:cf:",
+                "RSSI": -73
+            },
+            "AP46": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:5f:8d:2f:",
+                "RSSI": -64
+            },
+            "AP47": {
+                "SSID": "Cosimo's Wi-Fi Network",
+                "MAC": "20:c9:d0:26:99:c4:",
+                "RSSI": -70
+            }
+        }
+    },
+    "rilevazione29": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:11:",
+                "RSSI": -79
+            },
+            "AP2": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:21:",
+                "RSSI": -85
+            },
+            "AP3": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -76
+            },
+            "AP4": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -66
+            },
+            "AP5": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:01:",
+                "RSSI": -72
+            },
+            "AP6": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -76
+            },
+            "AP7": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:10:c7:41:",
+                "RSSI": -74
+            },
+            "AP8": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:48:41:80:",
+                "RSSI": -86
+            },
+            "AP9": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:75:70:",
+                "RSSI": -71
+            },
+            "AP10": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:5f:8d:20:",
+                "RSSI": -83
+            },
+            "AP11": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:6a:10:",
+                "RSSI": -76
+            },
+            "AP12": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:45:33:80:",
+                "RSSI": -83
+            },
+            "AP13": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:45:36:20:",
+                "RSSI": -64
+            },
+            "AP14": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:71:76:e0:",
+                "RSSI": -86
+            },
+            "AP15": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:71:77:70:",
+                "RSSI": -73
+            },
+            "AP16": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:10:c7:40:",
+                "RSSI": -76
+            },
+            "AP17": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:09:08:00:",
+                "RSSI": -68
+            },
+            "AP18": {
+                "SSID": "Notebook",
+                "MAC": "1c:b7:2c:82:1c:50:",
+                "RSSI": -84
+            },
+            "AP19": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:11:",
+                "RSSI": -79
+            },
+            "AP20": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:21:",
+                "RSSI": -85
+            },
+            "AP21": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -76
+            },
+            "AP22": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -66
+            },
+            "AP23": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:01:",
+                "RSSI": -72
+            },
+            "AP24": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -76
+            },
+            "AP25": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:10:c7:41:",
+                "RSSI": -74
+            },
+            "AP26": {
+                "SSID": "EBE11CBF-dE8AxJuHo_1AOFZ",
+                "MAC": "f8:d0:27:f3:d5:e2:",
+                "RSSI": -86
+            },
+            "AP27": {
+                "SSID": "\u00e2\u0098\u0086 Ciao fiorellino \u00e2\u0098\u0086",
+                "MAC": "42:bb:48:da:4f:d5:",
+                "RSSI": -86
+            },
+            "AP28": {
+                "SSID": "PosteMobile-77364291",
+                "MAC": "b6:94:ad:6c:29:ee:",
+                "RSSI": -86
+            }
+        }
+    },
+    "rilevazione30": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:11:",
+                "RSSI": -73
+            },
+            "AP2": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -80
+            },
+            "AP3": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:21:",
+                "RSSI": -83
+            },
+            "AP4": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:01:",
+                "RSSI": -71
+            },
+            "AP5": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -69
+            },
+            "AP6": {
+                "SSID": "ALMAWIFI",
+                "MAC": "38:91:b7:3d:b9:21:",
+                "RSSI": -84
+            },
+            "AP7": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:51:e3:01:",
+                "RSSI": -77
+            },
+            "AP8": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:46:11:c1:",
+                "RSSI": -69
+            },
+            "AP9": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -76
+            },
+            "AP10": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:11:",
+                "RSSI": -73
+            },
+            "AP11": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -80
+            },
+            "AP12": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:21:",
+                "RSSI": -83
+            },
+            "AP13": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:01:",
+                "RSSI": -71
+            },
+            "AP14": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -69
+            },
+            "AP15": {
+                "SSID": "ALMAWIFI",
+                "MAC": "38:91:b7:3d:b9:21:",
+                "RSSI": -84
+            },
+            "AP16": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:51:e3:01:",
+                "RSSI": -77
+            },
+            "AP17": {
+                "SSID": "ALMAWIFI",
+                "MAC": "8c:1e:80:46:11:c1:",
+                "RSSI": -69
+            },
+            "AP18": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -76
+            },
+            "AP19": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:09:08:00:",
+                "RSSI": -70
+            },
+            "AP20": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:6a:10:",
+                "RSSI": -69
+            },
+            "AP21": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:75:70:",
+                "RSSI": -73
+            },
+            "AP22": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:45:36:20:",
+                "RSSI": -62
+            },
+            "AP23": {
+                "SSID": "eduroam",
+                "MAC": "38:91:b7:3d:b9:20:",
+                "RSSI": -84
+            },
+            "AP24": {
+                "SSID": "eduroam",
+                "MAC": "8c:1e:80:46:11:c0:",
+                "RSSI": -75
+            },
+            "AP25": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:71:77:70:",
+                "RSSI": -76
+            },
+            "AP26": {
+                "SSID": "Redmi",
+                "MAC": "fa:3f:f0:45:b5:97:",
+                "RSSI": -77
+            },
+            "AP27": {
+                "SSID": "TORINO 13",
+                "MAC": "34:97:f6:62:8a:bd:",
+                "RSSI": -80
+            },
+            "AP28": {
+                "SSID": "DIRECT-1Gp0tEB28CC07GOfD",
+                "MAC": "fa:25:51:66:0a:a6:",
+                "RSSI": -72
+            },
+            "AP29": {
+                "SSID": "admstaff",
+                "MAC": "ac:9e:17:50:ca:cc:",
+                "RSSI": -79
+            },
+            "AP30": {
+                "SSID": "TIM-20953093",
+                "MAC": "98:de:d0:28:7c:40:",
+                "RSSI": -85
+            },
+            "AP31": {
+                "SSID": "TIM-20953093",
+                "MAC": "c6:19:54:61:35:72:",
+                "RSSI": -84
+            }
+        }
+    },
+    "rilevazione31": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:21:",
+                "RSSI": -82
+            },
+            "AP2": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:33:81:",
+                "RSSI": -86
+            },
+            "AP3": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:01:",
+                "RSSI": -69
+            },
+            "AP4": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -63
+            },
+            "AP5": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:11:",
+                "RSSI": -69
+            },
+            "AP6": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -75
+            },
+            "AP7": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:10:c8:01:",
+                "RSSI": -84
+            },
+            "AP8": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -81
+            },
+            "AP9": {
+                "SSID": "ALMAWIFI",
+                "MAC": "2c:31:24:c0:bc:01:",
+                "RSSI": -84
+            },
+            "AP10": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:6a:10:",
+                "RSSI": -73
+            },
+            "AP11": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:45:36:20:",
+                "RSSI": -64
+            },
+            "AP12": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:56:75:70:",
+                "RSSI": -83
+            },
+            "AP13": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:5f:8d:20:",
+                "RSSI": -75
+            },
+            "AP14": {
+                "SSID": "eduroam",
+                "MAC": "dc:f7:19:09:08:00:",
+                "RSSI": -69
+            },
+            "AP15": {
+                "SSID": "eduroam",
+                "MAC": "2c:31:24:c0:bc:00:",
+                "RSSI": -80
+            },
+            "AP16": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:48:41:80:",
+                "RSSI": -83
+            },
+            "AP17": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:71:77:70:",
+                "RSSI": -76
+            },
+            "AP18": {
+                "SSID": "eduroam",
+                "MAC": "00:a6:ca:10:c8:00:",
+                "RSSI": -86
+            },
+            "AP19": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:5f:8d:21:",
+                "RSSI": -82
+            },
+            "AP20": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:33:81:",
+                "RSSI": -86
+            },
+            "AP21": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:09:08:01:",
+                "RSSI": -69
+            },
+            "AP22": {
+                "SSID": "ALMAWIFI",
+                "MAC": "dc:f7:19:45:36:21:",
+                "RSSI": -63
+            },
+            "AP23": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:6a:11:",
+                "RSSI": -69
+            },
+            "AP24": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:71:77:71:",
+                "RSSI": -75
+            },
+            "AP25": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:10:c8:01:",
+                "RSSI": -84
+            },
+            "AP26": {
+                "SSID": "ALMAWIFI",
+                "MAC": "00:a6:ca:56:75:71:",
+                "RSSI": -81
+            },
+            "AP27": {
+                "SSID": "ALMAWIFI",
+                "MAC": "2c:31:24:c0:bc:01:",
+                "RSSI": -84
+            },
+            "AP28": {
+                "SSID": "Wifi-Cec",
+                "MAC": "b0:4e:26:60:b3:c2:",
+                "RSSI": -80
+            },
+            "AP29": {
+                "SSID": "Wi-Fi Casa",
+                "MAC": "c8:54:4b:ff:5a:d7:",
+                "RSSI": -82
+            },
+            "AP30": {
+                "SSID": "DIRECT-1Gp0tEB28CC07GOfD",
+                "MAC": "fa:25:51:66:0a:a6:",
+                "RSSI": -72
+            },
+            "AP31": {
+                "SSID": "PosteMobile-77364291",
+                "MAC": "b6:94:ad:6c:29:ee:",
+                "RSSI": -74
+            },
+            "AP32": {
+                "SSID": "FASTWEB-4btbNe",
+                "MAC": "64:5e:10:78:a8:fc:",
+                "RSSI": -106
+            },
+            "AP33": {
+                "SSID": "\u00e2\u0098\u0086 Ciao fiorellino \u00e2\u0098\u0086",
+                "MAC": "42:bb:48:da:4f:d5:",
+                "RSSI": -86
+            },
+            "AP34": {
+                "SSID": "TIM-20953093",
+                "MAC": "98:de:d0:28:7c:40:",
+                "RSSI": -86
+            },
+            "AP35": {
+                "SSID": "TIM-20953093",
+                "MAC": "c6:19:54:61:35:72:",
+                "RSSI": -82
+            }
+        }
     }
 }

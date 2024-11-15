@@ -17,6 +17,17 @@ spec:
           image: frontend-image:latest
           ports:
             - containerPort: 3000
+          env:
+            - name: SUPABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secret
+                  key: SUPABASE_URL
+            - name: SUPABASE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secret
+                  key: SUPABASE_KEY
 ---
 apiVersion: v1
 kind: Service

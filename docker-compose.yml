@@ -1,28 +1,36 @@
-version: '3.8'
+version: '3'
 
 services:
   frontend:
+    image: goose-authorization-frontend
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: ./frontend  # Cartella contenente il frontend
+      dockerfile: dockerfile  # Assicurati che il nome del Dockerfile sia corretto
     ports:
       - "3000:3000"
     env_file:
-      - frontend/.env.local  # Carica variabili da .env nella cartella frontend
+      - frontend/.env.local  # Carica variabili di ambiente per il frontend
     networks:
       - app-network
+    depends_on:
+      - backend  # Assicurati che il frontend aspetti che il backend sia pronto
 
   backend:
+    image: goose-authorization-backend
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend  # Cartella contenente il backend
+      dockerfile: dockerfile  # Assicurati che il nome del Dockerfile sia corretto
     ports:
       - "5001:5001"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
     env_file:
-      - frontend/.env.local  # Modifica per caricare variabili dal file .env del backend
+      - frontend/.env.local  # Carica variabili di ambiente specifiche del backend
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+

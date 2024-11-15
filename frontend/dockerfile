@@ -2,22 +2,34 @@
 FROM node:18 AS build
 
 # Imposta la cartella di lavoro all'interno del container
-WORKDIR /app
+WORKDIR /frontend
 
-# Copia il file package.json e package-lock.json nella cartella di lavoro
-COPY frontend/package*.json ./
+# Copia package.json e package-lock.json per installare le dipendenze
+COPY package.json package-lock.json ./
 
 # Installa le dipendenze
 RUN npm install
 
-# Copia tutti i file del frontend nel container
-COPY frontend/ ./
+# Copia il resto dei file del progetto (incluso .env.local se richiesto durante il build)
+COPY . .
 
 # Costruisci l'applicazione Next.js
 RUN npm run build
+
+# Fase di produzione con un'immagine leggera
+FROM node:18-slim AS production
+
+# Imposta la cartella di lavoro all'interno del container
+WORKDIR /frontend
+
+# Copia solo i file necessari dalla fase di build
+COPY --from=build /frontend/.next ./.next
+COPY --from=build /frontend/node_modules ./node_modules
+COPY --from=build /frontend/package.json ./package.json
+COPY --from=build /frontend/public ./public
 
 # Espone la porta su cui Next.js verrà eseguito (3000 è la porta predefinita)
 EXPOSE 3000
 
 # Comando per avviare il server di Next.js
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]
