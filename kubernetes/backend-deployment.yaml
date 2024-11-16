@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
+  labels:
+    app: backend
 spec:
   replicas: 1
   selector:
@@ -14,24 +16,29 @@ spec:
     spec:
       containers:
         - name: backend
-          image: cla01/backend-image:latest  # Sostituisci con l'immagine del tuo backend
+          image: cla01/backend-image:latest  # Sostituisci con l'immagine Docker effettiva
           ports:
-            - containerPort: 5001  # Modifica se il tuo vacjen usa una porta diversa
-          env:
-            - name: SUPABASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: env-local-config
-                  key: NEXT_PUBLIC_SUPABASE_URL  # Usa la chiave corretta dal ConfigMap
-            - name: SUPABASE_KEY
-              valueFrom:
-                configMapKeyRef:
-                  name: env-local-config
-                  key: NEXT_PUBLIC_SUPABASE_ANON_KEY  # Usa la chiave corretta dal ConfigMap
+            - containerPort: 5001
           resources:
             requests:
               memory: "512Mi"  # Memoria minima richiesta
               cpu: "500m"      # CPU minima richiesta
             limits:
-              memory: "1Gi"    # Limite massimo di memoria
-              cpu: "1000m"     # Limite massimo di CPU
+              memory: "1Gi"    # Memoria massima consentita
+              cpu: "1"         # CPU massima consentita
+          envFrom:
+            - configMapRef:
+                name: env-local-config  # Assicurati che il nome della ConfigMap sia corretto
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 5001  # Porta esterna per accedere al backend
+      targetPort: 5001  # Porta su cui l'app Flask è in ascolto
+  type: LoadBalancer  # Esponi il servizio a Internet
