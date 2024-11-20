@@ -6,7 +6,6 @@ import SelectablePolygon from '../maps/SelectablePolygon';
 import { redirect } from 'next/navigation';
 import { createServer } from "@/app/utils/supabaseServer";
 
-
 export default async function ManageRooms(){
 
     const supabase = createServer();
@@ -33,15 +32,13 @@ export default async function ManageRooms(){
 
             <div className=" flex flex-col gap-2 p-2 w-full">
             <section className="flex flex-col md:flex-row gap-4 text-right w-full items-center justify-center justify-items-center">
-                    <MyMap width={"w-10/12 md:w-[30vw] h-[30vh] mt-4"} >
+                    <MyMap width={"w-10/12 md:w-[70vw] h-[30vh] mt-4"} >
                         {rooms.data?.map( rm => (
                             <SelectablePolygon coords={rm.geojson_vertices} name={rm.name} key={rm.id}></SelectablePolygon>
                             
                         ))}
                     </MyMap>
-                   {
-                    <AddRoomComponent></AddRoomComponent>
-                   }
+                 
                 </section>
 
                 <section className="flex flex-row flex-wrap gap-2 mt-8 w-full h-fit ">  
@@ -60,6 +57,11 @@ export default async function ManageRooms(){
 
                 </section>
                 
+                <section>
+                   
+                   <AddRoomComponent></AddRoomComponent>
+                   
+                </section>
             </div>
             
         </div>

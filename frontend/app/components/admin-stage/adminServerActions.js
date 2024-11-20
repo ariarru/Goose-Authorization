@@ -186,5 +186,21 @@ export async function updateRoomStatus(roomId, restricted){
     } else{
         return false;
     }
+}
 
+//bonus
+export async function getPositionPeople(){
+    const supabase = createClient();
+    const session = await supabase.auth.getSession();
+    if(session){
+        const {data, error} = await supabase.rpc("get_people_in_rooms"); 
+        if(error){
+            console.log("ERROR", error)
+            return false;
+        } else {
+            return data;
+        }
+    } else{
+        return false;
+    }
 }

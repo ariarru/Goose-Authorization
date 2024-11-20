@@ -18,6 +18,7 @@ export default function StageContainer({children}){
                     <section className='w-[20%] mx-8'>
                         <p className="text-2xl py-4 px-6 w-52">Admin Stage</p>
                         <SideBar>
+                            <SideBarBtn dst={"/stage"} text={"Main Stage"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/rooms"} text={"Manage Rooms"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/devices"} text={"Manage Devices"}></SideBarBtn>
                             <SideBarBtn dst={"/stage/users"} text={"Manage Users"}></SideBarBtn>
