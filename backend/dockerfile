@@ -2,19 +2,23 @@
 FROM python:3.12-slim
 
 # Imposta la cartella di lavoro all'interno del container
-WORKDIR /app
+WORKDIR /backend
 
-# Copia il file requirements.txt nella cartella di lavoro del container
-COPY requirements.txt ./
+# Copia il file requirements.txt dalla cartella backend al container
+COPY requirements.txt /backend/requirements.txt
 
 # Installa le dipendenze da requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia tutti i file del backend nel container
-COPY backend/ ./
+COPY ./ /backend/
 
 # Esponi la porta sulla quale Flask ascolterà (5001)
 EXPOSE 5001
+
+# Imposta le variabili di ambiente per Flask
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
 
 # Comando per eseguire l'applicazione Flask
 CMD ["python", "app.py"]

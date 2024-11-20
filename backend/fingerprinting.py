@@ -144,7 +144,7 @@ def access_log(user_id, room_id):
 
 # Carica i dati per la previsione della stanza
 def load_data():
-    df = pd.read_csv('backend/wifi_data_with_rooms.csv')
+    df = pd.read_csv('/backend/wifi_data_with_rooms.csv')
     return df
 
 # Prepara i dati per l'addestramento
@@ -179,7 +179,7 @@ def predict_room(model, le, json_data):
     return room_prediction
 
 # Funzione principale
-def fingerprinting(json_data, user_id):
+def fingerprinting(json_data,user_id):
     # Assumi che `json_data` contenga i dati JSON da elaborare.
     try:
         current_scan = json_data  # Non leggiamo più da un file, ma prendiamo i dati direttamente

@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
+  labels:
+    app: backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -14,9 +16,19 @@ spec:
     spec:
       containers:
         - name: backend
-          image: backend-image:latest
+          image: cla01/backend-image:latest  # Sostituisci con l'immagine Docker effettiva
           ports:
             - containerPort: 5001
+          resources:
+            requests:
+              memory: "512Mi"  # Memoria minima richiesta
+              cpu: "500m"      # CPU minima richiesta
+            limits:
+              memory: "1Gi"    # Memoria massima consentita
+              cpu: "1"         # CPU massima consentita
+          envFrom:
+            - configMapRef:
+                name: env-local-config  # Assicurati che il nome della ConfigMap sia corretto
 ---
 apiVersion: v1
 kind: Service
@@ -27,6 +39,6 @@ spec:
     app: backend
   ports:
     - protocol: TCP
-      port: 5001
-      targetPort: 5001
-  type: ClusterIP
+      port: 5001  # Porta esterna per accedere al backend
+      targetPort: 5001  # Porta su cui l'app Flask è in ascolto
+  type: LoadBalancer  # Esponi il servizio a Internet

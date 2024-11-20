@@ -68,6 +68,10 @@ def controlloBle():
         return jsonify(response)
 
 
+# Aggiungi una rotta di base
+@app.route('/')
+def home():
+    return "Backend is working!"
 
 if __name__ == '__main__':
     # Configura il server Flask per ascoltare su tutte le interfacce e la porta 5001
