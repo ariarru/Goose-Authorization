@@ -1,8 +1,21 @@
 'use client';
 import { useEffect, useState } from 'react';
-import L from 'leaflet';
+import L, { marker } from 'leaflet';
 import { LayerGroup, Marker } from 'react-leaflet';
 import { getPositionPeople } from '../admin-stage/adminServerActions';
+import * as turf from 'turf'
+import { destination } from 'turf-destination'
+
+function movePoint(lat, lng){
+    // Punto di partenza
+    const point = turf.point([lat, lng]); // [lng, lat]
+    // Offset in metri e direzione (in gradi)
+    const distance = 0.0015; // Distanza in km (2 metri)
+    const bearing = Math.floor(Math.random() * (360 + 1)) - 180; 
+    // Calcola il nuovo punto
+    const newPoint = turf.destination(point, distance, bearing);
+    return newPoint.geometry.coordinates;
+}
 
 
 export default function PeopleComponent() {
@@ -37,12 +50,9 @@ export default function PeopleComponent() {
         //prendo il valore per ogni elemento dell'array
         people.map( (value) => {
             for(let m=0; m< value.people_count; m++){
-                const randomOffset = () => (Math.random() * 0.000000002 - 0.000000001); 
                 // Calcola una nuova posizione alterata
-                const modifiedCenter = [
-                    value.room_center[0] + randomOffset(), // Modifica latitudine
-                    value.room_center[1] + randomOffset()  // Modifica longitudine
-                ];
+                const modifiedCenter = movePoint(value.room_center.lat, value.room_center.long);
+                    
                 //aggiungi a markers l'oggetto
                 const newMarker = {
                     k : parseInt(value.id_room) + m,
@@ -51,6 +61,8 @@ export default function PeopleComponent() {
                 markers.push(newMarker);
             }
         })
+        console.log("markers", markers)
+    
     }
     
     return(
