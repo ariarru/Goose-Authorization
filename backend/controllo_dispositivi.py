@@ -2,6 +2,19 @@ import os
 import sys  
 from dotenv import load_dotenv
 from supabase import create_client, Client
+import enum
+
+# Codice da ritornare all'app
+class Codes(enum.Enum):
+    AREA_NOT_RESTRICED = 101
+    AREA_RESTRICED = 102
+    NOT_ALLOWED = 201
+    MISSING_DEVICE = 202
+    EXIT_MISSING_DEVICE = 203
+    
+    WRONG_DEVICE = 301
+    HAS_RIGHT_DEVICES = 302
+    
 
 # Calcola il percorso relativo
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'frontend', '.env.local')
@@ -54,7 +67,7 @@ def controllo_dispositivi(_room_id, lista_disp):
     
     if devices_s is None: 
         print("Nessun dispositivo necessario")
-        return True, "L'utente ha tutti i dispositivi"
+        return Codes.HAS_RIGHT_DEVICES
     else:
         for disp_necessari in devices_s:
             if disp_necessari not in lista_disp:
@@ -62,7 +75,8 @@ def controllo_dispositivi(_room_id, lista_disp):
     
     if len(disp_manc) == 0:
         print("L'utente ha tutti i dispositivi")
-        return True
+        return Codes.HAS_RIGHT_DEVICES
     else:
         print("A l'utente mancano i seguenti:", disp_manc)
-        return disp_manc
+        #return disp_manc
+        return Codes.MISSING_DEVICE
