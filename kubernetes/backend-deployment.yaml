@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: backend-image:latest  # Sostituisci con l'immagine Docker effettiva cla01/backend-image:latest
+          image: cla01/backend-image:latest  # Sostituisci con l'immagine Docker effettiva cla01/backend-image:latest
           ports:
             - containerPort: 5001
           resources:
