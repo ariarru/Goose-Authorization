@@ -9,6 +9,11 @@ from controllo_dispositivi import controllo_dispositivi
 app = Flask(__name__)
 CORS(app)  # Abilita CORS per tutte le rotte
 
+FLASK_URL="http://localhost:5001"
+FINGERPRINT_URL="http://localhost:5001/api/fingerprint"
+CONTROLLORBLE_URL="http://localhost:5001/api/controlloBle"
+
+
 @app.route('/api/fingerprint', methods=['POST'])
 def fingerprint():
     # Ottieni i dati dal corpo della richiesta JSON
@@ -67,8 +72,16 @@ def controlloBle():
         response = {"return": risposta}
         return jsonify(response)
 
+# Rotta per restituire gli URL completi
+@app.route('/api/urls', methods=['GET'])
+def get_urls():
+    return jsonify({
+        "flask_url": FLASK_URL,
+        "fingerprint_url": FINGERPRINT_URL,
+        "controllo_ble_url": CONTROLLORBLE_URL
+    })
 
-# Aggiungi una rotta di base
+# Rotta di base
 @app.route('/')
 def home():
     return "Backend is working!"
