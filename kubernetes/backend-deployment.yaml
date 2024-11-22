@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1
+  replicas: 1 #FORSE AUMENTA A 2
   selector:
     matchLabels:
       app: backend
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: cla01/backend-image:latest  # Sostituisci con l'immagine Docker effettiva
+          image: backend-image:latest  # Sostituisci con l'immagine Docker effettiva cla01/backend-image:latest
           ports:
             - containerPort: 5001
           resources:
@@ -31,6 +31,18 @@ spec:
                 name: env-local-config  # Assicurati che il nome della ConfigMap sia corretto
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-local-config
+data:
+  FLASK_ENV: production
+  FLASK_APP: app.py
+  FLASK_URL: http://backend-service:5001  # URL interno del backend
+  FINGERPRINT_URL: http://backend-service:5001/api/fingerprint
+  CONTROLLORBLE_URL: http://backend-service:5001/api/controlloBle
+
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
@@ -42,3 +54,6 @@ spec:
       port: 5001  # Porta esterna per accedere al backend
       targetPort: 5001  # Porta su cui l'app Flask è in ascolto
   type: LoadBalancer  # Esponi il servizio a Internet
+
+
+

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
+  labels:
+    app: frontend
 spec:
   replicas: 1
   selector:
@@ -14,24 +16,47 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: cla01/frontend-image:latest  # Sostituisci con l'immagine del tuo frontend
+          image: frontend-image:latest  # Usa l'immagine del tuo frontend  cla01/
           ports:
-            - containerPort: 3001  # Modifica se il tuo frontend usa una porta diversa
+            - containerPort: 3001  # Porta su cui il frontend ascolta
           env:
+            # Variabili Supabase
             - name: SUPABASE_URL
               valueFrom:
                 configMapKeyRef:
                   name: env-local-config
-                  key: NEXT_PUBLIC_SUPABASE_URL  # Usa la chiave corretta dal ConfigMap
+                  key: NEXT_PUBLIC_SUPABASE_URL
             - name: SUPABASE_KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-local-config
-                  key: NEXT_PUBLIC_SUPABASE_ANON_KEY  # Usa la chiave corretta dal ConfigMap
+                  key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+            # Variabili per la comunicazione con il backend
+            - name: REACT_APP_API_URL
+              value: http://backend-service:5001
+            - name: REACT_APP_FINGERPRINT_URL
+              value: http://backend-service:5001/api/fingerprint
+            - name: REACT_APP_CONTROLLORBLE_URL
+              value: http://backend-service:5001/api/controlloBle
           resources:
             requests:
-              memory: "512Mi"  # Memoria minima richiesta
-              cpu: "500m"      # CPU minima richiesta
+              memory: "512Mi"
+              cpu: "500m"
             limits:
-              memory: "1Gi"    # Limite massimo di memoria
-              cpu: "1000m"     # Limite massimo di CPU
+              memory: "1Gi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 3001  # Porta esterna per accedere al frontend
+      targetPort: 3001  # Porta interna del container frontend
+  type: LoadBalancer  # Esponi il frontend a Internet
+

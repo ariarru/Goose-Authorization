@@ -9,9 +9,14 @@ from controllo_dispositivi import controllo_dispositivi
 app = Flask(__name__)
 CORS(app)  # Abilita CORS per tutte le rotte
 
-FLASK_URL="http://localhost:5001"
+'''FLASK_URL="http://localhost:5001"
 FINGERPRINT_URL="http://localhost:5001/api/fingerprint"
 CONTROLLORBLE_URL="http://localhost:5001/api/controlloBle"
+'''
+
+FLASK_URL = "http://backend-service:5001"
+FINGERPRINT_URL = f"{FLASK_URL}/api/fingerprint"
+CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
 
 
 @app.route('/api/fingerprint', methods=['POST'])
