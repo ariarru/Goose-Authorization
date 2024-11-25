@@ -1,13 +1,16 @@
 package com.example.gooseapp.service;
 
 public enum Codes {
-    AREA_NOT_RESTRICED(101),
-    AREA_RESTRICED(102),
-    NOT_ALLOWED(201),
-    MISSING_DEVICE(202),
-    EXIT_MISSING_DEVICE(203),
-    WRONG_DEVICE(301),
-    HAS_RIGHT_DEVICES(302);
+    NEED_CHECK_BLE(10),
+    AREA_NOT_RESTRICED(21),
+    AREA_RESTRICED(22),
+    NOT_ALLOWED(23),
+    MISSING_DEVICE(30),
+    EXIT_MISSING_DEVICE(31),
+    WRONG_DEVICE(32),
+    HAS_RIGHT_DEVICES(33);
+
+
 
     private int value; //valore associato
     private Codes(int val){
@@ -16,4 +19,6 @@ public enum Codes {
     public int getCodeValue(){
         return this.value;
     }
+
+    //USA NUMERI E BASTA
 }

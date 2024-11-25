@@ -185,7 +185,7 @@ public class BackgroundService extends Service {
 
 
     //misura ble
-    private void backgroundMeasureBLE(){
+    public void backgroundMeasureBLE(){
         if (!isBLEScanning) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
                 Log.e("BLE SIGNAL", "Non ho i permessi bluetooth");

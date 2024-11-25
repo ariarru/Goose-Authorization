@@ -6,14 +6,14 @@ import enum
 
 # Codice da ritornare all'app
 class Codes(enum.Enum):
-    AREA_NOT_RESTRICED = 101
-    AREA_RESTRICED = 102
-    NOT_ALLOWED = 201
-    MISSING_DEVICE = 202
-    EXIT_MISSING_DEVICE = 203
-    
-    WRONG_DEVICE = 301
-    HAS_RIGHT_DEVICES = 302
+    NEED_CHECK_BLE = 10
+    AREA_NOT_RESTRICED = 21
+    AREA_RESTRICED = 22
+    NOT_ALLOWED = 23
+    MISSING_DEVICE = 30
+    EXIT_MISSING_DEVICE = 31
+    WRONG_DEVICE = 32
+    HAS_RIGHT_DEVICES = 33
     
 
 # Calcola il percorso relativo
