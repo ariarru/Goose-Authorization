@@ -2125,5 +2125,94 @@
                 "RSSI": -83
             }
         }
+    },
+    "rilevazione29": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -32
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -32
+            },
+            "AP3": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -32
+            },
+            "AP4": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -32
+            },
+            "AP5": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:d0:",
+                "RSSI": -87
+            },
+            "AP6": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:cf:",
+                "RSSI": -76
+            },
+            "AP7": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:16:",
+                "RSSI": -73
+            },
+            "AP8": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -71
+            },
+            "AP9": {
+                "SSID": "ADB-DAF4CC",
+                "MAC": "20:83:f8:da:f4:ce:",
+                "RSSI": -80
+            },
+            "AP10": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:72:",
+                "RSSI": -66
+            },
+            "AP11": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -58
+            },
+            "AP12": {
+                "SSID": "ADB-C7EA92",
+                "MAC": "20:83:f8:c7:ea:94:",
+                "RSSI": -76
+            },
+            "AP13": {
+                "SSID": "ADB-DAFB20",
+                "MAC": "20:83:f8:da:fb:21:",
+                "RSSI": -78
+            },
+            "AP14": {
+                "SSID": "ADB-C7FFCE",
+                "MAC": "20:83:f8:c7:ff:cf:",
+                "RSSI": -78
+            },
+            "AP15": {
+                "SSID": "AP_CEA_PALLOTTI",
+                "MAC": "88:dc:96:75:25:d6:",
+                "RSSI": -86
+            },
+            "AP16": {
+                "SSID": "ADB-E0B751",
+                "MAC": "20:83:f8:e0:b7:52:",
+                "RSSI": -88
+            },
+            "AP17": {
+                "SSID": "ADB-C7D46C",
+                "MAC": "20:83:f8:c7:d4:6d:",
+                "RSSI": -80
+            }
+        }
     }
 }
