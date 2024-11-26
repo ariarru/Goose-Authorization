@@ -17,6 +17,7 @@ import android.util.Log;
 import androidx.core.content.PermissionChecker;
 
 import com.example.gooseapp.R;
+import com.example.gooseapp.service.BackgroundService;
 import com.example.gooseapp.service.GooseRequest;
 
 import java.util.List;
@@ -24,8 +25,7 @@ import java.util.List;
 public class ScannerWIFI {
 
     private Context context;
-    private GooseRequest requestChannel;
-
+    private BackgroundService backgroundService;
     //WIFI
     private boolean isWiFiScanning = false;
     private WifiManager wifiManager;
@@ -59,11 +59,10 @@ public class ScannerWIFI {
         }
     };
 
-    public ScannerWIFI(Context context){
+    public ScannerWIFI(Context context, BackgroundService backgroundService){
         //Inizializzazione contesto e canale comunicazione
         this.context = context;
-        this.requestChannel = new GooseRequest(this.context);
-
+        this.backgroundService = backgroundService;
         // Inizializzazione manager
         wifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
         this.context.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
@@ -73,7 +72,7 @@ public class ScannerWIFI {
     }
 
     // misura wifi
-    private void backgroundMeasureWifi(){
+    public void backgroundMeasureWifi(){
         if(!isWiFiScanning){
             wifiManager.startScan();
             isWiFiScanning= true;
@@ -84,23 +83,8 @@ public class ScannerWIFI {
     private void handleWifiSuccess() {
         if (PermissionChecker.checkCallingOrSelfPermission(context, Manifest.permission.ACCESS_WIFI_STATE) == PermissionChecker.PERMISSION_GRANTED) {
             List<ScanResult> results = wifiManager.getScanResults();
-            if (!results.isEmpty()) {
-                for (ScanResult scanResult : results) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        ScannedWifiEntity swe = new ScannedWifiEntity(
-                                scanResult.getWifiSsid(),
-                                scanResult.getApMldMacAddress(),
-                                scanResult.level
-                        );
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                        int userid = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
-                        requestChannel.sendWifiScan(swe, userid);
-                    }
+            backgroundService.manageWifiScans(results);
 
-                }
-            } else {
-                System.out.println("No Wi-Fi networks found.");
-            }
         } else {
             System.out.println("Permissions not granted.");
         }

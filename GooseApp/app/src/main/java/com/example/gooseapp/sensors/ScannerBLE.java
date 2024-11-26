@@ -14,11 +14,14 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.gooseapp.service.BackgroundService;
+
 import java.util.List;
 
 public class ScannerBLE {
 
     private Context bleContext;
+    private BackgroundService service;
     //BLUETOOTH
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
@@ -55,8 +58,9 @@ public class ScannerBLE {
         }
     };
 
-    public ScannerBLE(Context context){
+    public ScannerBLE(Context context, BackgroundService service){
         this.bleContext = context;
+        this.service = service;
         bluetoothAdapter = ((BluetoothManager) bleContext.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
     }

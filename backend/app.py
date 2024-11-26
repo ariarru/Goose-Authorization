@@ -66,6 +66,11 @@ def fingerprint():
 
 @app.route('/api/controlloBle', methods=['POST'])
 def controlloBle():
+###############################################################
+    #TODO: gestire quando NON ci sono segnali bluetooth
+    # serve anche id utente???
+###############################################################
+
     # Ottieni i dati dal corpo della richiesta JSON
     data = request.get_json()
     

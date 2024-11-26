@@ -8,9 +8,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
 import android.os.Build;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -20,9 +23,13 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.gooseapp.R;
 import com.example.gooseapp.activity.HomeActivity;
+import com.example.gooseapp.sensors.ScannedWifiEntity;
 import com.example.gooseapp.sensors.ScannerBLE;
 import com.example.gooseapp.sensors.ScannerWIFI;
 import com.example.gooseapp.sensors.SensorHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 * Ogni 3 secondi effettua richiesta backend
@@ -38,7 +45,8 @@ public class BackgroundService extends Service {
     private static final String CHANNEL_ID = "GOOSE";
 
     private ScannerWIFI scannerWIFI;
-
+    private ScannerBLE scannerBLE;
+    private GooseRequest gooseRequest;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -66,7 +74,11 @@ public class BackgroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         startForeground(1, builderGeneral.build());
 
-        scannerWIFI = new ScannerWIFI(this);
+        //inizializza variabili
+        scannerWIFI = new ScannerWIFI(this, this);
+        scannerBLE = new ScannerBLE(this, this);
+        gooseRequest = new GooseRequest(this, this);
+        scannerWIFI.backgroundMeasureWifi();
         return Service.START_STICKY;
     }
 
@@ -91,12 +103,50 @@ public class BackgroundService extends Service {
     }
 
 
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
 
     }
 
+
+
+    //handle WIFI
+    public void manageWifiScans(List<ScanResult> results){
+        if (!results.isEmpty()) {
+            List<ScannedWifiEntity> scannedList = new ArrayList<ScannedWifiEntity>();
+            for (ScanResult scanResult : results) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ScannedWifiEntity swe = new ScannedWifiEntity(
+                            scanResult.getWifiSsid(),
+                            scanResult.getApMldMacAddress(),
+                            scanResult.level
+                    );
+                    scannedList.add(swe);
+                }
+            }
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            int userid = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
+            gooseRequest.sendWifiScan(scannedList, userid);
+        } else {
+            System.out.println("No Wi-Fi networks found.");
+        }
+    }
+
+    //handle BLE
+    public void neededBLE(){
+        scannerBLE.backgroundMeasureBLE();
+    }
+
+    public void manageBLEScans(List<Object> results){
+        if(results == null){
+                //TODO: capire cosa mandare a cla
+            /* maybe un
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            int userid = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
+            int roomId = sharedPreferences.getInt("room", -1);
+            gooseRequest.sendBLEScan(null, userId, roomId);
+             */
+        }
+    }
 }
