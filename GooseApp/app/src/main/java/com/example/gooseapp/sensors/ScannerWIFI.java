@@ -6,19 +6,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
+
+import com.example.gooseapp.R;
+import com.example.gooseapp.service.GooseRequest;
 
 import java.util.List;
 
 public class ScannerWIFI {
 
     private Context context;
+    private GooseRequest requestChannel;
 
     //WIFI
     private boolean isWiFiScanning = false;
@@ -54,7 +60,10 @@ public class ScannerWIFI {
     };
 
     public ScannerWIFI(Context context){
+        //Inizializzazione contesto e canale comunicazione
         this.context = context;
+        this.requestChannel = new GooseRequest(this.context);
+
         // Inizializzazione manager
         wifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
         this.context.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
@@ -83,8 +92,11 @@ public class ScannerWIFI {
                                 scanResult.getApMldMacAddress(),
                                 scanResult.level
                         );
-                        System.out.println("ora dovrei inviare i dati al back end e gestire eventuale chiamate al BLE");
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                        int userid = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
+                        requestChannel.sendWifiScan(swe, userid);
                     }
+
                 }
             } else {
                 System.out.println("No Wi-Fi networks found.");

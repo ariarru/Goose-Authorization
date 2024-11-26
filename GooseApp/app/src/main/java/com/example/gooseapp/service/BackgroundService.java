@@ -22,6 +22,7 @@ import com.example.gooseapp.R;
 import com.example.gooseapp.activity.HomeActivity;
 import com.example.gooseapp.sensors.ScannerBLE;
 import com.example.gooseapp.sensors.ScannerWIFI;
+import com.example.gooseapp.sensors.SensorHelper;
 
 /*
 * Ogni 3 secondi effettua richiesta backend
@@ -32,12 +33,11 @@ import com.example.gooseapp.sensors.ScannerWIFI;
 * */
 public class BackgroundService extends Service {
 
-    private NotificationManagerCompat notificationManager;
-    private NotificationCompat.Builder builderGeneral;
+    private static NotificationManagerCompat notificationManager;
+    private static NotificationCompat.Builder builderGeneral;
     private static final String CHANNEL_ID = "GOOSE";
 
     private ScannerWIFI scannerWIFI;
-    private ScannerBLE scannerBLE;
 
     @Nullable
     @Override
@@ -71,9 +71,8 @@ public class BackgroundService extends Service {
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        //check permission
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.notif_title);
             String description = getString(R.string.notif_text);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -86,12 +85,12 @@ public class BackgroundService extends Service {
         }
     }
 
+    @SuppressLint("MissingPermission")
     public static void sendBasicNotification(String title, String text){
-
         notificationManager.notify(1, builderGeneral.setContentText(text).setContentTitle(title).build());
     }
 
-    
+
 
 
     @Override

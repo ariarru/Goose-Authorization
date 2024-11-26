@@ -26,6 +26,9 @@ import com.example.gooseapp.service.BackgroundService
 
 class HomeActivity : AppCompatActivity() {
 
+    //TODO:
+    // - metti ScannerWifi come istanza
+    // - richiama gestione notifiche?
     private lateinit var wifiManager: WifiManager
      private lateinit var results: List<ScanResult>
     private var isReceiverRegistered = false
@@ -52,6 +55,9 @@ class HomeActivity : AppCompatActivity() {
         }
         if(!sensorHelper.hasBluetoothPermission(applicationContext, this)){
             Toast.makeText(applicationContext, "I don't have any bluetooth permission, try again", Toast.LENGTH_LONG).show()
+        }
+        if(!sensorHelper.hasNotificationPermission(applicationContext, this)){
+            Toast.makeText(applicationContext, "I need notification permit to continue", Toast.LENGTH_LONG).show()
         }
 
         val startServiceIntent = Intent(this, BackgroundService::class.java)

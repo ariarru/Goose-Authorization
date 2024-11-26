@@ -3,6 +3,9 @@ package com.example.gooseapp.sensors;
 import android.net.MacAddress;
 import android.net.wifi.WifiSsid;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ScannedWifiEntity {
 
     private String SSIDValue;
@@ -23,6 +26,14 @@ public class ScannedWifiEntity {
                 "MAC:'" + MACValue + "',\n" +
                 "RSSI:'" + RSSIValue + "'\n" +
                 '}';
+    }
+
+    public Map<String, String> toStringMap(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("SSID", SSIDValue);
+        map.put("MAC", MACValue);
+        map.put("RSSI", RSSIValue);
+        return map;
     }
 
     public String getSSIDValue() {
