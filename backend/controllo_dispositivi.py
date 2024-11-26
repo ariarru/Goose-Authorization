@@ -1,15 +1,11 @@
 import os
 import sys  
+import enum
 from dotenv import load_dotenv
 from supabase import create_client, Client
-import enum
 
 # Codice da ritornare all'app
 class Codes(enum.Enum):
-    NEED_CHECK_BLE = 10
-    AREA_NOT_RESTRICED = 21
-    AREA_RESTRICED = 22
-    NOT_ALLOWED = 23
     MISSING_DEVICE = 30
     EXIT_MISSING_DEVICE = 31
     WRONG_DEVICE = 32
@@ -61,7 +57,7 @@ def recupera_disp(_room_id):
         return None
 
 # Funzione per controllare se ci sono dispositivi necessari per una stanza data
-def controllo_dispositivi(_room_id, lista_disp):
+def controllo_dispositivi(_room_id, lista_disp, out):
     disp_manc = []
     devices_s = recupera_disp(_room_id)
     
@@ -76,7 +72,17 @@ def controllo_dispositivi(_room_id, lista_disp):
     if len(disp_manc) == 0:
         print("L'utente ha tutti i dispositivi")
         return Codes.HAS_RIGHT_DEVICES
-    else:
+    elif out==0:
         print("A l'utente mancano i seguenti:", disp_manc)
         #return disp_manc
         return Codes.MISSING_DEVICE
+    else:
+        print("A l'utente (in uscita) mancano i seguenti:", disp_manc)
+        #return disp_manc
+        return Codes.EXIT_MISSING_DEVICE
+    
+
+
+    #Se cambia stanza gli devo dire di chiamare due volte il seguente codice ma 
+    # out = 1 --> è uscito dalla stanza e sto controllando se ha tutti i dispositivi
+    # out = 0 --> è entrato dalla stanza 

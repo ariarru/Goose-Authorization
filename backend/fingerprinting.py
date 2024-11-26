@@ -1,44 +1,51 @@
 import os
-import json
 import sys
+import json
+import enum
 import datetime
 import pandas as pd
 from anyio import current_time
 from dotenv import load_dotenv
 from supabase import create_client, Client
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+# Codice da ritornare all'app
+class Codes(enum.Enum):
+    AREA_NOT_RESTRICED = 21 #L'Aarea non è limitata
+    AREA_RESTRICED = 22 #L'area è limitata
+
 
 current_time = datetime.datetime.now()
 
+
 # Calcola il percorso relativo
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'frontend', '.env.local')
-
 # Risolvi il percorso relativo in un percorso assoluto
 dotenv_path = os.path.abspath(dotenv_path)
-
 # Carica il file .env.local dal percorso assoluto
 load_dotenv(dotenv_path)
-
 # Recupera le variabili di ambiente
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 supabase_key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
-
 # Configura Supabase - crea una connessione a Supabase
 supabase: Client = create_client(supabase_url, supabase_key)
+
 
 # Funzione per recuperare i dati storici delle stanze dal database
 def recupero_dati():
     response = supabase.table("Rooms").select("room_name, vertices, rilevazione").execute()
     return response.data
 
+
 # Funzione per controllare se l'utente esiste nel database
 def check_user_exists(user_id):
     query = supabase.table("Users").select("user_id").eq("user_id", user_id).execute()
     return query.data is not None and len(query.data) > 0
 
-# Funzione per controllare se il dispositivo è ristretto
+
+# Funzione per controllare se la stanza ha delle restrizioni
 def contr_disp(room_name):
     query = supabase.table("Rooms").select("is_restricted, room_id").eq("room_name", room_name).execute()
     
@@ -46,6 +53,7 @@ def contr_disp(room_name):
         is_restricted = query.data[0]["is_restricted"]
         room_id = query.data[0]["room_id"]
         return is_restricted, room_id
+
 
 # Funzione per calcolare i pesi basati sulle misurazioni RSSI
 def calculate_weights(user_rssi, dict_AP):
@@ -56,10 +64,12 @@ def calculate_weights(user_rssi, dict_AP):
         weights.append((position, weight))
     return weights
 
+
 # Normalizza i pesi
 def normalize_weights(weights):
     total_weight = sum(w for _, w in weights)
     return [(pos, w / total_weight) for pos, w in weights]
+
 
 # Stima la posizione dell'utente utilizzando i pesi normalizzati
 def estimate_position(normalized_weights):
@@ -67,6 +77,7 @@ def estimate_position(normalized_weights):
     y_estimated = sum(pos['coordinates'][0][0][1] * weight for pos, weight in normalized_weights)
     
     return (x_estimated, y_estimated)
+
 
 # Calcola la posizione stimata dell'utente
 def calcola_posizione(current_scan, dati_db):
@@ -95,6 +106,7 @@ def calcola_posizione(current_scan, dati_db):
         print("Non ci sono misurazioni sufficienti per stimare la posizione.")
         return None
 
+
 def insert_funz(user_id, room_id):
     insert = supabase.table("Access_Logs").insert({
         "user_id": user_id,
@@ -112,8 +124,9 @@ def insert_funz(user_id, room_id):
 
     return msg 
 
+
 # Registra l'accesso alle stanze
-def access_log(user_id, room_id):
+def access_log(user_id, room_id_in, contr_ble_in):
     msg = None
     presenza = supabase.table("Access_Logs")\
         .select("*")\
@@ -123,12 +136,24 @@ def access_log(user_id, room_id):
         .execute()
 
     if not presenza.data: 
-        msg= insert_funz(user_id, room_id)
+        # Inserisci un nuovo record per la stanza in entrata
+        msg= insert_funz(user_id, room_id_in)
 
     elif presenza.data and presenza.data[0].get("returned_time") is not None:
-        msg  = insert_funz(user_id, room_id)
+        # Inserisci un nuovo record per la stanza in entrata
+        msg  = insert_funz(user_id, room_id_in)
 
     elif presenza.data and (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and (presenza.data[0].get("room_id") != room_id):
+        # Recupera la stanza di uscita
+        room_id_out = presenza.data[0].get("room_id")
+
+        # Controlla se la stanza di uscita ha restrizioni
+        contr_ble_out, _ = contr_disp(room_id_out)
+        if contr_ble_out:
+            contr_ble_out = Codes.AREA_RESTRICED.value
+        else:
+            contr_ble_out = Codes.AREA_NOT_RESTRICED.value
+
         aggiorna = supabase.table("Access_Logs").update({
             "returned_time": current_time.strftime("%H:%M:%S")
         }).eq("log_id", presenza.data[0].get("log_id")).execute()
@@ -139,13 +164,27 @@ def access_log(user_id, room_id):
             msg = "Record aggiornato con successo"
         else:
             msg = "Errore nell'aggiornamento del record: " 
+        # Inserisci un nuovo record per la stanza in entrata
+        msg += "\n" + insert_funz(user_id, room_id_in)
+
+        return {
+            "room_id_out": room_id_out,
+            "contr_ble_out": contr_ble_out,
+            "out": 1,
+            "room_id_in": room_id_in,
+            "contr_ble_in": contr_ble_in,
+            "entry_out": 0
+        }
 
     return msg
+
+
 
 # Carica i dati per la previsione della stanza
 def load_data():
     df = pd.read_csv('/backend/wifi_data_with_rooms.csv')
     return df
+
 
 # Prepara i dati per l'addestramento
 def prepare_data(df):
@@ -156,6 +195,7 @@ def prepare_data(df):
     y = df['room']
     return X, y, le
 
+
 # Addestra il modello Random Forest
 def train_model(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -164,6 +204,7 @@ def train_model(X, y):
 
     print(f"Accuracy: {model.score(X_test, y_test):.2f}")
     return model
+
 
 # Predici la stanza basata sulla scansione attuale
 def predict_room(model, le, json_data):
@@ -178,11 +219,13 @@ def predict_room(model, le, json_data):
     room_prediction = le.inverse_transform(prediction)[0]
     return room_prediction
 
+
+
 # Funzione principale
-def fingerprinting(json_data,user_id):
+def fingerprinting(json_data, user_id):
     # Assumi che `json_data` contenga i dati JSON da elaborare.
     try:
-        current_scan = json_data  # Non leggiamo più da un file, ma prendiamo i dati direttamente
+        current_scan = json_data 
     except Exception as e:
         print(f"Errore nel caricamento dei dati: {e}")
         return None, None
@@ -205,8 +248,17 @@ def fingerprinting(json_data,user_id):
 
     contr_ble, room_id = contr_disp(predicted_room)
     print("Devo controllare i BLE?:", contr_ble)
+    if contr_ble:
+        contr_ble=Codes.AREA_RESTRICED.value
+    else:
+        contr_ble=Codes.AREA_NOT_RESTRICED.value
 
-    #msg = access_log(user_id, room_id)
-    #print(msg)
+    result = access_log(user_id, room_id)
+    print(result)
 
-    return predicted_room, contr_ble
+    return result
+#aggiungi controllo in /out
+# SE STO USCENDO DA UNA STANZA IO HO RIPORTO DA CHE STANZA STO USCENDO SE QUESTA HA RESTRIZIONI 
+# (room_id_out, contr_ble_out, out=1) 
+# e RIPORTO ANCHE IN CHE STANZA SONO ENTRATO E SE QUESTA HA DELLE RESTRIZIONI 
+# (room_id_in, contr_ble_in, out=0)

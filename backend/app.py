@@ -1,10 +1,12 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 import os
 import sys
+from enum import Enum
+from flask_cors import CORS
 from dotenv import load_dotenv
+from flask import Flask, jsonify, request
 from fingerprinting import fingerprinting  
 from controllo_dispositivi import controllo_dispositivi
+
 
 app = Flask(__name__)
 CORS(app)  # Abilita CORS per tutte le rotte
@@ -35,15 +37,32 @@ def fingerprint():
     #print(f"Received json_input: {json_input}")
     #print(f"Received user_id: {user_id}")
 
-    # Esegui il calcolo dei dati (o la predizione)
-    predicted_room, contr_ble = fingerprinting(json_input, user_id)
+ # Esegui il calcolo dei dati (o la predizione)
+    result = fingerprinting(json_input, user_id)
     
-    # Log del risultato
-    print("predicted_room:", predicted_room, "contr_ble:",contr_ble)
+    if result:
+        room_id_out = result.get('room_id_out')
+        contr_ble_out = result.get('contr_ble_out')
+        out = result.get('out')
+        room_id_in = result.get('room_id_in')
+        contr_ble_in = result.get('contr_ble_in')
+        entry_out = result.get('entry_out') 
 
-    # Restituisci i dati come JSON
-    return jsonify({"predicted_room": predicted_room, "contr_ble": contr_ble})
+        # Log del risultato
+        print(f"Room out: {room_id_out}, Contr BLE out: {contr_ble_out}, Out: {out}")
+        print(f"Room in: {room_id_in}, Contr BLE in: {contr_ble_in}, entry_out: {entry_out}")
 
+        # Restituisci i dati come JSON
+        return jsonify({
+            "room_id_out": room_id_out,
+            "contr_ble_out": contr_ble_out,
+            "out": out,
+            "room_id_in": room_id_in,
+            "contr_ble_in": contr_ble_in,
+            "entry_out": entry_out
+        })
+
+    return jsonify({"error": "Errore nel calcolo dei dati"}), 500
 
 @app.route('/api/controlloBle', methods=['POST'])
 def controlloBle():
@@ -54,11 +73,12 @@ def controlloBle():
     print(f"Dati ricevuti: {data}")
 
     # Assicurati che i dati siano corretti
-    if 'room_id' not in data or 'lista_disp' not in data:
+    if 'room_id' not in data or 'lista_disp' not in data or 'out' not in data:
         return jsonify({"error": "Input room_id e lista_disp richiesti"}), 400
 
     room_id = data['room_id']
     lista_disp = data['lista_disp']  # Modificato per usare la chiave corretta
+    out = data['out']
 
     # Converti room_id in intero
     try:
@@ -66,16 +86,16 @@ def controlloBle():
     except ValueError:
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
 
+    # Converti out in intero
+    try:
+        out = int(out)  # Conversione di room_id in intero
+    except ValueError:
+        return jsonify({"error": "out deve essere un intero valido"}), 400
+    
     # Esegui il calcolo dei dati
-    risposta = controllo_dispositivi(room_id, lista_disp)
+    risposta = controllo_dispositivi(room_id, lista_disp, out)
     
-    if isinstance(risposta, bool):
-        response = {"return": True}
-        return jsonify(response)
-    
-    else:
-        response = {"return": risposta}
-        return jsonify(response)
+    return str(risposta.value),200
 
 # Rotta per restituire gli URL completi
 @app.route('/api/urls', methods=['GET'])
