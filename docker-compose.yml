@@ -31,7 +31,10 @@ services:
       - app-network
     volumes:
       - ./backend:/backend  # Assicurati che il percorso sulla macchina host sia corretto
+  
+
 
 networks:
   app-network:
     driver: bridge
+
