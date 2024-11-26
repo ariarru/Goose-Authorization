@@ -6,6 +6,7 @@ from supabase import create_client, Client
 
 # Codice da ritornare all'app
 class Codes(enum.Enum):
+    AREA_NOT_RESTRICTED = 21
     MISSING_DEVICE = 30
     EXIT_MISSING_DEVICE = 31
     WRONG_DEVICE = 32
@@ -63,7 +64,7 @@ def controllo_dispositivi(_room_id, lista_disp, out):
     
     if devices_s is None: 
         print("Nessun dispositivo necessario")
-        return Codes.HAS_RIGHT_DEVICES
+        return Codes.AREA_NOT_RESTRICTED
     else:
         for disp_necessari in devices_s:
             if disp_necessari not in lista_disp:

@@ -32,7 +32,6 @@ public class GooseRequest {
                         switch (value) {
                             //NEED CHECK BLE
                             case 10:
-                                service.backgroundMeasureBLE();
                                 break;
                             //AREA NOT RESTRICTED
                             case 21:
