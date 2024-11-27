@@ -131,6 +131,7 @@ def insert_funz(user_id, room_id):
 
 # Registra l'accesso alle stanze
 def access_log(user_id, room_id):
+    new_room_id = room_id
     msg = None
     presenza = supabase.table("Access_Logs")\
         .select("*")\
@@ -143,13 +144,11 @@ def access_log(user_id, room_id):
     if not presenza.data: 
         # Inserisci un nuovo record per la stanza in entrata
         msg= insert_funz(user_id, room_id)
-        new_room_id = room_id
-
+        
     #Caso2: l'ultimo access log dell'utente è completo
     elif presenza.data and presenza.data[0].get("returned_time") is not None:
         # Inserisci un nuovo record per la stanza in entrata
         msg  = insert_funz(user_id, room_id)
-        new_room_id = room_id
 
     
     # Caso3: L'utente è attualmente in una stanza diversa
@@ -176,7 +175,6 @@ def access_log(user_id, room_id):
          (presenza.data[0].get("room_id") == room_id):
 
         msg = "L'utente è già nella stanza specificata."
-        new_room_id = None
 
     return msg, new_room_id
 
@@ -253,9 +251,8 @@ def fingerprinting(json_data, user_id):
     result, new_room_id = access_log(user_id, room_id)
     print(result)
 
-    if new_room_id!=None:
-        contr_ble = contr_disp(new_room_id)
-        print("Devo controllare i BLE?:", contr_ble)  
+    contr_ble = contr_disp(new_room_id)
+    print("Devo controllare i BLE?:", contr_ble)  
     
 
     return new_room_id,  contr_ble
