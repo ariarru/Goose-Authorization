@@ -37,32 +37,25 @@ def fingerprint():
     #print(f"Received json_input: {json_input}")
     #print(f"Received user_id: {user_id}")
 
- # Esegui il calcolo dei dati (o la predizione)
-    result = fingerprinting(json_input, user_id)
+    # Esegui il calcolo dei dati (o la predizione)
+    room_id, contr_ble = fingerprinting(json_input, user_id)
     
-    if result:
-        room_id_out = result.get('room_id_out')
-        contr_ble_out = result.get('contr_ble_out')
-        out = result.get('out')
-        room_id_in = result.get('room_id_in')
-        contr_ble_in = result.get('contr_ble_in')
-        entry_out = result.get('entry_out') 
+    # Log del risultato
+    print("predicted_room:", room_id, "contr_ble:",contr_ble)
 
-        # Log del risultato
-        print(f"Room out: {room_id_out}, Contr BLE out: {contr_ble_out}, Out: {out}")
-        print(f"Room in: {room_id_in}, Contr BLE in: {contr_ble_in}, entry_out: {entry_out}")
+    # Restituisci i dati come JSON
+    return jsonify({"predicted_room": room_id, "contr_ble": contr_ble})
 
-        # Restituisci i dati come JSON
-        return jsonify({
-            "room_id_out": room_id_out,
-            "contr_ble_out": contr_ble_out,
-            "out": out,
-            "room_id_in": room_id_in,
-            "contr_ble_in": contr_ble_in,
-            "entry_out": entry_out
-        })
 
-    return jsonify({"error": "Errore nel calcolo dei dati"}), 500
+
+
+
+
+
+
+
+
+
 
 @app.route('/api/controlloBle', methods=['POST'])
 def controlloBle():

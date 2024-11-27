@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-import enum
 import datetime
 import pandas as pd
 from anyio import current_time
@@ -11,26 +10,25 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
-# Codice da ritornare all'app
-class Codes(enum.Enum):
-    AREA_NOT_RESTRICED = 21 #L'Aarea non è limitata
-    AREA_RESTRICED = 22 #L'area è limitata
-
-
 current_time = datetime.datetime.now()
 
 
 # Calcola il percorso relativo
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'frontend', '.env.local')
+
 # Risolvi il percorso relativo in un percorso assoluto
 dotenv_path = os.path.abspath(dotenv_path)
+
 # Carica il file .env.local dal percorso assoluto
 load_dotenv(dotenv_path)
+
 # Recupera le variabili di ambiente
 supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 supabase_key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+
 # Configura Supabase - crea una connessione a Supabase
 supabase: Client = create_client(supabase_url, supabase_key)
+
 
 
 # Funzione per recuperare i dati storici delle stanze dal database
@@ -39,20 +37,23 @@ def recupero_dati():
     return response.data
 
 
+
 # Funzione per controllare se l'utente esiste nel database
 def check_user_exists(user_id):
     query = supabase.table("Users").select("user_id").eq("user_id", user_id).execute()
     return query.data is not None and len(query.data) > 0
 
 
+
 # Funzione per controllare se la stanza ha delle restrizioni
-def contr_disp(room_name):
-    query = supabase.table("Rooms").select("is_restricted, room_id").eq("room_name", room_name).execute()
+def contr_disp(room_id):
+    query = supabase.table("Rooms").select("is_restricted").eq("room_id", room_id).execute()
     
     if query.data and len(query.data) > 0:
         is_restricted = query.data[0]["is_restricted"]
-        room_id = query.data[0]["room_id"]
-        return is_restricted, room_id
+
+        return is_restricted
+
 
 
 # Funzione per calcolare i pesi basati sulle misurazioni RSSI
@@ -65,10 +66,12 @@ def calculate_weights(user_rssi, dict_AP):
     return weights
 
 
+
 # Normalizza i pesi
 def normalize_weights(weights):
     total_weight = sum(w for _, w in weights)
     return [(pos, w / total_weight) for pos, w in weights]
+
 
 
 # Stima la posizione dell'utente utilizzando i pesi normalizzati
@@ -79,6 +82,7 @@ def estimate_position(normalized_weights):
     return (x_estimated, y_estimated)
 
 
+
 # Calcola la posizione stimata dell'utente
 def calcola_posizione(current_scan, dati_db):
     dict_AP = []
@@ -87,7 +91,7 @@ def calcola_posizione(current_scan, dati_db):
         if room['rilevazione'] is None:
             continue
         
-        for rilevazione_key, rilevazione_data in room['rilevazione'].items():
+        for rilevazione_data in room['rilevazione'].items():
             if isinstance(rilevazione_data, dict):
                 dizionario_AP = {
                     ap_value['MAC']: ap_value['RSSI'] for ap_value in rilevazione_data['wifi_data'].values()
@@ -126,7 +130,7 @@ def insert_funz(user_id, room_id):
 
 
 # Registra l'accesso alle stanze
-def access_log(user_id, room_id_in, contr_ble_in):
+def access_log(user_id, room_id):
     msg = None
     presenza = supabase.table("Access_Logs")\
         .select("*")\
@@ -134,25 +138,26 @@ def access_log(user_id, room_id_in, contr_ble_in):
         .order("log_id", desc=True)\
         .limit(1)\
         .execute()
-
+    
+    # Caso1: l'utente non ha un registro attivo
     if not presenza.data: 
         # Inserisci un nuovo record per la stanza in entrata
-        msg= insert_funz(user_id, room_id_in)
+        msg= insert_funz(user_id, room_id)
+        new_room_id = room_id
 
+    #Caso2: l'ultimo access log dell'utente è completo
     elif presenza.data and presenza.data[0].get("returned_time") is not None:
         # Inserisci un nuovo record per la stanza in entrata
-        msg  = insert_funz(user_id, room_id_in)
+        msg  = insert_funz(user_id, room_id)
+        new_room_id = room_id
 
-    elif presenza.data and (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and (presenza.data[0].get("room_id") != room_id):
-        # Recupera la stanza di uscita
-        room_id_out = presenza.data[0].get("room_id")
-
-        # Controlla se la stanza di uscita ha restrizioni
-        contr_ble_out, _ = contr_disp(room_id_out)
-        if contr_ble_out:
-            contr_ble_out = Codes.AREA_RESTRICED.value
-        else:
-            contr_ble_out = Codes.AREA_NOT_RESTRICED.value
+    
+    # Caso3: L'utente è attualmente in una stanza diversa
+    elif presenza.data and \
+        (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and \
+        (presenza.data[0].get("room_id") != room_id):
+      
+        new_room_id = presenza.data[0].get("room_id")
 
         aggiorna = supabase.table("Access_Logs").update({
             "returned_time": current_time.strftime("%H:%M:%S")
@@ -164,20 +169,16 @@ def access_log(user_id, room_id_in, contr_ble_in):
             msg = "Record aggiornato con successo"
         else:
             msg = "Errore nell'aggiornamento del record: " 
-        # Inserisci un nuovo record per la stanza in entrata
-        msg += "\n" + insert_funz(user_id, room_id_in)
+   
+    #Caso4: L'utente è nella stessa stanza
+    elif presenza.data and \
+         (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and \
+         (presenza.data[0].get("room_id") == room_id):
 
-        return {
-            "room_id_out": room_id_out,
-            "contr_ble_out": contr_ble_out,
-            "out": 1,
-            "room_id_in": room_id_in,
-            "contr_ble_in": contr_ble_in,
-            "entry_out": 0
-        }
+        msg = "L'utente è già nella stanza specificata."
+        new_room_id = None
 
-    return msg
-
+    return msg, new_room_id
 
 
 # Carica i dati per la previsione della stanza
@@ -245,20 +246,16 @@ def fingerprinting(json_data, user_id):
 
     predicted_room = predict_room(model, le, current_scan)
     print(f"La stanza prevista è: {predicted_room}")
-
-    contr_ble, room_id = contr_disp(predicted_room)
-    print("Devo controllare i BLE?:", contr_ble)
-    if contr_ble:
-        contr_ble=Codes.AREA_RESTRICED.value
-    else:
-        contr_ble=Codes.AREA_NOT_RESTRICED.value
-
-    result = access_log(user_id, room_id)
+    
+    query = supabase.table("Rooms").select("room_id").eq("room_name", predicted_room).execute()
+    room_id = query.data
+    
+    result, new_room_id = access_log(user_id, room_id)
     print(result)
 
-    return result
-#aggiungi controllo in /out
-# SE STO USCENDO DA UNA STANZA IO HO RIPORTO DA CHE STANZA STO USCENDO SE QUESTA HA RESTRIZIONI 
-# (room_id_out, contr_ble_out, out=1) 
-# e RIPORTO ANCHE IN CHE STANZA SONO ENTRATO E SE QUESTA HA DELLE RESTRIZIONI 
-# (room_id_in, contr_ble_in, out=0)
+    if new_room_id!=None:
+        contr_ble = contr_disp(new_room_id)
+        print("Devo controllare i BLE?:", contr_ble)  
+    
+
+    return new_room_id,  contr_ble
