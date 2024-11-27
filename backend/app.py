@@ -50,20 +50,8 @@ def fingerprint():
 
 
 
-
-
-
-
-
-
-
 @app.route('/api/controlloBle', methods=['POST'])
 def controlloBle():
-###############################################################
-    #TODO: gestire quando NON ci sono segnali bluetooth
-    # serve anche id utente???
-###############################################################
-
     # Ottieni i dati dal corpo della richiesta JSON
     data = request.get_json()
     
@@ -71,29 +59,37 @@ def controlloBle():
     print(f"Dati ricevuti: {data}")
 
     # Assicurati che i dati siano corretti
-    if 'room_id' not in data or 'lista_disp' not in data or 'out' not in data:
-        return jsonify({"error": "Input room_id e lista_disp richiesti"}), 400
+    if 'room_id' not in data or 'lista_disp' not in data or 'user_id' not in data:
+        return jsonify({"error": "Input room_id, lista_disp, user_id richiesti"}), 400
+    
+    # Verifica che la lista_disp non sia vuota
+    if not data['lista_disp']:
+        return jsonify({"error": "lista_disp non può essere vuota"}), 400
 
     room_id = data['room_id']
     lista_disp = data['lista_disp']  # Modificato per usare la chiave corretta
-    out = data['out']
-
+    user_id = data['user_id']
+    
     # Converti room_id in intero
     try:
         room_id = int(room_id)  # Conversione di room_id in intero
     except ValueError:
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
 
-    # Converti out in intero
+    # Converti user_id in intero
     try:
-        out = int(out)  # Conversione di room_id in intero
+        user_id = int(user_id)  # Conversione di room_id in intero
     except ValueError:
-        return jsonify({"error": "out deve essere un intero valido"}), 400
+        return jsonify({"error": "room_id deve essere un intero valido"}), 400
     
     # Esegui il calcolo dei dati
-    risposta = controllo_dispositivi(room_id, lista_disp, out)
+    risposta = controllo_dispositivi(room_id, lista_disp, user_id)
     
     return str(risposta.value),200
+
+
+
+
 
 # Rotta per restituire gli URL completi
 @app.route('/api/urls', methods=['GET'])

@@ -58,9 +58,15 @@ def recupera_disp(_room_id):
         return None
 
 # Funzione per controllare se ci sono dispositivi necessari per una stanza data
-def controllo_dispositivi(_room_id, lista_disp, out):
+def controllo_dispositivi(_room_id, lista_disp, user_id):
     disp_manc = []
     devices_s = recupera_disp(_room_id)
+    presenza = supabase.table("Access_Logs")\
+        .select("*")\
+        .eq("user_id", user_id)\
+        .order("log_id", desc=True)\
+        .limit(1)\
+        .execute()
     
     if devices_s is None: 
         print("Nessun dispositivo necessario")
@@ -73,17 +79,12 @@ def controllo_dispositivi(_room_id, lista_disp, out):
     if len(disp_manc) == 0:
         print("L'utente ha tutti i dispositivi")
         return Codes.HAS_RIGHT_DEVICES
-    elif out==0:
-        print("A l'utente mancano i seguenti:", disp_manc)
-        #return disp_manc
-        return Codes.MISSING_DEVICE
-    else:
+    elif presenza.data and presenza.data[0].get("returned_time") is not None:
         print("A l'utente (in uscita) mancano i seguenti:", disp_manc)
         #return disp_manc
         return Codes.EXIT_MISSING_DEVICE
-    
-
-
-    #Se cambia stanza gli devo dire di chiamare due volte il seguente codice ma 
-    # out = 1 --> è uscito dalla stanza e sto controllando se ha tutti i dispositivi
-    # out = 0 --> è entrato dalla stanza 
+    else:
+        print("A l'utente mancano i seguenti:", disp_manc)
+        #return disp_manc
+        return Codes.MISSING_DEVICE
+        
