@@ -38,13 +38,20 @@ def fingerprint():
     #print(f"Received user_id: {user_id}")
 
     # Esegui il calcolo dei dati (o la predizione)
-    room_id, contr_ble = fingerprinting(json_input, user_id)
+    result = fingerprinting(json_input, user_id)
     
-    # Log del risultato
-    print("predicted_room:", room_id, "contr_ble:",contr_ble)
+    # Distinguere tra ROOM_NOT_FOUND e il risultato normale
+    if isinstance(result, int):  # ROOM_NOT_FOUND restituisce un intero
+        return jsonify({
+            "result": result,
+        })
 
-    # Restituisci i dati come JSON
-    return jsonify({"predicted_room": room_id, "contr_ble": contr_ble})
+    elif isinstance(result, tuple):  # Caso normale con room_id e contr_ble
+        room_id, contr_ble = result
+        return jsonify({
+            "predicted_room": room_id,
+            "contr_ble": contr_ble
+        })
 
 
 

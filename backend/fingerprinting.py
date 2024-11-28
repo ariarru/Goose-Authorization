@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import enum
 import datetime
 import pandas as pd
 from anyio import current_time
@@ -9,6 +10,10 @@ from supabase import create_client, Client
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+
+# Codice da ritornare all'app
+class Codes(enum.Enum):
+    ROOM_NOT_FOUND = 40
 
 current_time = datetime.datetime.now()
 
@@ -214,9 +219,14 @@ def predict_room(model, le, json_data):
     for col in model.feature_names_in_:
         input_df[col] = [input_data.get(col, 0)]
 
-    prediction = model.predict(input_df)
-    room_prediction = le.inverse_transform(prediction)[0]
-    return room_prediction
+    try:
+        prediction = model.predict(input_df)
+        room_prediction = le.inverse_transform(prediction)[0]
+        return room_prediction
+    except Exception as e:
+        print(f"Errore nella predizione della stanza: {e}")
+        return Codes.ROOM_NOT_FOUND.value
+
 
 
 
