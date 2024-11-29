@@ -29,7 +29,14 @@ def fingerprint():
     # Assicurati che i dati siano corretti
     if 'json_input' not in data or 'user_id' not in data:
         return jsonify({"error": "Input JSON e user_id richiesti"}), 400
+    
+    # Verifica che la lista_disp non sia vuota
+    if not data['json_input']:
+        return jsonify({"error": "json_input non può essere vuota"}), 400
 
+    if not data['user_id']:
+        return jsonify({"error": "user_id non può essere vuota"}), 400
+    
     json_input = data['json_input']
     user_id = data['user_id']
 
@@ -69,9 +76,15 @@ def controlloBle():
     if 'room_id' not in data or 'lista_disp' not in data or 'user_id' not in data:
         return jsonify({"error": "Input room_id, lista_disp, user_id richiesti"}), 400
     
-    # Verifica che la lista_disp non sia vuota
+    # Verifica che uno dergli input non sia vuoto
     if not data['lista_disp']:
         return jsonify({"error": "lista_disp non può essere vuota"}), 400
+
+    if not data['room_id']:
+        return jsonify({"error": "room_id non può essere vuota"}), 400
+
+    if not data['user_id']:
+        return jsonify({"error": "user_id non può essere vuota"}), 400
 
     room_id = data['room_id']
     lista_disp = data['lista_disp']  # Modificato per usare la chiave corretta
