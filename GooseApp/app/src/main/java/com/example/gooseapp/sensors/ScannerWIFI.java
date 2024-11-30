@@ -6,19 +6,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
 
-import com.example.gooseapp.R;
 import com.example.gooseapp.service.BackgroundService;
-import com.example.gooseapp.service.GooseRequest;
 
 import java.util.List;
 
@@ -30,6 +25,7 @@ public class ScannerWIFI {
     private boolean isWiFiScanning = false;
     private WifiManager wifiManager;
     private Handler wifiHandler = new Handler();
+
 
     //check ogni 3 secondi
     private static final long RESTART_SCAN_PERIOD = 3 * 1000 *60;
@@ -59,6 +55,7 @@ public class ScannerWIFI {
         }
     };
 
+
     public ScannerWIFI(Context context, BackgroundService backgroundService){
         //Inizializzazione contesto e canale comunicazione
         this.context = context;
@@ -67,6 +64,7 @@ public class ScannerWIFI {
         wifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
         this.context.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
+        Log.i("GOOSE SIGNAL WIFI", "start scanning Wi-Fi");
         // Avvia loop di scansione
         wifiHandler.post(wifiScanRunnable);
     }
@@ -76,17 +74,18 @@ public class ScannerWIFI {
         if(!isWiFiScanning){
             wifiManager.startScan();
             isWiFiScanning= true;
-            Log.i("BACKGROUND GOOSE SIGNAL", "start scanning Wi-Fi");
+            Log.i("GOOSE SIGNAL WIFI", "start scanning Wi-Fi");
         }
     }
 
     private void handleWifiSuccess() {
         if (PermissionChecker.checkCallingOrSelfPermission(context, Manifest.permission.ACCESS_WIFI_STATE) == PermissionChecker.PERMISSION_GRANTED) {
+            Log.i("GOOSE SIGNAL WIFI", "successfully scanned Wi-Fi");
             List<ScanResult> results = wifiManager.getScanResults();
             backgroundService.manageWifiScans(results);
 
         } else {
-            System.out.println("Permissions not granted.");
+            System.out.println(" WIFI Permissions not granted.");
         }
     }
 
@@ -94,12 +93,14 @@ public class ScannerWIFI {
         System.out.println("Wi-Fi scan failed. Retrying or handling the failure.");
         System.out.println("----------------------------------------------");
 
-        Log.e("BACKGROUND GOOSE SIGNAL", "Wi-Fi scan failed. Please try again.");
+        Log.e("GOOSE SIGNAL WIFI", "Wi-Fi scan failed. Please try again.");
     }
 
-    private void stopWifi(){
+    public void stopWifi(){
         wifiHandler.removeCallbacks(wifiScanRunnable);  // Ferma il loop Wi-Fi
         context.unregisterReceiver(wifiReceiver); // Deregistra il ricevitore Wi-Fi
-        Log.i("GOOSE QUACK", "background service destroyed");
+        Log.i("GOOSE WIFI", "stopped wifi loop");
     }
+
+
 }

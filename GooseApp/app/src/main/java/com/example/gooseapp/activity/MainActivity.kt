@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val result = supabase.postgrest.rpc("login", credentials)
-                println("ritorna: ${result.data}")
-                println("----------------------------------------------")
 
                 if(result.data.isNotEmpty()){
                     val jsonInfo = JSONArray(result.data).getJSONObject(0)

@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -22,19 +23,23 @@ import java.util.Map;
 
 public class GooseRequest {
 
-    private static final String url= "https://localhost:5001";
-    private static final String fingerprintUrl = "https://localhost:5001/api/fingerprint";
-    private static final String bluetoothUrl = "http://localhost:5001/api/controlloBle";
+    private static final String url= "https://192.168.1.225:5001";
+    private static final String fingerprintUrl = "/api/fingerprint";
+    private static final String bluetoothUrl = "/api/controlloBle";
     private static RequestQueue queue;
     private BackgroundService backgroundService;
+    private SharedPreferences sharedPreferences;
+
 
     public GooseRequest(Context context, BackgroundService service){
-        this.queue = Volley.newRequestQueue(context);
+        this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
         this.backgroundService = service;
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
     }
 
     public static void sendWifiScan(List<ScannedWifiEntity> swes, int userId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, fingerprintUrl,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url+fingerprintUrl,
                 new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {
@@ -102,7 +107,7 @@ public class GooseRequest {
 
 
     public static void sendBLEScan(List<ScannedBLEEntity> sbes, int userId, int roomId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, fingerprintUrl,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url+bluetoothUrl,
                 new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {

@@ -11,12 +11,12 @@ from controllo_dispositivi import controllo_dispositivi
 app = Flask(__name__)
 CORS(app)  # Abilita CORS per tutte le rotte
 
-'''FLASK_URL="http://localhost:5001"
-FINGERPRINT_URL="http://localhost:5001/api/fingerprint"
-CONTROLLORBLE_URL="http://localhost:5001/api/controlloBle"
+'''FLASK_URL="https://localhost:5001"
+FINGERPRINT_URL="https://localhost:5001/api/fingerprint"
+CONTROLLORBLE_URL="https://localhost:5001/api/controlloBle"
 '''
 
-FLASK_URL = "http://backend-service:5001"
+FLASK_URL = "https://backend-service:5001"
 FINGERPRINT_URL = f"{FLASK_URL}/api/fingerprint"
 CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
 
@@ -126,5 +126,6 @@ def home():
     return "Backend is working!"
 
 if __name__ == '__main__':
-    # Configura il server Flask per ascoltare su tutte le interfacce e la porta 5001
-    app.run(debug=True, host="0.0.0.0", port=5001)  
+    # Configura il server Flask per ascoltare su tutte le interfacce e la porta 5001 con SSL
+    ssl_context = ('certs/cert.pem', 'certs/key.pem')
+    app.run(debug=True, host="0.0.0.0", port=5001, ssl_context=ssl_context)

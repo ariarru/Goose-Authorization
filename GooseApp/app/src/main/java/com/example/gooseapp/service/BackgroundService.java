@@ -1,7 +1,6 @@
 package com.example.gooseapp.service;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,7 +8,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.os.Build;
 import android.os.IBinder;
@@ -17,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -26,7 +23,6 @@ import com.example.gooseapp.activity.HomeActivity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 import com.example.gooseapp.sensors.ScannerBLE;
 import com.example.gooseapp.sensors.ScannerWIFI;
-import com.example.gooseapp.sensors.SensorHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +102,7 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        scannerWIFI.stopWifi();
     }
 
 
@@ -122,6 +118,7 @@ public class BackgroundService extends Service {
                             scanResult.getApMldMacAddress(),
                             scanResult.level
                     );
+                    Log.i("GOOSE WIFI SCAN RESULT", swe.toString());
                     scannedList.add(swe);
                 }
             }

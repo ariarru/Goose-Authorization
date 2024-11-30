@@ -6,5 +6,5 @@
     <string name="session">USER SESSION</string>
     <string name="username">username</string>
     <string name="logged">has logged in</string>
-
+    <string name="room_in">USER IN ROOM</string>
 </resources>

@@ -10,6 +10,9 @@ COPY requirements.txt /backend/requirements.txt
 # Installa le dipendenze da requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copia i certificati SSL
+COPY ./certs /backend/certs
+
 # Copia tutti i file del backend nel container
 COPY ./ /backend/
 

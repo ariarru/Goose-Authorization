@@ -14,8 +14,8 @@ public class ScannedWifiEntity {
 
     public ScannedWifiEntity(WifiSsid ssid, MacAddress mac, int rssi){
 
-        this.SSIDValue = ssid == null ? null : ssid.toString();
-        this.MACValue = mac == null ? null : mac.toString();
+        this.SSIDValue = ssid == null ? "Not Present" : ssid.toString();
+        this.MACValue = mac == null ? "Not Present" : mac.toString();
         this.RSSIValue = String.valueOf(rssi);
     }
 

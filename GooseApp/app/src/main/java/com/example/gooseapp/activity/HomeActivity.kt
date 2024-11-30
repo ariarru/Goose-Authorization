@@ -1,13 +1,7 @@
 package com.example.gooseapp.activity
 
-import android.Manifest
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
-import android.net.wifi.ScanResult
-import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -17,9 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PermissionChecker
 import com.example.gooseapp.R
-import com.example.gooseapp.sensors.ScannedWifiEntity
+import com.example.gooseapp.sensors.ScannerWIFI
 import com.example.gooseapp.sensors.SensorHelper
 import com.example.gooseapp.service.BackgroundService
 
@@ -29,9 +22,7 @@ class HomeActivity : AppCompatActivity() {
     //TODO:
     // - metti ScannerWifi come istanza
     // - richiama gestione notifiche?
-    private lateinit var wifiManager: WifiManager
-     private lateinit var results: List<ScanResult>
-    private var isReceiverRegistered = false
+
 
     private val sensorHelper = SensorHelper()
 
@@ -68,10 +59,7 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
-        //definisci receiver
-        registerReceiver(wifiReceiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
-        //definisci wifi
-        wifiManager = getSystemService(WIFI_SERVICE) as WifiManager
+
 
         //shared preferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -91,70 +79,10 @@ class HomeActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun scan() {
-        if (!wifiManager.isWifiEnabled) {
-            Toast.makeText(this, "wifi is disabled.. You need to enable it in order to use the application", Toast.LENGTH_LONG).show()
-            // richiedi permesso attivazione wifi
-        }
-        if (!isReceiverRegistered) {
-            isReceiverRegistered = true
-            wifiManager.startScan()
-            println("scanning started")
-            println("----------------------------------------------")
+       //prendi solo le sharedPreferences, se non ci sono metti avviso
 
-            Toast.makeText(this, "Scanning...", Toast.LENGTH_SHORT).show()
-        }
     }
 
-
-    private val wifiReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            // Controlla se l'intento ricevuto è per i risultati della scansione Wi-Fi
-
-            if (intent.action == WifiManager.SCAN_RESULTS_AVAILABLE_ACTION) {
-                val success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
-                if (success) {
-                    handleScanSuccess()
-                } else {
-                    handleScanFailure()
-                }
-            }
-            isReceiverRegistered = false
-        }
-    }
-
-    private fun handleScanSuccess() {
-        if (PermissionChecker.checkCallingOrSelfPermission(applicationContext, Manifest.permission.ACCESS_WIFI_STATE) == PermissionChecker.PERMISSION_GRANTED) {
-            results = wifiManager.scanResults
-            if (results.isNotEmpty()) {
-                for (scanResult in results) {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                        val swe = ScannedWifiEntity(
-                            scanResult.wifiSsid,
-                            scanResult.apMldMacAddress,
-                            scanResult.level
-                        )
-                        println("Scan successful: $swe")
-                        //TODO: invia al backend inserendo id da sharedPreferences
-                    }
-                }
-            } else {
-                println("No Wi-Fi networks found.")
-                println("----------------------------------------------")
-            }
-        } else {
-            println("Permissions not granted.")
-            println("----------------------------------------------")
-
-        }
-    }
-
-    private fun handleScanFailure() {
-        println("Wi-Fi scan failed. Retrying or handling the failure.")
-        println("----------------------------------------------")
-
-        // Puoi decidere di rilanciare la scansione o gestire il fallimento diversamente
-        Toast.makeText(this, "Wi-Fi scan failed. Please try again.", Toast.LENGTH_SHORT).show()
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
