@@ -11,10 +11,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gooseapp.R;
 import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,131 +32,115 @@ public class GooseRequest {
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
     private static RequestQueue queue;
-    private BackgroundService backgroundService;
-    private SharedPreferences sharedPreferences;
+    private static BackgroundService backgroundService;
+    private static SharedPreferences sharedPreferences;
 
 
     public GooseRequest(Context context, BackgroundService service){
         this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
         this.backgroundService = service;
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
     }
 
     public static void sendWifiScan(List<ScannedWifiEntity> swes, int userId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url+fingerprintUrl,
-                new Response.Listener() {
-                    @Override
-                    public void onResponse(Object response) {
-                        Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
-                        Log.i("GOOSE RESPONSE", String.valueOf(response));
-                        //TODO: capire se chiamare BLE oppure se mandare notifica
-                        //todo: salva numero stanza come shared preferences
-                        //per ble dovrei chiamare backgroundService.neededBLE()
-                        /*
-                        int value = (int) response;
-                        switch (value) {
-                            //NEED CHECK BLE
-                            case 10:
-                                break;
-                            //AREA NOT RESTRICTED
-                            case 21:
-                                //todo: do nothing
-                                break;
-                            //AREA RESTRICTED
-                            case 22:
-                                //todo
-                                break;
-                            //NOT ALLOWED
-                            case 23:
-                                //todo
-                                break;
-                            //MISSING DEVICE
-                            case 30:
-                                //todo
-                                break;
-                            //EXIT MISSING DEVICE
-                            case 31:
-                                //todo
-                                break;
-                            //WRONG DEVICE
-                            case 32:
-                                //todo
-                                break;
-                            //HAS RIGHT DEVICES
-                            case 33:
-                                //todo
-                                break;
-                        }*/
-                    }
+        try {
+            // Creare l'oggetto JSON da inviare
+            JSONObject jsonBody = new JSONObject();
+            JSONObject wifiData = new JSONObject();
+            
+            // Convertire la lista di ScannedWifiEntity nel formato atteso dal backend
+            for(int i = 0; i < swes.size(); i++) {
+                JSONObject wifiAP = new JSONObject();
+                Map<String, String> data = swes.get(i).toStringMap();
+                for(Map.Entry<String, String> entry : data.entrySet()) {
+                    wifiAP.put(entry.getKey(), entry.getValue());
+                }
+                wifiData.put("ap" + i, wifiAP);
+            }
+            
+            JSONObject jsonInput = new JSONObject();
+            jsonInput.put("wifi_data", wifiData);
+            
+            jsonBody.put("user_id", userId);
+            jsonBody.put("json_input", jsonInput);
 
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        Log.e("GOOSE REQUEST", String.valueOf(error));
-                    }
-                }){
-                    protected Map<String, String> getParams() {
-                        Map<String, String > data = new HashMap<String, String>();
-                        data.put("user_id", String.valueOf(userId));
-                        for(ScannedWifiEntity swe : swes) {
-                            data.putAll(swe.toStringMap());
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url + fingerprintUrl, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
+                            Log.i("GOOSE RESPONSE", response.toString());
+                            try {
+                                int room = response.getInt("predicted_room");
+                                Log.i("GOOSE CHECK", "Ho trovato "+ room);
+
+                                sharedPreferences.edit().putInt("room_in", room).apply();
+                                Log.i("GOOSE CHECK", "Mi sono salvato "+sharedPreferences.getInt("room_in", -3));
+                                boolean checkBLEconnections = response.getBoolean("contr_ble");
+                                if(checkBLEconnections){
+                                    backgroundService.neededBLE();
+                                }
+                            } catch (JSONException e) {
+                                Log.e("GOOSE REQUEST", "cannot find predicted room value");
+                                throw new RuntimeException(e);
+                            }
+
                         }
-                        return data;
-                    }
-        };
-        queue.add(stringRequest);
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("GOOSE REQUEST", String.valueOf(error));
+                        }
+                    });
+
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            Log.e("GOOSE REQUEST", "Error creating JSON", e);
+        }
     }
 
-
     public static void sendBLEScan(List<ScannedBLEEntity> sbes, int userId, int roomId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url+bluetoothUrl,
-                new Response.Listener() {
-                    @Override
-                    public void onResponse(Object response) {
-                        Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
-                        Log.i("GOOSE RESPONSE", String.valueOf(response));
-                        /*
-                        int value = (int) response;
-                        switch (value) {
-                            //MISSING DEVICE
-                            case 30:
-                                //todo: backgroundService.sendBasicNotification("Missing Security Device", "Risultano ASSENTI dei dispositivi della sicurezza");
-                                break;
-                            //EXIT MISSING DEVICE
-                            case 31:
-                                //todo: backgroundService.sendBasicNotification("Exit Missing Security Device", "Stai uscendo dalla stanza senza avere tutti i dispositivi di sicurezza");
-                                break;
-                            //WRONG DEVICE
-                            case 32:
-                                //todo: backgroundService.sendBasicNotification("Wrong Device", "Dispositivi di sicurezza errati per la stanza");
-                                break;
-                            //HAS RIGHT DEVICES
-                            case 33:
-                                //todo: nothing
-                                break;
-                        }*/
+        try {
+            JSONObject jsonBody = new JSONObject();
+            JSONObject bleData = new JSONObject();
+            
+            // Convertire la lista di ScannedBLEEntity nel formato atteso dal backend
+            if (sbes != null) {
+                for(int i = 0; i < sbes.size(); i++) {
+                    JSONObject bleDevice = new JSONObject();
+                    Map<String, String> data = sbes.get(i).toStringMap();
+                    for(Map.Entry<String, String> entry : data.entrySet()) {
+                        bleDevice.put(entry.getKey(), entry.getValue());
                     }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-
-                    }
-                }){
-            protected Map<String, String> getParams() {
-                Map<String, String > data = new HashMap<String, String>();
-                data.put("room_id", String.valueOf(roomId));
-                for(ScannedBLEEntity sbe : sbes) {
-                    data.putAll(sbe.toStringMap());
+                    bleData.put("device" + i, bleDevice);
                 }
-                return data;
             }
-        };
-        queue.add(stringRequest);
+            
+            JSONObject jsonInput = new JSONObject();
+            jsonInput.put("ble_data", bleData);
+            
+            jsonBody.put("room_id", roomId);
+            jsonBody.put("json_input", jsonInput);
+
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url + bluetoothUrl, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
+                            Log.i("GOOSE RESPONSE", response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("GOOSE REQUEST", String.valueOf(error));
+                        }
+                    });
+
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            Log.e("GOOSE REQUEST", "Error creating JSON", e);
+        }
     }
 }

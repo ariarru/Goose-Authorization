@@ -23,42 +23,55 @@ CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
 
 @app.route('/api/fingerprint', methods=['POST'])
 def fingerprint():
-    # Ottieni i dati dal corpo della richiesta JSON
-    data = request.get_json()
+    print("=== Received fingerprint request ===")
+    try:
+        # Ottieni i dati dal corpo della richiesta JSON
+        data = request.get_json()
+        print("Raw request data:", request.get_data())
+        print("Parsed JSON data:", data)
 
-    # Assicurati che i dati siano corretti
-    if 'json_input' not in data or 'user_id' not in data:
-        return jsonify({"error": "Input JSON e user_id richiesti"}), 400
-    
-    # Verifica che la lista_disp non sia vuota
-    if not data['json_input']:
-        return jsonify({"error": "json_input non può essere vuota"}), 400
+        # Assicurati che i dati siano corretti
+        if 'json_input' not in data or 'user_id' not in data:
+            print("Missing required fields")
+            return jsonify({"error": "Input JSON e user_id richiesti"}), 400
+        
+        # Verifica che la lista_disp non sia vuota
+        if not data['json_input']:
+            print("Empty json_input")
+            return jsonify({"error": "json_input non può essere vuota"}), 400
 
-    if not data['user_id']:
-        return jsonify({"error": "user_id non può essere vuota"}), 400
-    
-    json_input = data['json_input']
-    user_id = data['user_id']
+        if not data['user_id']:
+            print("Empty user_id")
+            return jsonify({"error": "user_id non può essere vuota"}), 400
+        
+        json_input = data['json_input']
+        user_id = data['user_id']
 
-    # Log dei dati ricevuti
-    #print(f"Received json_input: {json_input}")
-    #print(f"Received user_id: {user_id}")
+        # Log dei dati ricevuti
+        print(f"Processing request with:")
+        print(f"json_input: {json_input}")
+        print(f"user_id: {user_id}")
 
-    # Esegui il calcolo dei dati (o la predizione)
-    result = fingerprinting(json_input, user_id)
-    
-    # Distinguere tra ROOM_NOT_FOUND e il risultato normale
-    if isinstance(result, int):  # ROOM_NOT_FOUND restituisce un intero
-        return jsonify({
-            "result": result,
-        })
-
-    elif isinstance(result, tuple):  # Caso normale con room_id e contr_ble
-        room_id, contr_ble = result
-        return jsonify({
-            "predicted_room": room_id,
-            "contr_ble": contr_ble
-        })
+        # Esegui il calcolo dei dati (o la predizione)
+        result = fingerprinting(json_input, user_id)
+        print(f"Fingerprinting result: {result}")
+        
+        # Distinguere tra ROOM_NOT_FOUND e il risultato normale
+        if isinstance(result, int):  # ROOM_NOT_FOUND restituisce un intero
+            return jsonify({
+                "result": result,
+            })
+        elif isinstance(result, tuple):  # Caso normale con room_id e contr_ble
+            room_id, contr_ble = result
+            return jsonify({
+                "predicted_room": room_id,
+                "contr_ble": contr_ble
+            })
+    except Exception as e:
+        print(f"Error in fingerprint endpoint: {str(e)}")
+        import traceback
+        print("Traceback:", traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
 
 
 

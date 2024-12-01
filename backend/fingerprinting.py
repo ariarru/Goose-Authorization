@@ -103,7 +103,9 @@ def calcola_posizione(current_scan, dati_db):
                 }
                 dict_AP.append((room['vertices'], list(dizionario_AP.values())))
 
-    user_rssi = [ap['RSSI'] for ap in current_scan['wifi_data'].values()]
+    # Estrai i valori RSSI dagli access point
+    ## TODO: controllere se sia valido anche per altre versioni
+    user_rssi = [ap['RSSI'] for ap in current_scan.values()]
     
     weights = calculate_weights(user_rssi, dict_AP)
     normalized_weights = normalize_weights(weights)
@@ -234,7 +236,13 @@ def predict_room(model, le, json_data):
 def fingerprinting(json_data, user_id):
     # Assumi che `json_data` contenga i dati JSON da elaborare.
     try:
-        current_scan = json_data 
+        # Estrai i dati wifi dal json_input
+        if isinstance(json_data, dict) and 'wifi_data' in json_data:
+            current_scan = json_data['wifi_data']
+            print("Dati WiFi ricevuti:", current_scan)
+        else:
+            print("Formato dati non valido:", json_data)
+            return None, None
     except Exception as e:
         print(f"Errore nel caricamento dei dati: {e}")
         return None, None
@@ -252,11 +260,19 @@ def fingerprinting(json_data, user_id):
     X, y, le = prepare_data(df)
     model = train_model(X, y)
 
-    predicted_room = predict_room(model, le, current_scan)
+    predicted_room = predict_room(model, le, json_data)
     print(f"La stanza prevista è: {predicted_room}")
     
+    # Query per ottenere il room_id
     query = supabase.table("Rooms").select("room_id").eq("room_name", predicted_room).execute()
-    room_id = query.data
+    
+    # Estrai il room_id dal risultato della query
+    if query.data and len(query.data) > 0:
+        room_id = query.data[0].get('room_id')
+        print(f"Room ID trovato: {room_id}")
+    else:
+        print("Nessuna stanza trovata con questo nome")
+        return None, None
     
     result, new_room_id = access_log(user_id, room_id)
     print(result)
@@ -264,5 +280,4 @@ def fingerprinting(json_data, user_id):
     contr_ble = contr_disp(new_room_id)
     print("Devo controllare i BLE?:", contr_ble)  
     
-
-    return new_room_id,  contr_ble
+    return new_room_id, contr_ble

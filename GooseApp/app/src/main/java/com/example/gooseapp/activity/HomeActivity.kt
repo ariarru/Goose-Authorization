@@ -1,16 +1,20 @@
 package com.example.gooseapp.activity
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.gooseapp.R
 import com.example.gooseapp.sensors.ScannerWIFI
 import com.example.gooseapp.sensors.SensorHelper
@@ -18,11 +22,6 @@ import com.example.gooseapp.service.BackgroundService
 
 
 class HomeActivity : AppCompatActivity() {
-
-    //TODO:
-    // - metti ScannerWifi come istanza
-    // - richiama gestione notifiche?
-
 
     private val sensorHelper = SensorHelper()
 
@@ -50,6 +49,11 @@ class HomeActivity : AppCompatActivity() {
         if(!sensorHelper.hasNotificationPermission(applicationContext, this)){
             Toast.makeText(applicationContext, "I need notification permit to continue", Toast.LENGTH_LONG).show()
         }
+       /* ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+            94
+        )*/
 
         val startServiceIntent = Intent(this, BackgroundService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -64,8 +68,7 @@ class HomeActivity : AppCompatActivity() {
         //shared preferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val userText = findViewById<TextView>(R.id.user_text)
-        println(sharedPreferences.getString(R.string.username.toString(), ""))
-        val newText = "Benvenuta/o "+ sharedPreferences.getString(R.string.username.toString(), "")
+        val newText = "Welcome "+ sharedPreferences.getString(R.string.username.toString(), "")
         userText.setText(newText)
 
         //prendi riferimento bottone
@@ -76,11 +79,18 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-
+//TODO: metti observable object
     @RequiresApi(Build.VERSION_CODES.R)
     private fun scan() {
-       //prendi solo le sharedPreferences, se non ci sono metti avviso
-
+        //shared preferences
+        val roomText = findViewById<TextView>(R.id.room_text)
+        val value = sharedPreferences.getInt("room_in", -1)
+        Log.i("GOOSE ACTIVITY ROOM", "sei nella stanza con valore "+ value)
+        var newText = "I'm measuring"
+        if(value != -1){
+            newText = "I've located you in room" + value.toString()
+        }
+        roomText.setText(newText)
     }
 
 
@@ -99,9 +109,6 @@ class HomeActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
-
 
 
 }

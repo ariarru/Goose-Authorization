@@ -17,7 +17,8 @@ class SensorHelper {
     public final val PERMISSION_WIFI = 97
     public final val PERMISSION_CHANGE_WIFI = 96
     public final val PERMISSION_BLE = 95
-    public final val PERMISSION_POST_NOTIFICATION = 94
+    public final val PERMISSION_BLE_CONNECT = 94
+    public final val PERMISSION_POST_NOTIFICATION = 93
 
 
     public fun hasWifiPermission(context: Context, activity: Activity): Boolean {
@@ -46,8 +47,10 @@ class SensorHelper {
     }
 
     public fun hasBluetoothPermission(context: Context, activity: Activity): Boolean {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(activity, arrayOf(Manifest.permission.BLUETOOTH_SCAN), PERMISSION_BLE)
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(activity, arrayOf( Manifest.permission.BLUETOOTH_CONNECT ), PERMISSION_BLE_CONNECT)
+            requestPermissions(activity, arrayOf( Manifest.permission.BLUETOOTH_SCAN ), PERMISSION_BLE)
             return false
         }
         return true

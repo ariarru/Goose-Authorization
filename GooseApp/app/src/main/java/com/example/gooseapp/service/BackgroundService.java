@@ -1,6 +1,5 @@
 package com.example.gooseapp.service;
 
-
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,6 +19,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.gooseapp.R;
 import com.example.gooseapp.activity.HomeActivity;
+import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 import com.example.gooseapp.sensors.ScannerBLE;
 import com.example.gooseapp.sensors.ScannerWIFI;
@@ -59,16 +59,17 @@ public class BackgroundService extends Service {
         createNotificationChannel();
         notificationManager = NotificationManagerCompat.from(this);
         Intent notificationIntent = new Intent(this, HomeActivity.class);
-        notificationIntent.setAction("Measure Signal");
+        notificationIntent.setAction("Alert users");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
         builderGeneral = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.goose_transparent)
                 .setContentTitle("Quack")
-                .setContentText("...")
+                .setContentText("Starting security localization check")
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         startForeground(1, builderGeneral.build());
+
 
         //inizializza variabili
         scannerWIFI = new ScannerWIFI(this, this);
@@ -118,7 +119,6 @@ public class BackgroundService extends Service {
                             scanResult.getApMldMacAddress(),
                             scanResult.level
                     );
-                    Log.i("GOOSE WIFI SCAN RESULT", swe.toString());
                     scannedList.add(swe);
                 }
             }
@@ -135,15 +135,24 @@ public class BackgroundService extends Service {
         scannerBLE.backgroundMeasureBLE();
     }
 
-    public void manageBLEScans(List<Object> results){
-        if(results == null){
-                //TODO: capire cosa mandare a cla
-            /* maybe un
+    public void manageBLEScans(List<ScannedBLEEntity> results) {
+        if (results == null || results.isEmpty()) {
+            Log.i("GOOSE SIGNAL BLE RESULTS", "non ho ottenuto risultati ble");
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            int userid = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
-            int roomId = sharedPreferences.getInt("room", -1);
+            int userId = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
+            int roomId = sharedPreferences.getInt(String.valueOf(R.string.room_in), -1);
             gooseRequest.sendBLEScan(null, userId, roomId);
-             */
+        } else {
+            Log.i("GOOSE SIGNAL BLE RESULTS", "Trovati " + results.size() + " dispositivi BLE");
+            for (ScannedBLEEntity device : results) {
+                Log.i("GOOSE SIGNAL BLE RESULTS", device.toString());
+            }
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            int userId = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
+            int roomId = sharedPreferences.getInt(String.valueOf(R.string.room_in), -1);
+            gooseRequest.sendBLEScan(results, userId, roomId);
         }
     }
+
+
 }
