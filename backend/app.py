@@ -90,9 +90,6 @@ def controlloBle():
         return jsonify({"error": "Input room_id, lista_disp, user_id richiesti"}), 400
     
     # Verifica che uno dergli input non sia vuoto
-    if not data['lista_disp']:
-        return jsonify({"error": "lista_disp non può essere vuota"}), 400
-
     if not data['room_id']:
         return jsonify({"error": "room_id non può essere vuota"}), 400
 
@@ -100,7 +97,7 @@ def controlloBle():
         return jsonify({"error": "user_id non può essere vuota"}), 400
 
     room_id = data['room_id']
-    lista_disp = data['lista_disp']  # Modificato per usare la chiave corretta
+    lista_disp = data['lista_disp']  
     user_id = data['user_id']
     
     # Converti room_id in intero
@@ -114,6 +111,12 @@ def controlloBle():
         user_id = int(user_id)  # Conversione di room_id in intero
     except ValueError:
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
+    
+    # Gestisci lista_disp per assicurarti che sia trattato correttamente
+    if lista_disp == 101:  # Se lista_disp è esattamente 101, trattalo come un intero
+        pass  
+    elif not isinstance(lista_disp, list):  # Se non è né un 101 né una lista, errore
+        return jsonify({"error": "lista_disp deve essere 101 o una lista valida"}), 400
     
     # Esegui il calcolo dei dati
     risposta = controllo_dispositivi(room_id, lista_disp, user_id)

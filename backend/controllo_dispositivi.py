@@ -11,6 +11,7 @@ class Codes(enum.Enum):
     EXIT_MISSING_DEVICE = 31
     WRONG_DEVICE = 32
     HAS_RIGHT_DEVICES = 33
+    EXTRA_DEVICES= 35
     
 
 # Calcola il percorso relativo
@@ -68,23 +69,36 @@ def controllo_dispositivi(_room_id, lista_disp, user_id):
         .limit(1)\
         .execute()
     
-    if devices_s is None: 
-        print("Nessun dispositivo necessario")
-        return Codes.AREA_NOT_RESTRICTED
-    else:
-        for disp_necessari in devices_s:
-            if disp_necessari not in lista_disp:
-                disp_manc.append(disp_necessari)
+    
+    # Caso 1: La stanza non richiede dispositivi di sicurezza
+    if devices_s is None:
+        if lista_disp: 
+            print("L'utente ha dispositivi, ma la stanza non li richiede")
+            return Codes.EXTRA_DEVICES
+        else:
+            print("La stanza non prevede dispositivi di sicurezza. OK tutto apposto.")
+            return Codes.AREA_NOT_RESTRICTED
+    
+    # Caso 2: La lista passata è vuota ma la stanza richiede dispositivi di sicurezza
+    if lista_disp==101:  # Verifica se la lista è vuota
+        print("La stanza prevede dispositivi di sicurezza, ma l'utente non ha alcun dispositivo di sicurezza.")
+        return Codes.MISSING_DEVICE
+
+    # Controllo dei dispositivi mancanti
+    for disp_necessari in devices_s:
+        if disp_necessari not in lista_disp:
+            disp_manc.append(disp_necessari)
     
     if len(disp_manc) == 0:
+        # Caso 3: L'utente ha tutti i dispositivi necessari
         print("L'utente ha tutti i dispositivi")
         return Codes.HAS_RIGHT_DEVICES
     elif presenza.data and presenza.data[0].get("returned_time") is not None:
+        # Caso 4: L'utente è in uscita e mancano dispositivi
         print("A l'utente (in uscita) mancano i seguenti:", disp_manc)
-        #return disp_manc
         return Codes.EXIT_MISSING_DEVICE
     else:
+        # Caso 5: Mancano dispositivi mentre l'utente è ancora nella stanza
         print("A l'utente mancano i seguenti:", disp_manc)
-        #return disp_manc
         return Codes.MISSING_DEVICE
         
