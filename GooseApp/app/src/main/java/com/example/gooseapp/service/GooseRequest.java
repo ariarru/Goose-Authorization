@@ -13,16 +13,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.gooseapp.R;
 import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,11 +67,11 @@ public class GooseRequest {
                             Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
                             Log.i("GOOSE RESPONSE", response.toString());
                             try {
-                                int room = response.getInt("predicted_room");
-                                Log.i("GOOSE CHECK", "Ho trovato "+ room);
-
-                                sharedPreferences.edit().putInt("room_in", room).apply();
-                                Log.i("GOOSE CHECK", "Mi sono salvato "+sharedPreferences.getInt("room_in", -3));
+                                int roomId = response.getInt("predicted_room");
+                                String roomName = response.getString("room_name");
+                                Log.i("GOOSE CHECK", "Ho trovato "+ roomId + "-"+ roomName);
+                                //save datas
+                                backgroundService.saveData(roomId, roomName);
                                 boolean checkBLEconnections = response.getBoolean("contr_ble");
                                 if(checkBLEconnections){
                                     backgroundService.neededBLE();
@@ -104,7 +100,8 @@ public class GooseRequest {
         try {
             JSONObject jsonBody = new JSONObject();
             JSONObject bleData = new JSONObject();
-            
+            JSONObject jsonInput = new JSONObject();
+
             // Convertire la lista di ScannedBLEEntity nel formato atteso dal backend
             if (sbes != null) {
                 for(int i = 0; i < sbes.size(); i++) {
@@ -115,13 +112,13 @@ public class GooseRequest {
                     }
                     bleData.put("device" + i, bleDevice);
                 }
+                jsonBody.put("lista_disp", bleData);
+
+            } else {
+                jsonBody.put("lista_disp", "101");
             }
-            
-            JSONObject jsonInput = new JSONObject();
-            jsonInput.put("ble_data", bleData);
-            
+            jsonBody.put("user_id", userId);
             jsonBody.put("room_id", roomId);
-            jsonBody.put("json_input", jsonInput);
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url + bluetoothUrl, jsonBody,
                     new Response.Listener<JSONObject>() {

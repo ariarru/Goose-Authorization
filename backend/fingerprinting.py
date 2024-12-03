@@ -242,10 +242,10 @@ def fingerprinting(json_data, user_id):
             print("Dati WiFi ricevuti:", current_scan)
         else:
             print("Formato dati non valido:", json_data)
-            return None, None
+            return None, None, None
     except Exception as e:
         print(f"Errore nel caricamento dei dati: {e}")
-        return None, None
+        return None, None, None
 
     dati_db = recupero_dati()
     dati_db = [dato for dato in dati_db if dato.get('vertices') is not None]
@@ -272,7 +272,7 @@ def fingerprinting(json_data, user_id):
         print(f"Room ID trovato: {room_id}")
     else:
         print("Nessuna stanza trovata con questo nome")
-        return None, None
+        return None, None, None
     
     result, new_room_id = access_log(user_id, room_id)
     print(result)
@@ -280,4 +280,4 @@ def fingerprinting(json_data, user_id):
     contr_ble = contr_disp(new_room_id)
     print("Devo controllare i BLE?:", contr_ble)  
     
-    return new_room_id, contr_ble
+    return new_room_id, predicted_room, contr_ble

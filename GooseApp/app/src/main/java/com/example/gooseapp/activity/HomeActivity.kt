@@ -1,9 +1,7 @@
 package com.example.gooseapp.activity
 
-import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -14,9 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.gooseapp.R
-import com.example.gooseapp.sensors.ScannerWIFI
 import com.example.gooseapp.sensors.SensorHelper
 import com.example.gooseapp.service.BackgroundService
 
@@ -45,15 +41,16 @@ class HomeActivity : AppCompatActivity() {
         }
         if(!sensorHelper.hasBluetoothPermission(applicationContext, this)){
             Toast.makeText(applicationContext, "I don't have any bluetooth permission, try again", Toast.LENGTH_LONG).show()
-        }
-        if(!sensorHelper.hasNotificationPermission(applicationContext, this)){
-            Toast.makeText(applicationContext, "I need notification permit to continue", Toast.LENGTH_LONG).show()
-        }
-       /* ActivityCompat.requestPermissions(
+            /* ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
             94
         )*/
+        }
+        if(!sensorHelper.hasNotificationPermission(applicationContext, this)){
+            Toast.makeText(applicationContext, "I need notification permit to continue", Toast.LENGTH_LONG).show()
+        }
+
 
         val startServiceIntent = Intent(this, BackgroundService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -84,11 +81,11 @@ class HomeActivity : AppCompatActivity() {
     private fun scan() {
         //shared preferences
         val roomText = findViewById<TextView>(R.id.room_text)
-        val value = sharedPreferences.getInt("room_in", -1)
+        val value = sharedPreferences.getString("room_name", null)
         Log.i("GOOSE ACTIVITY ROOM", "sei nella stanza con valore "+ value)
         var newText = "I'm measuring"
-        if(value != -1){
-            newText = "I've located you in room" + value.toString()
+        if(value != null){
+            newText = "I've located you in room " + value.toString()
         }
         roomText.setText(newText)
     }

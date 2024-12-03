@@ -61,10 +61,11 @@ def fingerprint():
             return jsonify({
                 "result": result,
             })
-        elif isinstance(result, tuple):  # Caso normale con room_id e contr_ble
-            room_id, contr_ble = result
+        elif isinstance(result, tuple):  # Caso normale con room_id, room_name e contr_ble
+            room_id, room_name, contr_ble = result
             return jsonify({
                 "predicted_room": room_id,
+                "room_name": room_name,
                 "contr_ble": contr_ble
             })
     except Exception as e:
@@ -91,9 +92,11 @@ def controlloBle():
     
     # Verifica che uno dergli input non sia vuoto
     if not data['room_id']:
+        print('====ROOM ID ERROR====')
         return jsonify({"error": "room_id non può essere vuota"}), 400
 
     if not data['user_id']:
+        print('====USER ID ERROR====')
         return jsonify({"error": "user_id non può essere vuota"}), 400
 
     room_id = data['room_id']
