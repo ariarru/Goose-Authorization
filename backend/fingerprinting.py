@@ -244,10 +244,11 @@ def fingerprinting(json_data, user_id):
             print("Dati WiFi ricevuti:", current_scan)
         else:
             print("Formato dati non valido:", json_data)
-            return None, None, None
+            return None, None, None #, None
     except Exception as e:
         print(f"Errore nel caricamento dei dati: {e}")
-        return None, None, None
+        return None, None, None #, None
+    
 
     dati_db = recupero_dati()
     dati_db = [dato for dato in dati_db if dato.get('vertices') is not None]
@@ -274,17 +275,24 @@ def fingerprinting(json_data, user_id):
         print(f"Room ID trovato: {room_id}")
     else:
         print("Nessuna stanza trovata con questo nome")
-        return None, None, None
+        return None, None, None #, None
     
     #se l'utente non può essere in quella stanza interrompi exec.
     query = supabase.from_("Room_Authorization").select("*").eq("room_id", room_id).eq("user_id", user_id).execute()
+    
     if len(query.data) <= 0:
         return Codes.UNAUTHORIZED_USER.value
-
+    
+    """#Caso in cui aggiungiamo un elem nel json
+    if len(query.data) <= 0:
+        author = False
+    else:
+        author= True"""
+    
     result, new_room_id = access_log(user_id, room_id)
     print(result)
 
     contr_ble = contr_disp(new_room_id)
     print("Devo controllare i BLE?:", contr_ble)  
     
-    return new_room_id, predicted_room, contr_ble
+    return new_room_id, predicted_room, contr_ble #, author
