@@ -124,7 +124,7 @@ def controlloBle():
     # Esegui il calcolo dei dati
     risposta = controllo_dispositivi(room_id, lista_disp, user_id)
     
-    return str(risposta.value),200
+    return jsonify({"response": risposta.value}), 200
 
 
 
