@@ -1562,5 +1562,306 @@
                 "RSSI": -90
             }
         }
+    },
+    "rilevazione22": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -42
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -43
+            },
+            "AP3": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:16:",
+                "RSSI": -87
+            },
+            "AP4": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -78
+            },
+            "AP5": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -42
+            },
+            "AP6": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -43
+            },
+            "AP7": {
+                "SSID": "Vodafone-57620841",
+                "MAC": "bc:15:ac:32:00:89:",
+                "RSSI": -86
+            },
+            "AP8": {
+                "SSID": "ADB-DAFB20",
+                "MAC": "20:83:f8:da:fb:21:",
+                "RSSI": -84
+            },
+            "AP9": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:cf:",
+                "RSSI": -78
+            },
+            "AP10": {
+                "SSID": "ADB-E03D1D",
+                "MAC": "20:83:f8:e0:3d:1e:",
+                "RSSI": -72
+            },
+            "AP11": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -58
+            },
+            "AP12": {
+                "SSID": "DIRECT-D3EAD897",
+                "MAC": "9e:ae:d3:ea:58:97:",
+                "RSSI": -84
+            },
+            "AP13": {
+                "SSID": "FASTWEB-AB6C42",
+                "MAC": "d6:92:5e:ab:6c:4a:",
+                "RSSI": -76
+            }
+        }
+    },
+    "rilevazione23": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -49
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -41
+            },
+            "AP3": {
+                "SSID": "TP-Link_44C2",
+                "MAC": "50:91:e3:f6:44:c2:",
+                "RSSI": -78
+            },
+            "AP4": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:cf:",
+                "RSSI": -78
+            },
+            "AP5": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -49
+            },
+            "AP6": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -41
+            },
+            "AP7": {
+                "SSID": "ADB-E0AEF3",
+                "MAC": "20:83:f8:e0:ae:f4:",
+                "RSSI": -86
+            },
+            "AP8": {
+                "SSID": "ADB-E03D1D",
+                "MAC": "20:83:f8:e0:3d:1e:",
+                "RSSI": -71
+            },
+            "AP9": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -63
+            },
+            "AP10": {
+                "SSID": "Vodafone-34773808",
+                "MAC": "bc:15:ac:68:d2:99:",
+                "RSSI": -80
+            },
+            "AP11": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -79
+            },
+            "AP12": {
+                "SSID": "L920PRO_2230634608",
+                "MAC": "54:78:c9:2d:c7:1e:",
+                "RSSI": -86
+            }
+        }
+    },
+    "rilevazione24": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -49
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -47
+            },
+            "AP3": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:72:",
+                "RSSI": -66
+            },
+            "AP4": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -63
+            },
+            "AP5": {
+                "SSID": "Vodafone-57620841",
+                "MAC": "bc:15:ac:32:00:89:",
+                "RSSI": -87
+            },
+            "AP6": {
+                "SSID": "IPCAM-167511",
+                "MAC": "38:01:46:29:32:e7:",
+                "RSSI": -83
+            },
+            "AP7": {
+                "SSID": "Vodafone-34773808",
+                "MAC": "bc:15:ac:68:d2:9d:",
+                "RSSI": -88
+            },
+            "AP8": {
+                "SSID": "Vodafone-34773808",
+                "MAC": "bc:15:ac:68:d2:99:",
+                "RSSI": -79
+            },
+            "AP9": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -49
+            },
+            "AP10": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -47
+            },
+            "AP11": {
+                "SSID": "ADB-C7EA92",
+                "MAC": "20:83:f8:c7:ea:94:",
+                "RSSI": -90
+            },
+            "AP12": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:16:",
+                "RSSI": -82
+            },
+            "AP13": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -79
+            },
+            "AP14": {
+                "SSID": "TP-Link_44C2",
+                "MAC": "50:91:e3:f6:44:c2:",
+                "RSSI": -78
+            },
+            "AP15": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:cf:",
+                "RSSI": -78
+            },
+            "AP16": {
+                "SSID": "ADB-E0AEF3",
+                "MAC": "20:83:f8:e0:ae:f4:",
+                "RSSI": -86
+            },
+            "AP17": {
+                "SSID": "ADB-E03D1D",
+                "MAC": "20:83:f8:e0:3d:1e:",
+                "RSSI": -73
+            },
+            "AP18": {
+                "SSID": "L920PRO_2230634608",
+                "MAC": "54:78:c9:2d:c7:1e:",
+                "RSSI": -86
+            }
+        }
+    },
+    "rilevazione25": {
+        "wifi_data": {
+            "AP1": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -46
+            },
+            "AP2": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -31
+            },
+            "AP3": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e7:",
+                "RSSI": -46
+            },
+            "AP4": {
+                "SSID": "ADB-C7F0E6",
+                "MAC": "20:83:f8:c7:f0:e8:",
+                "RSSI": -31
+            },
+            "AP5": {
+                "SSID": "ADB-C7E4CE",
+                "MAC": "20:83:f8:c7:e4:cf:",
+                "RSSI": -83
+            },
+            "AP6": {
+                "SSID": "ADB-DAFB20",
+                "MAC": "20:83:f8:da:fb:21:",
+                "RSSI": -78
+            },
+            "AP7": {
+                "SSID": "ADB-E03D1D",
+                "MAC": "20:83:f8:e0:3d:1e:",
+                "RSSI": -72
+            },
+            "AP8": {
+                "SSID": "Rich.ynm,",
+                "MAC": "fa:8f:ca:9f:e2:be:",
+                "RSSI": -90
+            },
+            "AP9": {
+                "SSID": "ADB-C7F770",
+                "MAC": "20:83:f8:c7:f7:71:",
+                "RSSI": -70
+            },
+            "AP10": {
+                "SSID": "ADB-C7EA92",
+                "MAC": "20:83:f8:c7:ea:93:",
+                "RSSI": -77
+            },
+            "AP11": {
+                "SSID": "AP_CEA_PALLOTTI",
+                "MAC": "88:dc:96:75:25:d6:",
+                "RSSI": -90
+            },
+            "AP12": {
+                "SSID": "Vodafone-34773808",
+                "MAC": "bc:15:ac:68:d2:99:",
+                "RSSI": -82
+            },
+            "AP13": {
+                "SSID": "HiSmart-01-ca2c4fa264a4",
+                "MAC": "ca:2c:4f:a2:64:a4:",
+                "RSSI": -77
+            },
+            "AP14": {
+                "SSID": "ADB-DC5414",
+                "MAC": "20:83:f8:dc:54:15:",
+                "RSSI": -75
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 # Codice da ritornare all'app
 class Codes(enum.Enum):
     ROOM_NOT_FOUND = 40
+    UNAUTHORIZED_USER = 41
 
 current_time = datetime.datetime.now()
 
@@ -147,6 +148,7 @@ def access_log(user_id, room_id):
         .limit(1)\
         .execute()
     
+       
     # Caso1: l'utente non ha un registro attivo
     if not presenza.data: 
         # Inserisci un nuovo record per la stanza in entrata
@@ -274,6 +276,11 @@ def fingerprinting(json_data, user_id):
         print("Nessuna stanza trovata con questo nome")
         return None, None, None
     
+    #se l'utente non può essere in quella stanza interrompi exec.
+    query = supabase.from_("Room_Authorization").select("*").eq("room_id", room_id).eq("user_id", user_id).execute()
+    if len(query.data) <= 0:
+        return Codes.UNAUTHORIZED_USER.value
+
     result, new_room_id = access_log(user_id, room_id)
     print(result)
 
