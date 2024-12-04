@@ -61,13 +61,12 @@ def fingerprint():
             return jsonify({
                 "result": result,
             })
-        elif isinstance(result, tuple):  # Caso normale 
+        elif isinstance(result, tuple):  # Caso normale con room_id, room_name e contr_ble
             room_id, room_name, contr_ble = result
             return jsonify({
                 "predicted_room": room_id,
                 "room_name": room_name,
                 "contr_ble": contr_ble
-                #"author": author
             })
     except Exception as e:
         print(f"Error in fingerprint endpoint: {str(e)}")
