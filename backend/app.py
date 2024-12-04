@@ -56,8 +56,14 @@ def fingerprint():
         result = fingerprinting(json_input, user_id)
         print(f"Fingerprinting result: {result}")
         
-        # Distinguere tra ROOM_NOT_FOUND e il risultato normale
-        if isinstance(result, int):  # ROOM_NOT_FOUND restituisce un intero
+        # Distinguere tra ROOM_NOT_FOUND, UNAUTHORIZED_USER e il risultato normale
+        if isinstance(result, int):  # ROOM_NOT_FOUND o UNAUTHORIZED_USER restituisce un intero
+            if result == 41:  # UNAUTHORIZED_USER
+                print(f"Unauthorized access attempt by user {user_id}")
+                return jsonify({
+                    "error": "Unauthorized access: User does not have permission for this room",
+                    "code": result
+                }), 400
             return jsonify({
                 "result": result,
             })

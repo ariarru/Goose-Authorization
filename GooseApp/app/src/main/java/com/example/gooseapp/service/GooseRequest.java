@@ -62,7 +62,6 @@ public class GooseRequest {
             
             JSONObject jsonInput = new JSONObject();
             jsonInput.put("wifi_data", wifiData);
-            
             jsonBody.put("user_id", userId);
             jsonBody.put("json_input", jsonInput);
 
@@ -93,6 +92,22 @@ public class GooseRequest {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             String errorMessage;
+                            
+                            // Check if the error has a network response with data
+                            if (error.networkResponse != null && error.networkResponse.data != null) {
+                                try {
+                                    String jsonError = new String(error.networkResponse.data);
+                                    JSONObject errorObj = new JSONObject(jsonError);
+                                    if (errorObj.has("code")) {
+                                        backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
+                                        Log.e("GOOSE REQUEST", "User not authorized");
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    Log.e("GOOSE REQUEST", "Error parsing error response", e);
+                                }
+                            }
+
                             if (error instanceof TimeoutError) {
                                 errorMessage = "Request timed out. Please check your connection.";
                             } else if (error instanceof com.android.volley.NoConnectionError) {
@@ -177,6 +192,21 @@ public class GooseRequest {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             String errorMessage;
+                            
+                            // Check if the error has a network response with data
+                            if (error.networkResponse != null && error.networkResponse.data != null) {
+                                try {
+                                    String jsonError = new String(error.networkResponse.data);
+                                    JSONObject errorObj = new JSONObject(jsonError);
+                                    if (errorObj.has("code")) {
+                                        Log.e("GOOSE REQUEST", "quack");
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    Log.e("GOOSE REQUEST", "Error parsing error response", e);
+                                }
+                            }
+
                             if (error instanceof TimeoutError) {
                                 errorMessage = "Request timed out. Please check your connection.";
                             } else if (error instanceof com.android.volley.NoConnectionError) {
