@@ -25,17 +25,12 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 
-
-// Latenza: Crea un oggetto File per il file val_latency.json
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
-//File file = new File(context.getFilesDir(), "val_latency.json");
-
-
 
 
 
@@ -61,7 +56,7 @@ public class GooseRequest {
     public static void sendWifiScan(List<ScannedWifiEntity> swes, int userId){
 
         //LATENZA: Memorizziamo il tempo di inizio prima di inviare la richiesta
-        //long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
 
         try {
@@ -119,21 +114,29 @@ public class GooseRequest {
                                     JSONObject errorObj = new JSONObject(jsonError);
                                     if (errorObj.has("code")) {
                                         //LATENZA: Memorizziamo il tempo di fine prima di inviare la notifica accesso non autorizzato
-                                        //long endTime = System.currentTimeMillis()
-                                        //LATENZA: Calcola la latenza
-                                        //long latency = endTime - startTime
+                                        long endTime = System.currentTimeMillis();
+                                        //LATENZA: Calcola la latenza e Crea il dato di latenza come oggetto JSON
+                                        long latency = endTime - startTime;
+                                        JSONObject latencyData = new JSONObject();
+                                        latencyData.put("latency", latency);
+
                                         //LATENZA: memorizza risultati
                                         // Aggiungi il nuovo dato alla fine del file
-                                        //FileWriter fileWriter = new FileWriter(file, true);  // true per appendere i dati
-                                        //BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                                        File file = new File(context.getFilesDir(), "val_latency.json"); 
+                                        try {
+                                            FileWriter fileWriter = new FileWriter(file, true); 
+                                            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-                                        // Scrivi il nuovo dato JSON nel file, seguito da una nuova riga
-                                        //bufferedWriter.write(latencyData.toString());
-                                        //bufferedWriter.newLine();  // Vai a capo
+                                            // Scrivi il nuovo dato JSON nel file, seguito da una nuova riga
+                                            bufferedWriter.write(latencyData.toString());
+                                            bufferedWriter.newLine();  // Vai a capo
 
-                                        // Chiudi il file dopo la scrittura
-                                        //bufferedWriter.close();
-                                        //System.out.println("Latenza aggiunta con successo nel file.");
+                                            // Chiudi il file dopo la scrittura
+                                            bufferedWriter.close();
+                                            System.out.println("Latenza aggiunta con successo nel file.");
+                                        } catch (IOException e) {
+                                            Log.e("GOOSE REQUEST", "Errore nella scrittura della latenza nel file", e);
+                                        }
 
                                         backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
                                         Log.e("GOOSE REQUEST", "User not authorized");
