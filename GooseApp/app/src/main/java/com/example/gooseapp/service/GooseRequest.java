@@ -45,6 +45,11 @@ public class GooseRequest {
     }
 
     public static void sendWifiScan(List<ScannedWifiEntity> swes, int userId){
+
+        //LATENZA: Memorizziamo il tempo di inizio prima di inviare la richiesta
+        long startTime = System.currentTimeMillis();
+
+
         try {
             // Creare l'oggetto JSON da inviare
             JSONObject jsonBody = new JSONObject();
@@ -99,6 +104,11 @@ public class GooseRequest {
                                     String jsonError = new String(error.networkResponse.data);
                                     JSONObject errorObj = new JSONObject(jsonError);
                                     if (errorObj.has("code")) {
+                                        //LATENZA: Memorizziamo il tempo di fine prima di inviare la notifica accesso non autorizzato
+                                        val endTime = System.currentTimeMillis():
+                                        //LATENZA: Calcola la latenza
+                                        val latency = endTime - startTime
+                                        //LATENZA: memorizza risultati
                                         backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
                                         Log.e("GOOSE REQUEST", "User not authorized");
                                         return;
