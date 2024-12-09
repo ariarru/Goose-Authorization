@@ -19,7 +19,7 @@ A = -60  # potenza a 1 metro (in dBm)
 n = 2.5  # esponente di attenuazione, valore medio in ambienti tipici
 
 # Leggi le misurazioni RSSI dal file JSON
-rssi_values = leggi_rssi_da_json('..\GooseApp\app\src\main\java\com\example\gooseapp\service\val_rssi.json')
+rssi_values = leggi_rssi_da_json('..\GooseApp\app\src\main\java\com\example\gooseapp\sensors\val_rssi.json')
 
 # Calcola la distanza per ogni misurazione
 distanze = [calcola_distanza(rssi, A, n) for rssi in rssi_values]

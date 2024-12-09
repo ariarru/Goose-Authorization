@@ -10,6 +10,7 @@ public class ScannedBLEEntity {
 
     private BluetoothDevice bluetoothDevice;
     private String name;
+    //private int rssi; // DISTANZA
 
     @SuppressLint("MissingPermission")
     public ScannedBLEEntity(BluetoothDevice blD){
@@ -30,4 +31,12 @@ public class ScannedBLEEntity {
         map.put("NAME", name);
         return map;
     }
+
 }
+
+
+
+
+
+
+
