@@ -36,8 +36,8 @@ import org.json.JSONObject;
 
 public class GooseRequest {
 
-    private static final String url= "https://172.20.10.3:5001"; //10.201.63.59:5001"; // indirizzo almawifi
-            //"https://192.168.1.225:5001"; //casa
+    private static final String url= "192.168.1.19:5001"; //10.201.63.59:5001"; // indirizzo almawifi
+            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001"
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
     private static RequestQueue queue;
@@ -218,6 +218,8 @@ public class GooseRequest {
                                     case 30 : backgroundService.sendBasicNotification("Missing Device", "You are in a restricted area and you do not have the necessary devices");
                                         break;
                                     case 32 : backgroundService.sendBasicNotification("Wrong Device", "You are in a restricted area and have the wrong devices");
+                                        break;
+                                    case 31 : backgroundService.sendBasicNotification("Missing Device", "you are leaving a restricted area without the security devices");
                                         break;
 
                                 }
