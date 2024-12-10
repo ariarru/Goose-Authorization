@@ -3,15 +3,12 @@ package com.example.gooseapp.service;
 import static java.lang.Integer.parseInt;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -25,19 +22,11 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 
 public class GooseRequest {
 
-    private static final String url= "192.168.1.19:5001"; //10.201.63.59:5001"; // indirizzo almawifi
-            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001"
+    private static final String url= "192.168.1.19:5001"; //cla
+            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
     private static RequestQueue queue;
@@ -46,6 +35,8 @@ public class GooseRequest {
     // Add timeout constants
     private static final int SOCKET_TIMEOUT_MS = 30000; // 30 seconds timeout
     private static final int MAX_RETRIES = 2;
+
+
 
     public GooseRequest(Context context, BackgroundService service){
         this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
@@ -76,6 +67,7 @@ public class GooseRequest {
             
             JSONObject jsonInput = new JSONObject();
             jsonInput.put("wifi_data", wifiData);
+
             jsonBody.put("user_id", userId);
             jsonBody.put("json_input", jsonInput);
 
@@ -121,6 +113,7 @@ public class GooseRequest {
                                         latencyData.put("latency", latency);
 
                                         //LATENZA: memorizza risultati
+                                        /*
                                         // Aggiungi il nuovo dato alla fine del file
                                         File file = new File(context.getFilesDir(), "val_latency.json"); 
                                         try {
@@ -136,7 +129,7 @@ public class GooseRequest {
                                             System.out.println("Latenza aggiunta con successo nel file.");
                                         } catch (IOException e) {
                                             Log.e("GOOSE REQUEST", "Errore nella scrittura della latenza nel file", e);
-                                        }
+                                        } */ //QUI DOBBIAMO CAPIRE DOVE DEVE ANDARE QUESTO DATO, POTREMMO ANCHE SOLO STAMPARLO
 
                                         backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
                                         Log.e("GOOSE REQUEST", "User not authorized");
@@ -168,6 +161,7 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
+
         } catch (JSONException e) {
             Log.e("GOOSE REQUEST", "Error creating JSON", e);
         }
@@ -206,7 +200,7 @@ public class GooseRequest {
                                 int responseValue = response.getInt("response");
                                 Log.i("GOOSE RESPONSE", "Response value: " + responseValue);
                                 /*
-                                *    AREA_NOT_RESTRICTED = 21 // no notifica
+                                    AREA_NOT_RESTRICTED = 21 // no notifica
                                     MISSING_DEVICE = 30
                                     EXIT_MISSING_DEVICE = 31
                                     WRONG_DEVICE = 32
