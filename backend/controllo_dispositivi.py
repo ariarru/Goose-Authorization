@@ -58,6 +58,13 @@ def recupera_disp(_room_id):
     except Exception as e:
         print(f"Errore nel recupero dei dispositivi: {e}")
         return None
+    
+
+
+def recupera_Noti_preferenza(room_id):
+        # Query alla tabella "Room_Authorizations" per recuperare il tipo di notifica per quella stanza 
+        response = supabase.table("Notification").select("notification_preference").eq("room_id", _room_id).execute()
+        return response.data
 
 # Funzione per controllare se ci sono dispositivi necessari per una stanza data
 def controllo_dispositivi(_room_id, lista_disp, user_id):
@@ -70,20 +77,21 @@ def controllo_dispositivi(_room_id, lista_disp, user_id):
         .limit(1)\
         .execute()
     
-    
+    notif_type = recupera_Noti_preferenza(_room_id)
+
     # Caso 1: La stanza non richiede dispositivi di sicurezza
     if devices_s is None:
         if lista_disp: 
             print("L'utente ha dispositivi, ma la stanza non li richiede")
-            return Codes.EXTRA_DEVICES
+            return Codes.EXTRA_DEVICES, notif_type
         else:
             print("La stanza non prevede dispositivi di sicurezza. OK tutto apposto.")
-            return Codes.AREA_NOT_RESTRICTED
+            return Codes.AREA_NOT_RESTRICTED , notif_type
     
     # Caso 2: La lista passata è vuota ma la stanza richiede dispositivi di sicurezza
     if lista_disp==101:  # Verifica se la lista è vuota
         print("La stanza prevede dispositivi di sicurezza, ma l'utente non ha alcun dispositivo di sicurezza.")
-        return Codes.MISSING_DEVICE
+        return Codes.MISSING_DEVICE, notif_type
 
     # Controllo dei dispositivi mancanti
     for disp_necessari in devices_s:
@@ -93,13 +101,13 @@ def controllo_dispositivi(_room_id, lista_disp, user_id):
     if len(disp_manc) == 0:
         # Caso 3: L'utente ha tutti i dispositivi necessari
         print("L'utente ha tutti i dispositivi")
-        return Codes.HAS_RIGHT_DEVICES
+        return Codes.HAS_RIGHT_DEVICES, notif_type
     elif presenza.data and presenza.data[0].get("returned_time") is not None:
         # Caso 4: L'utente è in uscita e mancano dispositivi
         print("A l'utente (in uscita) mancano i seguenti:", disp_manc)
-        return Codes.EXIT_MISSING_DEVICE
+        return Codes.EXIT_MISSING_DEVICE, notif_type
     else:
         # Caso 5: Mancano dispositivi mentre l'utente è ancora nella stanza
         print("A l'utente mancano i seguenti:", disp_manc)
-        return Codes.MISSING_DEVICE
+        return Codes.MISSING_DEVICE, notif_type
         

@@ -128,9 +128,9 @@ def controlloBle():
         return jsonify({"error": "lista_disp deve essere 101 o una lista valida"}), 400
     
     # Esegui il calcolo dei dati
-    risposta = controllo_dispositivi(room_id, lista_disp, user_id)
+    errore, notif_type = controllo_dispositivi(room_id, lista_disp, user_id)
     
-    return jsonify({"response": risposta.value}), 200
+    return jsonify({"response": errore.value, "notif_type": notif_type}), 200
 
 
 
