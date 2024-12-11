@@ -79,6 +79,7 @@ public class GooseRequest {
                                 errorMessage = "No network connection available.";
                             } else if (error instanceof com.android.volley.AuthFailureError) {
                                 errorMessage = "Authentication failure.";
+
                             } else if (error instanceof com.android.volley.ServerError) {
                                 errorMessage = "Server error occurred.";
                             } else if (error instanceof com.android.volley.NetworkError) {
@@ -88,7 +89,15 @@ public class GooseRequest {
                             }
 
                             if(errorMessage != null)
-                                Log.e("GOOSE REQUEST", errorMessage, error);
+                                Log.e("GOOSE REQUEST", errorMessage);
+                                JSONObject errorObj = new JSONObject();
+                                try {
+                                    errorObj.put("success", false);
+                                    errorObj.put("error", errorMessage);
+                                    activity.handleLoginResults(errorObj);
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
                         }
                     });
             jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
@@ -96,8 +105,6 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
-        Log.i("GOOSE REQUEST", "sending to login"+ body.toString());
-        Log.i("GOOSE REQUEST", "sending to "+ url + loginUrl);
 
 
     }
@@ -238,6 +245,7 @@ public class GooseRequest {
                             Log.i("GOOSE RESPONSE", response.toString());
                             try {
                                 int responseValue = response.getInt("response");
+                                String type = response.getString("notif_type");
                                 Log.i("GOOSE RESPONSE", "Response value: " + responseValue);
                                 /*
                                     AREA_NOT_RESTRICTED = 21 // no notifica
@@ -249,13 +257,36 @@ public class GooseRequest {
                                     * */
 
                                 switch(responseValue){
-                                    case 30 : backgroundService.sendBasicNotification("Missing Device", "You are in a restricted area and you do not have the necessary devices");
+                                    case 30 :
+                                        switch (type){
+                                                case "popup": backgroundService.sendBasicNotification("Missing Device", "You are in a restricted area and you do not have the necessary devices");
+                                                break;
+                                                case "lights": backgroundService.sendLightNotification("Missing Device", "You are in a restricted area and you do not have the necessary devices");
+                                                    break;
+                                                case "sound": backgroundService.sendSoundNotification("Missing Device", "You are in a restricted area and you do not have the necessary devices");
+                                                    break;
+                                        }
                                         break;
-                                    case 32 : backgroundService.sendBasicNotification("Wrong Device", "You are in a restricted area and have the wrong devices");
+                                    case 32 : 
+                                        switch (type){
+                                            case "popup": backgroundService.sendBasicNotification("Wrong Device", "You are in a restricted area and have the wrong devices");
+                                            break;
+                                            case "lights": backgroundService.sendLightNotification("Wrong Device", "You are in a restricted area and have the wrong devices");
+                                                break;
+                                            case "sound": backgroundService.sendSoundNotification("Wrong Device", "You are in a restricted area and have the wrong devices");
+                                                break;
+                                        }
                                         break;
-                                    case 31 : backgroundService.sendBasicNotification("Missing Device", "you are leaving a restricted area without the security devices");
+                                    case 31 : 
+                                        switch (type){
+                                            case "popup": backgroundService.sendBasicNotification("Missing Device", "you are leaving a restricted area without the security devices");
+                                            break;
+                                            case "lights": backgroundService.sendLightNotification("Missing Device", "you are leaving a restricted area without the security devices");
+                                                break;
+                                            case "sound": backgroundService.sendSoundNotification("Missing Device", "you are leaving a restricted area without the security devices");
+                                                break;
+                                        }
                                         break;
-
                                 }
 
                             } catch (JSONException e) {

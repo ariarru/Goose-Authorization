@@ -38,7 +38,11 @@ public class BackgroundService extends Service {
 
     private static NotificationManagerCompat notificationManager;
     private static NotificationCompat.Builder builderGeneral;
+    private static NotificationCompat.Builder builderSound;
+    private static NotificationCompat.Builder builderLight;
     private static final String CHANNEL_ID = "GOOSE";
+    private static final String CHANNEL_SOUND_ID = "GOOSE_SOUND";
+    private static final String CHANNEL_LIGHT_ID = "GOOSE_LIGHT";
 
     private ScannerWIFI scannerWIFI;
     private ScannerBLE scannerBLE;
@@ -61,6 +65,8 @@ public class BackgroundService extends Service {
         Intent notificationIntent = new Intent(this, HomeActivity.class);
         notificationIntent.setAction("Alert users");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        //basic notification
         builderGeneral = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.goose_transparent)
                 .setContentTitle("Quack")
@@ -68,6 +74,21 @@ public class BackgroundService extends Service {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        //sound notification
+        builderSound = new NotificationCompat.Builder(this, CHANNEL_SOUND_ID)
+                .setSmallIcon(R.drawable.goose_transparent)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        //light notification
+        builderLight = new NotificationCompat.Builder(this, CHANNEL_LIGHT_ID)
+                .setSmallIcon(R.drawable.goose_transparent)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
         startForeground(1, builderGeneral.build());
 
 
@@ -82,15 +103,37 @@ public class BackgroundService extends Service {
     private void createNotificationChannel() {
         //check permission
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            
+            // Default channel
             CharSequence name = getString(R.string.notif_title);
             String description = getString(R.string.notif_text);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            
+            // Sound channel
+            NotificationChannel soundChannel = new NotificationChannel(CHANNEL_SOUND_ID, 
+                "Important Alerts", NotificationManager.IMPORTANCE_HIGH);
+            soundChannel.setDescription("Notifications with mandatory sound");
+            soundChannel.setSound(android.provider.Settings.System.DEFAULT_NOTIFICATION_URI, 
+                new android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build());
+            soundChannel.enableVibration(true);
+            
+            // Light channel
+            NotificationChannel lightChannel = new NotificationChannel(CHANNEL_LIGHT_ID,
+                "Emergency Alerts", NotificationManager.IMPORTANCE_HIGH);
+            lightChannel.setDescription("Notifications with light signal");
+            lightChannel.enableLights(true);
+            lightChannel.setLightColor(android.graphics.Color.RED);
+            
+            // Register all channels
             notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(soundChannel);
+            notificationManager.createNotificationChannel(lightChannel);
         }
     }
 
@@ -99,14 +142,26 @@ public class BackgroundService extends Service {
         notificationManager.notify(1, builderGeneral.setContentText(text).setContentTitle(title).build());
     }
 
+    @SuppressLint("MissingPermission")
+    public static void sendSoundNotification(String title, String text) {
+        notificationManager.notify(2, builderSound.setContentText(text)
+                .setContentTitle(title)
+                .setSound(android.provider.Settings.System.DEFAULT_NOTIFICATION_URI)
+                .build());
+    }
+
+    @SuppressLint("MissingPermission")
+    public static void sendLightNotification(String title, String text) {
+        notificationManager.notify(3, builderLight.setContentText(text)
+                .setContentTitle(title)
+                .build());
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         scannerWIFI.stopWifi();
     }
-
-
 
     //handle WIFI
     public void manageWifiScans(List<ScanResult> results){
@@ -163,7 +218,5 @@ public class BackgroundService extends Service {
         String roomname = sharedPreferences.getString("room_name", "pippo");
         int roomid = sharedPreferences.getInt(String.valueOf(R.string.room_in), -1);
         Log.i("GOOSE SIGNAL BLE RESULTS", "Room found: "+roomid +"-"+ roomname);
-
-
     }
 }

@@ -63,7 +63,9 @@ def recupera_disp(_room_id):
 
 def recupera_Noti_preferenza(room_id):
         # Query alla tabella "Room_Authorizations" per recuperare il tipo di notifica per quella stanza 
-        response = supabase.table("Notification").select("notification_preference").eq("room_id", _room_id).execute()
+        response = supabase.table("Notification").select("notification_preference").eq("room_id", room_id).execute()
+        if len(response.data) ==0:
+            return "popup"
         return response.data
 
 # Funzione per controllare se ci sono dispositivi necessari per una stanza data
