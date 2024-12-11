@@ -27,6 +27,10 @@ public class ScannedBLEEntity {
                 "RSSI:" + rssi + ",\n" +
                 '}';
     }
+
+    public String getStringRSSI(){
+        return this.rssi +"";
+    }
     public Map<String, String> toStringMap(){
         Map<String, String> map = new HashMap<String, String>();
         map.put("NAME", name);

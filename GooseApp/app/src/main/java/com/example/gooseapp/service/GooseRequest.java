@@ -2,20 +2,19 @@ package com.example.gooseapp.service;
 
 import static java.lang.Integer.parseInt;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gooseapp.activity.MainActivity;
 import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 
@@ -25,33 +24,83 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 
 public class GooseRequest {
 
-    private static final String url= "192.168.1.19:5001"; //10.201.63.59:5001"; // indirizzo almawifi
-            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001"
+    private static final String url= "https://172.20.10.3:5001";
+            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
+    private static final String loginUrl = "/api/login";
+
     private static RequestQueue queue;
     private static BackgroundService backgroundService;
+    private static MainActivity activity;
     
     // Add timeout constants
     private static final int SOCKET_TIMEOUT_MS = 30000; // 30 seconds timeout
     private static final int MAX_RETRIES = 2;
+
+    public GooseRequest(Context context, MainActivity activity){
+        this.queue = this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
+        this.activity = activity;
+    }
 
     public GooseRequest(Context context, BackgroundService service){
         this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
 
         this.backgroundService = service;
     }
+
+
+    public void login(JSONObject body){
+
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url + loginUrl, body,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
+                            Log.i("GOOSE RESPONSE", response.toString());
+
+                            if(response.length() > 0) {
+                                activity.handleLoginResults(response);
+
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            String errorMessage =null;
+
+                            if (error instanceof TimeoutError) {
+                                errorMessage = "Request timed out. Please check your connection.";
+                            } else if (error instanceof com.android.volley.NoConnectionError) {
+                                errorMessage = "No network connection available.";
+                            } else if (error instanceof com.android.volley.AuthFailureError) {
+                                errorMessage = "Authentication failure.";
+                            } else if (error instanceof com.android.volley.ServerError) {
+                                errorMessage = "Server error occurred.";
+                            } else if (error instanceof com.android.volley.NetworkError) {
+                                errorMessage = "Network error occurred.";
+                            } else {
+                                errorMessage = "An unknown error occurred.";
+                            }
+
+                            if(errorMessage != null)
+                                Log.e("GOOSE REQUEST", errorMessage, error);
+                        }
+                    });
+            jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    SOCKET_TIMEOUT_MS,
+                    MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsonRequest);
+
+
+    }
+
 
     public static void sendWifiScan(List<ScannedWifiEntity> swes, int userId){
 
@@ -76,6 +125,7 @@ public class GooseRequest {
             
             JSONObject jsonInput = new JSONObject();
             jsonInput.put("wifi_data", wifiData);
+
             jsonBody.put("user_id", userId);
             jsonBody.put("json_input", jsonInput);
 
@@ -105,7 +155,7 @@ public class GooseRequest {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            String errorMessage;
+                            String errorMessage =null;
                             
                             // Check if the error has a network response with data
                             if (error.networkResponse != null && error.networkResponse.data != null) {
@@ -113,41 +163,22 @@ public class GooseRequest {
                                     String jsonError = new String(error.networkResponse.data);
                                     JSONObject errorObj = new JSONObject(jsonError);
                                     if (errorObj.has("code")) {
+                                        backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
+
                                         //LATENZA: Memorizziamo il tempo di fine prima di inviare la notifica accesso non autorizzato
                                         long endTime = System.currentTimeMillis();
                                         //LATENZA: Calcola la latenza e Crea il dato di latenza come oggetto JSON
                                         long latency = endTime - startTime;
-                                        JSONObject latencyData = new JSONObject();
-                                        latencyData.put("latency", latency);
-
                                         //LATENZA: memorizza risultati
-                                        // Aggiungi il nuovo dato alla fine del file
-                                        File file = new File(context.getFilesDir(), "val_latency.json"); 
-                                        try {
-                                            FileWriter fileWriter = new FileWriter(file, true); 
-                                            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                                        Log.i("LATENZA", String.valueOf(latency));
 
-                                            // Scrivi il nuovo dato JSON nel file, seguito da una nuova riga
-                                            bufferedWriter.write(latencyData.toString());
-                                            bufferedWriter.newLine();  // Vai a capo
-
-                                            // Chiudi il file dopo la scrittura
-                                            bufferedWriter.close();
-                                            System.out.println("Latenza aggiunta con successo nel file.");
-                                        } catch (IOException e) {
-                                            Log.e("GOOSE REQUEST", "Errore nella scrittura della latenza nel file", e);
-                                        }
-
-                                        backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
-                                        Log.e("GOOSE REQUEST", "User not authorized");
+                                        errorMessage = "User not authorized";
                                         return;
                                     }
                                 } catch (JSONException e) {
                                     Log.e("GOOSE REQUEST", "Error parsing error response", e);
                                 }
-                            }
-
-                            if (error instanceof TimeoutError) {
+                            } else if (error instanceof TimeoutError) {
                                 errorMessage = "Request timed out. Please check your connection.";
                             } else if (error instanceof com.android.volley.NoConnectionError) {
                                 errorMessage = "No network connection available.";
@@ -160,7 +191,9 @@ public class GooseRequest {
                             } else {
                                 errorMessage = "An unknown error occurred.";
                             }
-                            Log.e("GOOSE REQUEST", errorMessage, error);
+
+                            if(errorMessage != null)
+                                Log.e("GOOSE REQUEST", errorMessage, error);
                         }
                     });
             jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
@@ -168,6 +201,7 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
+
         } catch (JSONException e) {
             Log.e("GOOSE REQUEST", "Error creating JSON", e);
         }
@@ -206,7 +240,7 @@ public class GooseRequest {
                                 int responseValue = response.getInt("response");
                                 Log.i("GOOSE RESPONSE", "Response value: " + responseValue);
                                 /*
-                                *    AREA_NOT_RESTRICTED = 21 // no notifica
+                                    AREA_NOT_RESTRICTED = 21 // no notifica
                                     MISSING_DEVICE = 30
                                     EXIT_MISSING_DEVICE = 31
                                     WRONG_DEVICE = 32

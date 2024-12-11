@@ -21,9 +21,7 @@ import com.example.gooseapp.service.BackgroundService;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
 
 public class ScannerBLE {
 
@@ -60,15 +58,9 @@ public class ScannerBLE {
                 ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice());
                 scannedDevices.add(scannedBLE);
                 Log.i("GOOSE SIGNAL BLE", "Dispositivo trovato: " + scannedBLE.toString());
-
-                //DISTANZA:  RECUPERA RSSI E METTILO NEL FILE
-                JsonObject rssiObject = new JsonObject();
-                rssiObject.addProperty("rssi", result.getRssi()); // Aggiungi RSSI al JSON
-                rssiArray.add(rssiObject);
+                Log.i("DISTANZA", scannedBLE.getStringRSSI());
 
             }
-            // DISTANZA: Scriviamo i dati RSSI nel file JSON
-            saveRssiDataToFile(rssiArray);
 
             // Invia tutti i dispositivi trovati al service
             service.manageBLEScans(scannedDevices);
@@ -152,34 +144,8 @@ public class ScannerBLE {
         }
     }
 
-    //DISTANZA: Metodo per salvare i dati RSSI nel file JSON
-    private void saveRssiDataToFile(JsonArray rssiData) {
-        FileOutputStream fos = null;
-        try {
-            // Crea o apri il file val_rssi.json
-            File file = new File(bleContext.getFilesDir(), "val_rssi.json");
 
-            // Scrivi i dati RSSI nel file
-            fos = new FileOutputStream(file, true); // Imposta 'true' per appendere i dati
-            Gson gson = new Gson();
-            String json = gson.toJson(rssiData); // Converte l'array JSON in stringa
 
-            fos.write(json.getBytes()); // Scrive nel file
-            fos.flush();
-            Log.i("GOOSE SIGNAL BLE", "RSSI salvato nel file: " + json);
-
-        } catch (IOException e) {
-            Log.e("GOOSE SIGNAL BLE", "Errore durante la scrittura del file RSSI", e);
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close(); // Chiudi il flusso
-                } catch (IOException e) {
-                    Log.e("GOOSE SIGNAL BLE", "Errore durante la chiusura del file", e);
-                }
-            }
-        }
-    }
 
 
 }
