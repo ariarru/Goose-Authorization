@@ -123,7 +123,7 @@ def insert_funz(user_id, room_id):
     insert = supabase.table("Access_Logs").insert({
         "user_id": user_id,
         "room_id": room_id,
-        "timestamp": current_time.strftime("%H:%M:%S"),
+        "timestamp": current_time.strftime("%Y-%m-%d %H:%M:%S")
         "returned_time": None
         }).execute()
 
@@ -168,7 +168,7 @@ def access_log(user_id, room_id):
         new_room_id = presenza.data[0].get("room_id")
 
         aggiorna = supabase.table("Access_Logs").update({
-            "returned_time": current_time.strftime("%H:%M:%S")
+            "returned_time": current_time.strftime("%Y-%m-%d %H:%M:%S")
         }).eq("log_id", presenza.data[0].get("log_id")).execute()
         
         print("agg data:", aggiorna.data)
