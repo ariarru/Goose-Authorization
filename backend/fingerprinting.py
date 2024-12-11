@@ -61,64 +61,6 @@ def contr_disp(room_id):
         return is_restricted
 
 
-
-# Funzione per calcolare i pesi basati sulle misurazioni RSSI
-def calculate_weights(user_rssi, dict_AP):
-    weights = []
-    for measurement in dict_AP:
-        position, rssi_values = measurement
-        weight = sum(abs(user - prev) for user, prev in zip(user_rssi, rssi_values))
-        weights.append((position, weight))
-    return weights
-
-
-
-# Normalizza i pesi
-def normalize_weights(weights):
-    total_weight = sum(w for _, w in weights)
-    return [(pos, w / total_weight) for pos, w in weights]
-
-
-
-# Stima la posizione dell'utente utilizzando i pesi normalizzati
-def estimate_position(normalized_weights):
-    x_estimated = sum(pos['coordinates'][0][0][0] * weight for pos, weight in normalized_weights)
-    y_estimated = sum(pos['coordinates'][0][0][1] * weight for pos, weight in normalized_weights)
-    
-    return (x_estimated, y_estimated)
-
-
-
-# Calcola la posizione stimata dell'utente
-def calcola_posizione(current_scan, dati_db):
-    dict_AP = []
-
-    for room in dati_db:
-        if room['rilevazione'] is None:
-            continue
-        
-        for rilevazione_data in room['rilevazione'].items():
-            if isinstance(rilevazione_data, dict):
-                dizionario_AP = {
-                    ap_value['MAC']: ap_value['RSSI'] for ap_value in rilevazione_data['wifi_data'].values()
-                }
-                dict_AP.append((room['vertices'], list(dizionario_AP.values())))
-
-    # Estrai i valori RSSI dagli access point
-    ## TODO: controllere se sia valido anche per altre versioni
-    user_rssi = [ap['RSSI'] for ap in current_scan.values()]
-    
-    weights = calculate_weights(user_rssi, dict_AP)
-    normalized_weights = normalize_weights(weights)
-
-    if normalized_weights:
-        estimated_position = estimate_position(normalized_weights)
-        return estimated_position
-    else:
-        print("Non ci sono misurazioni sufficienti per stimare la posizione.")
-        return None
-
-
 def insert_funz(user_id, room_id):
     insert = supabase.table("Access_Logs").insert({
         "user_id": user_id,
@@ -232,8 +174,6 @@ def predict_room(model, le, json_data):
         return Codes.ROOM_NOT_FOUND.value
 
 
-
-
 # Funzione principale
 def fingerprinting(json_data, user_id):
     # Assumi che `json_data` contenga i dati JSON da elaborare.
@@ -252,11 +192,6 @@ def fingerprinting(json_data, user_id):
     dati_db = recupero_dati()
     dati_db = [dato for dato in dati_db if dato.get('vertices') is not None]
 
-    estimated_position = calcola_posizione(current_scan, dati_db)
-    if estimated_position:
-        print(f"Posizione stimata dell'utente: {estimated_position}")
-    else:
-        print("Non ci sono misurazioni sufficienti per stimare la posizione.")
 
     df = load_data()
     X, y, le = prepare_data(df)
@@ -285,6 +220,7 @@ def fingerprinting(json_data, user_id):
     
     print("query:", queryResult)
     if queryResult == False:
+        result, new_room_id = access_log(user_id, room_id)
         return Codes.UNAUTHORIZED_USER.value
 
     result, new_room_id = access_log(user_id, room_id)
