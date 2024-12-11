@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
         // Send request
         val gooseRequest = GooseRequest(this, this)
-        gooseRequest.login(jsonBody);
+        gooseRequest.login(jsonBody)
 
     }
 

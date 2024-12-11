@@ -277,8 +277,13 @@ def fingerprinting(json_data, user_id):
         return None, None, None
     
     #se l'utente non può essere in quella stanza interrompi exec.
-    query = supabase.table("Room_Authorization").select("*").eq("room_id", room_id).eq("user_id", user_id).execute()
-    if len(query.data) <= 0:
+
+    query = supabase.rpc("ut_autorizzato", {
+        'user_id': user_id,
+        'room_id': room_id
+    }).execute()
+    print("query:", query)
+    if query == False:
         return Codes.UNAUTHORIZED_USER.value
 
     result, new_room_id = access_log(user_id, room_id)

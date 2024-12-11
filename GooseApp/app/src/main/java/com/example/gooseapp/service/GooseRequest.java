@@ -54,8 +54,7 @@ public class GooseRequest {
 
 
     public void login(JSONObject body){
-
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url + loginUrl, body,
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url+loginUrl, body,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -97,6 +96,8 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
+        Log.i("GOOSE REQUEST", "sending to login"+ body.toString());
+        Log.i("GOOSE REQUEST", "sending to "+ url + loginUrl);
 
 
     }
@@ -170,7 +171,7 @@ public class GooseRequest {
                                         //LATENZA: Calcola la latenza e Crea il dato di latenza come oggetto JSON
                                         long latency = endTime - startTime;
                                         //LATENZA: memorizza risultati
-                                        Log.i("LATENZA", String.valueOf(latency));
+                                        Log.i("LATENZA WIFI", String.valueOf(latency));
 
                                         errorMessage = "User not authorized";
                                         return;
@@ -201,7 +202,6 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
-
         } catch (JSONException e) {
             Log.e("GOOSE REQUEST", "Error creating JSON", e);
         }

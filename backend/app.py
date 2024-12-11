@@ -21,7 +21,7 @@ EFFECT_LOGIN= "https://localhost:5001/api/login""
 FLASK_URL = "https://backend-service:5001"
 FINGERPRINT_URL = f"{FLASK_URL}/api/fingerprint"
 CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
-
+EFFECT_LOGIN = f"{FLASK_URL}/api/login"
 
 
 @app.route('/api/fingerprint', methods=['POST'])
@@ -170,7 +170,8 @@ def get_urls():
     return jsonify({
         "flask_url": FLASK_URL,
         "fingerprint_url": FINGERPRINT_URL,
-        "controllo_ble_url": CONTROLLORBLE_URL
+        "controllo_ble_url": CONTROLLORBLE_URL,
+        "login_url": EFFECT_LOGIN
     })
 
 # Rotta di base

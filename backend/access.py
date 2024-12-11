@@ -21,7 +21,6 @@ def handle_login(username: str, password: str):
             '_username': username,
             '_password': password
         }).execute()
-
         if response.data and len(response.data) > 0:
             user_data = response.data[0]
             return {
