@@ -188,6 +188,22 @@ export async function updateRoomStatus(roomId, restricted){
     }
 }
 
+export async function updateRoomNotificationType(roomId, notificationType) {
+    const supabase = createClient();
+    const session = await supabase.auth.getSession();
+
+    if(session){
+        const result = await supabase.rpc("update_room_notification_type", {
+            _room_id: roomId, 
+            _notification_type: notificationType
+        });
+        result.error ? console.log(result.error) : 0;
+        return result;
+    } else{
+        return null;
+    }
+}
+
 //bonus
 export async function getPositionPeople(){
     const supabase = createClient();

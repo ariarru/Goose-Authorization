@@ -1,6 +1,5 @@
 'use client'
 import Card from './Card';
-import AddDevice from '../forms/AddDevice'
 import { deleteUser } from '../admin-stage/adminServerActions';
 import { useRouter } from 'next/navigation';
 
@@ -31,12 +30,6 @@ export default function UserCard({userInfo}){
                         <path fill="#00a6fb" d="M12 12h7c-.53 4.11-3.28 7.78-7 8.92zH5V6.3l7-3.11M12 1L3 5v6c0 5.55 3.84 10.73 9 12c5.16-1.27 9-6.45 9-12V5z"/></svg>) 
                 : (<p></p>)}
             </div>
-           <p className='text-sm text-gray-500'>Associates devices:</p>
-                <p>
-                    {userInfo.devices?.map(dev => 
-                        (<p key={dev.id}>{dev}</p>))}
-                </p>
-                <AddDevice id={userInfo.id} room={false} user={true}></AddDevice>
                 <button className='rounded bg-rose-400 text-white px-4 py-1 hover:bg-red-600' onClick={(e)=>{e.preventDefault; delete_user();}}>Delete user</button>
             </div> 
         </Card>
