@@ -9,66 +9,22 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gooseapp.LoginError
 import com.example.gooseapp.R
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.postgrest.postgrest
+import com.example.gooseapp.service.GooseRequest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
-import org.json.JSONArray
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences : SharedPreferences
-
-    val supabase = createSupabaseClient(
-        supabaseUrl = "https://cdutvkhtyqcsorzvmuzg.supabase.co",
-        supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkdXR2a2h0eXFjc29yenZtdXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1NDMwOTYsImV4cCI6MjAzOTExOTA5Nn0.rE0B4Uvj6083r_QgGJy_KtizUfjY2bO8SMcmZFf3LRI"
-    ) {
-        this.install(Postgrest)
-    }
-
-    public final suspend fun login(username: String, password: String) {
-        // Verifica se username o password sono vuoti
-        if (username.isBlank() || password.isBlank()) {
-            throw LoginError.EMPTY_FIELDS
-        }
-            try {
-                val credentials =  buildJsonObject {
-                    put("_username", username)
-                    put("_password", password)
-                }
-
-                val result = supabase.postgrest.rpc("login", credentials)
-
-                if(result.data.isNotEmpty()){
-                    val jsonInfo = JSONArray(result.data).getJSONObject(0)
-
-                    with (sharedPreferences.edit()) {
-                        putInt(R.string.session.toString(), jsonInfo.getInt("u_id"))
-                        putString(R.string.username.toString(), jsonInfo.getString("user_name"))
-                        putBoolean(R.string.logged.toString(), true)
-                        apply()
-                    }
-
-                    Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
-                    val goToHome = Intent(this, HomeActivity::class.java)
-                    startActivity(goToHome)
-                }
-
-            } catch (e: Exception) {
-                // Gestione degli errori
-                println("Errore durante il login: ${e.message}")
-                showAlert("Errore di Login", e.message.toString())
-            }
-
-    }
-
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,12 +62,42 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun showAlert(title: String, message: String) {
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("OK", null)
-            .show()
-    }
-}
 
+    private fun login(username: String, password: String) {
+        // Check for empty fields
+        if (username.isBlank() || password.isBlank()) {
+            throw LoginError.EMPTY_FIELDS
+        }
+        // Create JSON request body
+        val jsonBody = JSONObject().apply {
+            put("username", username)
+            put("password", password)
+        }
+        // Send request
+        val gooseRequest = GooseRequest(this, this)
+        gooseRequest.login(jsonBody);
+
+    }
+
+    public fun handleLoginResults(jsonResult: JSONObject){
+        if(jsonResult.getBoolean("success")){
+            with (sharedPreferences.edit()) {
+                putInt(R.string.session.toString(), jsonResult.getInt("user_id"))
+                putString(R.string.username.toString(), jsonResult.getString("username"))
+                putBoolean(R.string.logged.toString(), true)
+                apply()
+            }
+
+            Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
+            val goToHome = Intent(this, HomeActivity::class.java)
+            startActivity(goToHome)
+        } else {
+            AlertDialog.Builder(this)
+                .setTitle("Error logging in")
+                .setMessage(jsonResult.getString("error"))
+                .setPositiveButton("OK", null)
+                .show()
+        }
+    }
+
+}

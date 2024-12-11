@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from fingerprinting import fingerprinting  
 from controllo_dispositivi import controllo_dispositivi
-
+from supabase import create_client, Client
+from access import handle_login, LoginError
 
 app = Flask(__name__)
 CORS(app)  # Abilita CORS per tutte le rotte
@@ -14,11 +15,13 @@ CORS(app)  # Abilita CORS per tutte le rotte
 '''FLASK_URL="https://localhost:5001"
 FINGERPRINT_URL="https://localhost:5001/api/fingerprint"
 CONTROLLORBLE_URL="https://localhost:5001/api/controlloBle"
+EFFECT_LOGIN= "https://localhost:5001/api/login""
 '''
 
 FLASK_URL = "https://backend-service:5001"
 FINGERPRINT_URL = f"{FLASK_URL}/api/fingerprint"
 CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
+
 
 
 @app.route('/api/fingerprint', methods=['POST'])
@@ -132,6 +135,31 @@ def controlloBle():
     
     return jsonify({"response": risposta.value}), 200
 
+
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    try:
+        data = request.get_json()
+        if not data or 'username' not in data or 'password' not in data:
+            return jsonify({"error": "Username and password are required"}), 400
+
+        username = data['username']
+        password = data['password']
+
+        # Check for empty fields
+        if not username or not password:
+            return jsonify({"error": "Empty fields not allowed"}), 400
+
+        # Call the login handler from access.py
+        result = handle_login(username, password)
+        return jsonify(result)
+
+    except LoginError as e:
+        return jsonify({"error": str(e)}), 401
+    except Exception as e:
+        return jsonify({"error": "Login failed"}), 500
 
 
 

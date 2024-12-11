@@ -58,7 +58,7 @@ public class ScannerBLE {
                 ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice());
                 scannedDevices.add(scannedBLE);
                 Log.i("GOOSE SIGNAL BLE", "Dispositivo trovato: " + scannedBLE.toString());
-
+                Log.i("DISTANZA", scannedBLE.getStringRSSI());
 
             }
 
