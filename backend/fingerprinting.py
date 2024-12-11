@@ -123,7 +123,7 @@ def insert_funz(user_id, room_id):
     insert = supabase.table("Access_Logs").insert({
         "user_id": user_id,
         "room_id": room_id,
-        "timestamp": current_time.strftime("%Y-%m-%d %H:%M:%S")
+        "timestamp": current_time.strftime("%Y-%m-%d %H:%M:%S"),
         "returned_time": None
         }).execute()
 
