@@ -5,13 +5,17 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraAccessException;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -40,6 +44,8 @@ public class BackgroundService extends Service {
     private static NotificationCompat.Builder builderGeneral;
     private static NotificationCompat.Builder builderSound;
     private static NotificationCompat.Builder builderLight;
+    private static CameraManager cameraManager;
+
     private static final String CHANNEL_ID = "GOOSE";
     private static final String CHANNEL_SOUND_ID = "GOOSE_SOUND";
     private static final String CHANNEL_LIGHT_ID = "GOOSE_LIGHT";
@@ -47,6 +53,9 @@ public class BackgroundService extends Service {
     private ScannerWIFI scannerWIFI;
     private ScannerBLE scannerBLE;
     private GooseRequest gooseRequest;
+    private android.os.Handler handler;
+    private static final int SCAN_INTERVAL = 3000; // 3 seconds in milliseconds
+    private Runnable scanRunnable;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -58,7 +67,6 @@ public class BackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Log.i("GOOSE RANDEVOUZ", "i've started on command");
         //handle notifications
         createNotificationChannel();
         notificationManager = NotificationManagerCompat.from(this);
@@ -66,6 +74,8 @@ public class BackgroundService extends Service {
         notificationIntent.setAction("Alert users");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
+        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        
         //basic notification
         builderGeneral = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.goose_transparent)
@@ -85,6 +95,7 @@ public class BackgroundService extends Service {
         //light notification
         builderLight = new NotificationCompat.Builder(this, CHANNEL_LIGHT_ID)
                 .setSmallIcon(R.drawable.goose_transparent)
+                
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -96,7 +107,20 @@ public class BackgroundService extends Service {
         scannerWIFI = new ScannerWIFI(this, this);
         scannerBLE = new ScannerBLE(this, this);
         gooseRequest = new GooseRequest(this, this);
-        scannerWIFI.backgroundMeasureWifi();
+        
+        // Initialize handler and runnable for periodic scanning
+        handler = new android.os.Handler();
+        scanRunnable = new Runnable() {
+            @Override
+            public void run() {
+                scannerWIFI.backgroundMeasureWifi();
+                handler.postDelayed(this, SCAN_INTERVAL);
+            }
+        };
+        
+        // Start periodic scanning
+        handler.post(scanRunnable);
+        
         return Service.START_STICKY;
     }
 
@@ -155,11 +179,18 @@ public class BackgroundService extends Service {
         notificationManager.notify(3, builderLight.setContentText(text)
                 .setContentTitle(title)
                 .build());
+        turnOnFlashlight();
+        // Turn off the flashlight after 3 seconds
+        new Handler().postDelayed(() -> turnOffFlashlight(), 3000);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (handler != null) {
+            handler.removeCallbacks(scanRunnable);
+        }
+        turnOffFlashlight();
         scannerWIFI.stopWifi();
     }
 
@@ -203,7 +234,7 @@ public class BackgroundService extends Service {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             int userId = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
             int roomId = sharedPreferences.getInt("room_in", -1);
-            Log.i("GOOSE SIGNAL BLE RESULTS", "Room found: "+roomId);
+            Log.i("GOOSE SIGNAL BLE RESULTS", "Sending: "+roomId + " + user: "+userId);
             gooseRequest.sendBLEScan(results, userId, roomId);
         }
     }
@@ -215,5 +246,24 @@ public class BackgroundService extends Service {
         String roomname = sharedPreferences.getString("room_name", "pippo");
         int roomid = sharedPreferences.getInt("room_in", -1);
         Log.i("GOOSE SIGNAL BLE RESULTS", "Room found: "+roomid +"-"+ roomname);
+    }
+
+
+    private static void turnOnFlashlight() {
+        try {
+            String cameraId = cameraManager.getCameraIdList()[0];
+            cameraManager.setTorchMode(cameraId, true);
+        } catch (CameraAccessException e) {
+            Log.e("GOOSE LIGHT", "Failed to access camera", e);
+        }
+    }
+    
+    private static void turnOffFlashlight() {
+        try {
+            String cameraId = cameraManager.getCameraIdList()[0];
+            cameraManager.setTorchMode(cameraId, false);
+        } catch (CameraAccessException e) {
+            Log.e("GOOSE LIGHT", "Failed to access camera", e);
+        }
     }
 }

@@ -30,7 +30,7 @@ public class ScannerBLE {
     //BLUETOOTH
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
-    private static final long STOP_SCAN_PERIOD = 1 * 1000; //3 SECONDI
+    private static final long STOP_SCAN_PERIOD = 500; //mezzo secondo (0.5 * 1000)
     private boolean scanFoundResults = false;
     private boolean isBLEScanning;
     private Handler bluetoothHandler = new Handler();
@@ -47,7 +47,6 @@ public class ScannerBLE {
                 scanFoundResults = true;
             }
             ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice(), result.getRssi());
-            Log.i("GOOSE SIGNAL BLE", scannedBLE.toString());
             scannedDevices.add(scannedBLE);
         }
 
@@ -55,15 +54,11 @@ public class ScannerBLE {
         public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
             Log.i("BLE GOOSE", "sono dentro il batch con questi valori:");
-            Log.i("BLE GOOSE", results.toString());
             scanFoundResults = true;
 
             for (ScanResult result : results) {
                 ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice(), result.getRssi());
                 scannedDevices.add(scannedBLE);
-                Log.i("GOOSE SIGNAL BLE", "Dispositivo trovato: " + scannedBLE.toString());
-                Log.i("DISTANZA", scannedBLE.getStringRSSI());
-
             }
 
             // Invia tutti i dispositivi trovati al service
