@@ -70,7 +70,7 @@ def recupera_Noti_preferenza(room_id):
 
 # Funzione per calcolare la distanza e filtrare dispositivi posseduti
 def tracking(lista_disp):
-    A = -60  # Potenza a 1 metro (in dBm)
+    A = -69  # Potenza a 1 metro (in dBm)
     n = 2.5  # Esponente di attenuazione
     disp_possed = []  # Lista dei dispositivi posseduti
 
