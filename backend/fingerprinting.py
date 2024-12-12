@@ -181,7 +181,6 @@ def fingerprinting(json_data, user_id):
         # Estrai i dati wifi dal json_input
         if isinstance(json_data, dict) and 'wifi_data' in json_data:
             current_scan = json_data['wifi_data']
-            print("Dati WiFi ricevuti:", current_scan)
         else:
             print("Formato dati non valido:", json_data)
             return None, None, None

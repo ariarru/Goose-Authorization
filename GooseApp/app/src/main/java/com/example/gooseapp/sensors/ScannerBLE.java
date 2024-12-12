@@ -30,10 +30,11 @@ public class ScannerBLE {
     //BLUETOOTH
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
-    private static final long STOP_SCAN_PERIOD = 2 * 1000; //3 SECONDI
+    private static final long STOP_SCAN_PERIOD = 1 * 1000; //3 SECONDI
     private boolean scanFoundResults = false;
     private boolean isBLEScanning;
     private Handler bluetoothHandler = new Handler();
+    private List<ScannedBLEEntity> scannedDevices = new ArrayList<>();
 
     // Device scan callback.
     private ScanCallback leScanCallback = new ScanCallback() {
@@ -42,8 +43,12 @@ public class ScannerBLE {
             super.onScanResult(callbackType, result);
             // Non facciamo nulla qui, gestiamo tutto in onBatchScanResults
             // Qui mi servirebbe solo per gestirne uno
-            ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice());
+            if(result != null) {
+                scanFoundResults = true;
+            }
+            ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice(), result.getRssi());
             Log.i("GOOSE SIGNAL BLE", scannedBLE.toString());
+            scannedDevices.add(scannedBLE);
         }
 
         @Override
@@ -53,9 +58,8 @@ public class ScannerBLE {
             Log.i("BLE GOOSE", results.toString());
             scanFoundResults = true;
 
-            List<ScannedBLEEntity> scannedDevices = new ArrayList<>();
             for (ScanResult result : results) {
-                ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice());
+                ScannedBLEEntity scannedBLE = new ScannedBLEEntity(result.getDevice(), result.getRssi());
                 scannedDevices.add(scannedBLE);
                 Log.i("GOOSE SIGNAL BLE", "Dispositivo trovato: " + scannedBLE.toString());
                 Log.i("DISTANZA", scannedBLE.getStringRSSI());
@@ -122,12 +126,17 @@ public class ScannerBLE {
                         isBLEScanning = false;
                         bluetoothLeScanner.stopScan(leScanCallback);
                         Log.i("GOOSE SIGNAL BLE", "Scansione BLE terminata per timeout");
+
                         if (!scanFoundResults) {
                             Log.i("BLE GOOSE", "non ho trovato nulla");
-                            System.out.println("ora dovrei inviare i dati al backend e gestire la risposta");
                             service.manageBLEScans(null);
                         } else {
                             Log.i("BLE GOOSE", "Dispositivi trovati durante la scansione");
+                            // Invia tutti i dispositivi trovati al service
+                            service.manageBLEScans(scannedDevices);
+
+                            isBLEScanning = false;
+                            scanFoundResults = false;
                         }
                     }
                 }
@@ -149,5 +158,3 @@ public class ScannerBLE {
 
 
 }
-
-

@@ -200,12 +200,9 @@ public class BackgroundService extends Service {
             gooseRequest.sendBLEScan(null, userId, roomId);
         } else {
             Log.i("GOOSE SIGNAL BLE RESULTS", "Trovati " + results.size() + " dispositivi BLE");
-            for (ScannedBLEEntity device : results) {
-                Log.i("GOOSE SIGNAL BLE RESULTS", device.toString());
-            }
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             int userId = sharedPreferences.getInt(String.valueOf(R.string.session), -1);
-            int roomId = sharedPreferences.getInt(String.valueOf(R.string.room_in), -1);
+            int roomId = sharedPreferences.getInt("room_in", -1);
             Log.i("GOOSE SIGNAL BLE RESULTS", "Room found: "+roomId);
             gooseRequest.sendBLEScan(results, userId, roomId);
         }
@@ -216,7 +213,7 @@ public class BackgroundService extends Service {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putString("room_name", roomName).putInt("room_in", roomId).apply();
         String roomname = sharedPreferences.getString("room_name", "pippo");
-        int roomid = sharedPreferences.getInt(String.valueOf(R.string.room_in), -1);
+        int roomid = sharedPreferences.getInt("room_in", -1);
         Log.i("GOOSE SIGNAL BLE RESULTS", "Room found: "+roomid +"-"+ roomname);
     }
 }

@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class GooseRequest {
 
-    private static final String url= "https://172.20.10.3:5001";
+    private static final String url= "https://192.168.1.225:5001";
             //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
@@ -105,7 +105,7 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
-
+            Log.i("GOOSE REQUEST", "Sending login request");
 
     }
 
@@ -209,6 +209,7 @@ public class GooseRequest {
                     MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonRequest);
+            Log.i("GOOSE REQUEST", "Sending wifi request");
         } catch (JSONException e) {
             Log.e("GOOSE REQUEST", "Error creating JSON", e);
         }
@@ -218,6 +219,8 @@ public class GooseRequest {
         try {
             JSONObject jsonBody = new JSONObject();
             JSONObject bleData = new JSONObject();
+            jsonBody.put("user_id", userId);
+            jsonBody.put("room_id", roomId);
 
             // Convertire la lista di ScannedBLEEntity nel formato atteso dal backend
             if (sbes != null) {
@@ -234,8 +237,7 @@ public class GooseRequest {
             } else {
                 jsonBody.put("lista_disp", 101);
             }
-            jsonBody.put("user_id", userId);
-            jsonBody.put("room_id", roomId);
+           
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url + bluetoothUrl, jsonBody,
                     new Response.Listener<JSONObject>() {
@@ -246,7 +248,11 @@ public class GooseRequest {
                             try {
                                 int responseValue = response.getInt("response");
                                 String type = response.getString("notif_type");
+                                if(type.contains(":")){
+                                    type = response.getJSONArray("notif_type").getString(0);
+                                }
                                 Log.i("GOOSE RESPONSE", "Response value: " + responseValue);
+                                Log.i("GOOSE RESPONSE", "Response type: " + type);
                                 /*
                                     AREA_NOT_RESTRICTED = 21 // no notifica
                                     MISSING_DEVICE = 30
@@ -331,6 +337,7 @@ public class GooseRequest {
                     });
 
             queue.add(jsonRequest);
+            Log.i("GOOSE REQUEST", "Sending ble request");
         } catch (JSONException e) {
             Log.e("GOOSE REQUEST", "Error creating JSON", e);
         }
