@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from fingerprinting import fingerprinting  
 from controllo_dispositivi import controllo_dispositivi
+from supporto.scansione_rete import scan_wifi, save_data_to_file
 from supabase import create_client, Client
 from access import handle_login, LoginError
 
@@ -15,13 +16,15 @@ CORS(app)  # Abilita CORS per tutte le rotte
 '''FLASK_URL="https://localhost:5001"
 FINGERPRINT_URL="https://localhost:5001/api/fingerprint"
 CONTROLLORBLE_URL="https://localhost:5001/api/controlloBle"
-EFFECT_LOGIN= "https://localhost:5001/api/login""
+EFFECT_LOGIN= "https://localhost:5001/api/login"
+SCANSIONE_URL="https://localhost:5001/api/fingerprint"
 '''
 
 FLASK_URL = "https://backend-service:5001"
 FINGERPRINT_URL = f"{FLASK_URL}/api/fingerprint"
 CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
 EFFECT_LOGIN = f"{FLASK_URL}/api/login"
+SCANSIONE_URL = f"{FLASK_URL}/api/scansione"
 
 
 @app.route('/api/fingerprint', methods=['POST'])
@@ -173,6 +176,22 @@ def get_urls():
         "controllo_ble_url": CONTROLLORBLE_URL,
         "login_url": EFFECT_LOGIN
     })
+
+
+
+@app.route('/api/scansione', methods=['POST'])
+def scan_and_save():
+    # Prende il nome del file JSON dal corpo della richiesta
+    json_filename = request.json.get('filename', 'backend/rilevazioni/E1.json')  # Default path
+
+    wifi_data = scan_wifi()  # Usa la funzione importata
+
+    if wifi_data:
+        save_data_to_file(wifi_data, filename=json_filename)  # Usa la funzione importata
+        return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
+    else:
+        return jsonify({"message": "Nessun dato Wi-Fi trovato. Il file non è stato creato."}), 400
+    
 
 # Rotta di base
 @app.route('/')

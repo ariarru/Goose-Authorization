@@ -1,43 +1,63 @@
-import json
-import math
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 
-# Funzione per calcolare la distanza a partire dal valore RSSI
-def calcola_distanza(RSSI, A, n):
-    distanza = 10 ** ((A - RSSI) / (10 * n))
-    return distanza
+# Funzione per leggere il file e estrarre le distanze
+def estrai_distanze_da_file(file_path):
+    try:
+        # Apre il file in modalità lettura
+        with open(file_path, 'r') as file:
+            # Leggi tutto il contenuto del file
+            file_data = file.read()
 
-# Funzione per leggere il file JSON e estrarre i valori di RSSI
-def leggi_rssi_da_json(nome_file):
-    with open(nome_file, 'r') as f:
-        dati = json.load(f)
-    return [misurazione['rssi'] for misurazione in dati]
+            # Usa espressioni regolari per trovare tutte le distanze (valori numerici con punto decimale)
+            distanze = re.findall(r"(\d+\.\d+)", file_data)
 
-# Parametri fissi per la calibrazione 
-A = -60  # potenza a 1 metro (in dBm)
-n = 2.5  # esponente di attenuazione, valore medio in ambienti tipici
+            # Converte i risultati in un array di numeri float
+            distanze = [float(distanza) for distanza in distanze]
+            return distanze
 
-# Leggi le misurazioni RSSI dal file JSON
-rssi_values = leggi_rssi_da_json('..\GooseApp\app\src\main\java\com\example\gooseapp\sensors\val_rssi.json')
+    except Exception as e:
+        print(f"Errore nel leggere il file: {e}")
+        return []
 
-# Calcola la distanza per ogni misurazione
-distanze = [calcola_distanza(rssi, A, n) for rssi in rssi_values]
+def analisi():
+    # Percorso del file
+    file_path = r'C:\Users\claud\Documents\Goose-Authorization\Analisi\distanza.txt'
+    
+    # Estrai le distanze dal file
+    distanze = estrai_distanze_da_file(file_path)
 
-# Analisi delle distanze: calcola media, deviazione standard e grafico
-media_distanze = np.mean(distanze)
-deviazione_standard = np.std(distanze)
+    # Verifica che la lista delle distanze non sia vuota
+    if not distanze:
+        print("Errore: nessuna distanza trovata nel file.")
+        return
 
-# Stampa i risultati
-print(f"Statistiche delle distanze stimate:")
-print(f" - Media della distanza: {media_distanze:.2f} metri")
-print(f" - Deviazione standard della distanza: {deviazione_standard:.2f} metri")
+    # Analisi delle distanze: calcola media, deviazione standard e grafico
+    media_distanze = np.mean(distanze)
+    deviazione_standard = np.std(distanze)
+    errore_medio = np.mean(np.abs(np.array(distanze) - media_distanze))
 
-# Grafico delle distanze
-plt.figure(figsize=(8, 5))
-plt.plot(distanze, marker='o', linestyle='-', color='b')
-plt.title("Distanze stimate a partire dal RSSI")
-plt.xlabel("Rilevazioni")
-plt.ylabel("Distanza (metri)")
-plt.grid(True)
-plt.show()
+    # Stampa i risultati
+    print(f"Statistiche delle distanze stimate:")
+    print(f" - Media della distanza: {media_distanze:.2f} metri")
+    print(f" - Deviazione standard della distanza: {deviazione_standard:.2f} metri")
+    print(f" - Errore medio sulla stima: {errore_medio:.2f} metri")
+
+
+    # Grafico delle distanze
+    plt.figure(figsize=(8, 5))
+    plt.plot(distanze, marker='o', linestyle='-', color='b')
+    plt.title("Distanze stimate a partire dal RSSI")
+    plt.xlabel("Rilevazioni")
+    plt.ylabel("Distanza (metri)")
+    plt.grid(True)
+
+    # Aggiungi una linea per la media
+    plt.axhline(y=media_distanze, color='r', linestyle='--', label=f"Media: {media_distanze:.2f}m")
+    plt.legend()
+
+    plt.show()
+
+# Esegui l'analisi
+analisi()
