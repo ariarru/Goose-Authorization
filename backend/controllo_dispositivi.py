@@ -44,11 +44,11 @@ def recupera_disp(_room_id):
             # Se sono stati trovati ID dei dispositivi, esegui una query alla tabella "Safety_Devices" per i loro nomi
             if device_s_id:
                 # Usa 'in_' per ottenere i nomi dei dispositivi che corrispondono agli ID dei dispositivi
-                devices_response = supabase.table("Safety_Devices").select("device_s_name").in_("device_s_id", device_s_id).execute()
+                devices_response = supabase.table("Safety_Devices").select("MAC").in_("device_s_id", device_s_id).execute()
                 
                 if devices_response.data:
                     # Restituisci i nomi dei dispositivi
-                    return [row['device_s_name'] for row in devices_response.data]
+                    return [row['MAC'] for row in devices_response.data]
                 else:
                     return None
             else:
@@ -68,6 +68,24 @@ def recupera_Noti_preferenza(room_id):
             return "popup"
         return response.data
 
+# Funzione per calcolare la distanza e filtrare dispositivi posseduti
+def tracking(lista_disp):
+    A = -60  # Potenza a 1 metro (in dBm)
+    n = 2.5  # Esponente di attenuazione
+    disp_possed = []  # Lista dei dispositivi posseduti
+
+    for disp_data in lista_disp.values():
+        address = disp_data['ADDRESS']
+        rssi = int(disp_data['RSSI'])  # Convertiamo l'RSSI in un intero
+        distanza = 10 ** ((A - rssi) / (10 * n))  # Formula per stimare la distanza
+        print(f"Device: {address}, RSSI: {rssi}, Distanza stimata: {distanza:.2f} metri")
+
+        # Criterio per considerare un dispositivo "posseduto" (esempio: entro 1 metro)
+        if distanza <= 1:
+            disp_possed.append(address)
+
+    return disp_possed
+
 # Funzione per controllare se ci sono dispositivi necessari per una stanza data
 def controllo_dispositivi(_room_id, lista_disp, user_id):
     disp_manc = []
@@ -80,10 +98,14 @@ def controllo_dispositivi(_room_id, lista_disp, user_id):
         .execute()
     
     notif_type = recupera_Noti_preferenza(_room_id)
+    
+    #dispositivi posseduti dall'utente 
+    disp_possed = tracking(lista_disp)
+
 
     # Caso 1: La stanza non richiede dispositivi di sicurezza
     if devices_s is None:
-        if lista_disp: 
+        if disp_possed: 
             print("L'utente ha dispositivi, ma la stanza non li richiede")
             return Codes.EXTRA_DEVICES, notif_type
         else:
@@ -91,13 +113,13 @@ def controllo_dispositivi(_room_id, lista_disp, user_id):
             return Codes.AREA_NOT_RESTRICTED , notif_type
     
     # Caso 2: La lista passata è vuota ma la stanza richiede dispositivi di sicurezza
-    if lista_disp==101:  # Verifica se la lista è vuota
+    if disp_possed==101:  # Verifica se la lista è vuota
         print("La stanza prevede dispositivi di sicurezza, ma l'utente non ha alcun dispositivo di sicurezza.")
         return Codes.MISSING_DEVICE, notif_type
 
     # Controllo dei dispositivi mancanti
     for disp_necessari in devices_s:
-        if disp_necessari not in lista_disp:
+        if disp_necessari not in disp_possed:
             disp_manc.append(disp_necessari)
     
     if len(disp_manc) == 0:
