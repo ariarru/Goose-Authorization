@@ -91,9 +91,6 @@ def fingerprint():
 def controlloBle():
     # Ottieni i dati dal corpo della richiesta JSON
     data = request.get_json()
-    
-    # Log dei dati ricevuti per il debug
-    print(f"Dati ricevuti: {data}")
 
     # Assicurati che i dati siano corretti
     if 'room_id' not in data or 'lista_disp' not in data or 'user_id' not in data:
@@ -125,11 +122,10 @@ def controlloBle():
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
     
     # Gestisci lista_disp per assicurarti che sia trattato correttamente
-    if lista_disp == 101:  # Se lista_disp è esattamente 101, trattalo come un intero
-        pass  
-    elif not isinstance(lista_disp, list):  # Se non è né un 101 né una lista, errore
-        return jsonify({"error": "lista_disp deve essere 101 o una lista valida"}), 400
+    if isinstance(lista_disp, list):  # Se non è una lista, errore
+        return jsonify({"error": "lista_disp deve essere una lista valida"}), 400
     
+
     # Esegui il calcolo dei dati
     errore, notif_type = controllo_dispositivi(room_id, lista_disp, user_id)
     

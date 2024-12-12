@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class GooseRequest {
 
-    private static final String url= "https://192.168.1.225:5001";
+    private static final String url= "https://172.20.10.3:5001";
             //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
@@ -171,7 +171,7 @@ public class GooseRequest {
                                     String jsonError = new String(error.networkResponse.data);
                                     JSONObject errorObj = new JSONObject(jsonError);
                                     if (errorObj.has("code")) {
-                                        backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
+                                        BackgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
 
                                         //LATENZA: Memorizziamo il tempo di fine prima di inviare la notifica accesso non autorizzato
                                         long endTime = System.currentTimeMillis();
@@ -235,7 +235,7 @@ public class GooseRequest {
                 jsonBody.put("lista_disp", bleData);
 
             } else {
-                jsonBody.put("lista_disp", 101);
+                jsonBody.put("lista_disp", new JSONObject());
             }
            
 
@@ -247,12 +247,7 @@ public class GooseRequest {
                             Log.i("GOOSE RESPONSE", response.toString());
                             try {
                                 int responseValue = response.getInt("response");
-                                String type = response.getString("notif_type");
-                                if(type.contains(":")){
-                                    type = response.getJSONArray("notif_type").getString(0);
-                                }
-                                Log.i("GOOSE RESPONSE", "Response value: " + responseValue);
-                                Log.i("GOOSE RESPONSE", "Response type: " + type);
+                                String type = response.getJSONArray("notif_type").getJSONObject(0).getString("notification_preference");
                                 /*
                                     AREA_NOT_RESTRICTED = 21 // no notifica
                                     MISSING_DEVICE = 30

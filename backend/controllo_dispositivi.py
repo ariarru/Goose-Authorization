@@ -36,7 +36,7 @@ def recupera_disp(_room_id):
     try:
         # Query alla tabella "Room_S_Device" per il dato room_id
         response = supabase.table("Room_S_Device").select("device_s_id").eq("room_id", _room_id).execute()
-        
+        print("recupera_disp: ", response.data)
         if response.data:
             # Estrai gli ID dei dispositivi trovati
             device_s_id = [row['device_s_id'] for row in response.data]
@@ -45,7 +45,7 @@ def recupera_disp(_room_id):
             if device_s_id:
                 # Usa 'in_' per ottenere i nomi dei dispositivi che corrispondono agli ID dei dispositivi
                 devices_response = supabase.table("Safety_Devices").select("MAC").in_("device_s_id", device_s_id).execute()
-                
+                print("device_response: ", response.data)
                 if devices_response.data:
                     # Restituisci i nomi dei dispositivi
                     return [row['MAC'] for row in devices_response.data]
