@@ -94,6 +94,9 @@ def fingerprint():
 def controlloBle():
     # Ottieni i dati dal corpo della richiesta JSON
     data = request.get_json()
+    
+    # Log dei dati ricevuti per il debug
+    print(f"Dati ricevuti: {data}")
 
     # Assicurati che i dati siano corretti
     if 'room_id' not in data or 'lista_disp' not in data or 'user_id' not in data:
@@ -126,9 +129,8 @@ def controlloBle():
     
     # Gestisci lista_disp per assicurarti che sia trattato correttamente
     if isinstance(lista_disp, list):  # Se non è una lista, errore
-        return jsonify({"error": "lista_disp deve essere una lista valida"}), 400
+        return jsonify({"error": "lista_disp deve essereuna lista valida"}), 400
     
-
     # Esegui il calcolo dei dati
     errore, notif_type = controllo_dispositivi(room_id, lista_disp, user_id)
     
@@ -177,17 +179,23 @@ def get_urls():
 
 @app.route('/api/scansione', methods=['POST'])
 def scan_and_save():
-    # Prende il nome del file JSON dal corpo della richiesta
-    json_filename = request.json.get('filename', 'backend/rilevazioni/E1.json')  # Default path
+    # Prende solo il nome del file JSON (es. 'NuovoFile.json')
+    filename_only = request.json.get('filename')  # L'utente fornisce solo il nome del file
 
-    wifi_data = scan_wifi()  # Usa la funzione importata
+    # Verifica se il nome del file è stato fornito
+    if not filename_only:
+        return jsonify({"error": "Il nome del file è richiesto."}), 400
+
+    # Crea il percorso completo aggiungendo la cartella fissa
+    json_filename = os.path.join('backend', 'rilevazioni', filename_only)  # percorso fisso + nome file
+
+    wifi_data = scan_wifi()  # Usa la funzione per la scansione Wi-Fi
 
     if wifi_data:
-        save_data_to_file(wifi_data, filename=json_filename)  # Usa la funzione importata
+        save_data_to_file(wifi_data, filename=json_filename)  # Usa la funzione per salvare i dati nel file
         return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
     else:
         return jsonify({"message": "Nessun dato Wi-Fi trovato. Il file non è stato creato."}), 400
-    
 
 # Rotta di base
 @app.route('/')

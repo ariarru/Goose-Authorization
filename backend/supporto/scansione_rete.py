@@ -3,6 +3,7 @@ import json
 import os
 from pywifi import PyWiFi, const, Profile
 
+# Funzione per la scansione Wi-Fi
 def scan_wifi():
     wifi = PyWiFi()
     iface = wifi.interfaces()[0]  # Seleziona la prima interfaccia Wi-Fi
@@ -22,7 +23,6 @@ def scan_wifi():
                 "RSSI": network.signal
             })
 
-        #print("Dati Wi-Fi trovati:", wifi_data)  # Messaggio di debug
         return wifi_data
 
     except Exception as e:
@@ -30,15 +30,14 @@ def scan_wifi():
         return []  # Ritorna una lista vuota se si verifica un errore
 
 
+# Funzione per salvare i dati in un file JSON
 def save_data_to_file(wifi_data, filename):
     try:
         # Crea la directory se non esiste
         os.makedirs(os.path.dirname(filename), exist_ok=True)
-        print(f"Directory {os.path.dirname(filename)} creata/verificata.")  # Messaggio di debug
 
         # Controlla se il file esiste già
         if os.path.exists(filename):
-            # Se esiste, lo apre e continua a scriverci
             with open(filename, 'r') as f:
                 try:
                     json_data = json.load(f)
@@ -64,17 +63,6 @@ def save_data_to_file(wifi_data, filename):
         # Salva i dati nel file JSON
         with open(filename, 'w') as f:
             json.dump(json_data, f, indent=4)
-        print(f"Dati salvati nel file: {filename}")  # Messaggio di debug
 
     except Exception as e:
         print("Errore durante il salvataggio dei dati nel file:", e)
-
-
-if __name__ == "__main__":
-    wifi_data = scan_wifi()  
-    if wifi_data:
-        save_data_to_file(wifi_data, filename='backend/rilevazioni/E1.json') #rilevazione
-    else:
-        print("Nessun dato Wi-Fi trovato. Il file non è stato creato.")
-
-
