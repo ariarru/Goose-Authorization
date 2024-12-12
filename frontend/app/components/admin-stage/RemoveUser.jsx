@@ -7,7 +7,7 @@ export default function RemoveDevices(id, room){
     const router = useRouter();
 
     async function del(){
-        const result = deleteUserFromRoom(id, room)
+        const result = await deleteUserFromRoom(id, room)
         console.log(result);
         if(result != true){
             alert("User removed from authorized");

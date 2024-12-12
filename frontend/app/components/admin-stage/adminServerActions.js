@@ -147,6 +147,7 @@ export async function deleteUserFromRoom(userId, roomId){
     const session = await supabase.auth.getSession();
     if(session){
         const {data, error} = await supabase.rpc("remove_user_from_room", {user_id: userId, room_id: roomId }); 
+        console.log(error)
         return error ? error : true;
     } else{
         return false;

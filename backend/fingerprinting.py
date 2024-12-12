@@ -218,7 +218,7 @@ def fingerprinting(json_data, user_id):
     }).execute()
     
     print("query:", queryResult)
-    if queryResult == False:
+    if queryResult.data == False:
         result, new_room_id = access_log(user_id, room_id)
         return Codes.UNAUTHORIZED_USER.value
 

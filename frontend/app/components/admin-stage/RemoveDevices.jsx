@@ -8,7 +8,7 @@ export default function RemoveDevices(id, room){
     const router = useRouter();
 
     async function del(){
-        const result = deleteDevFromRoom(id, room)
+        const result = await deleteDevFromRoom(id, room)
         console.log(result);
         if(result != true){
             alert("Device removed");
