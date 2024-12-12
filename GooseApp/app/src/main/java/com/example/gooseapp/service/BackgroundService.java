@@ -54,7 +54,7 @@ public class BackgroundService extends Service {
     private ScannerBLE scannerBLE;
     private GooseRequest gooseRequest;
     private android.os.Handler handler;
-    private static final int SCAN_INTERVAL = 3000; // 3 seconds in milliseconds
+    private static final int SCAN_INTERVAL = 5000; // 3 seconds in milliseconds
     private Runnable scanRunnable;
     @Nullable
     @Override
