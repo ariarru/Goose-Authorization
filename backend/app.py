@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from fingerprinting import fingerprinting  
 from controllo_dispositivi import controllo_dispositivi
-from supporto.scansione_rete import save_data_to_file
+from supporto.scansione_rete import save_data_to_file, scan_wifi
 from supabase import create_client, Client
 from access import handle_login, LoginError
 
@@ -179,23 +179,30 @@ def get_urls():
 
 @app.route('/api/scansione', methods=['POST'])
 def scan_and_save():
-    # Prende solo il nome del file JSON (es. 'NuovoFile.json')
-    filename_only = request.json.get('filename')  # L'utente fornisce solo il nome del file
+    try:
+        # Ottieni il nome del file direttamente dal corpo della richiesta
+        filename_only = request.json.get('filename')
+        print(f"File richiesto: {filename_only}")
 
-    # Verifica se il nome del file è stato fornito
-    if not filename_only:
-        return jsonify({"error": "Il nome del file è richiesto."}), 400
+        if not filename_only:
+            return jsonify({"error": "Il nome del file è richiesto."}), 400
 
-    # Crea il percorso completo aggiungendo la cartella fissa
-    json_filename = os.path.join('backend', 'rilevazioni', filename_only)  # percorso fisso + nome file
+        # Creazione percorso del file (può essere relativo o assoluto)
+        json_filename = os.path.join('backend', 'rilevazioni', filename_only)  # Aggiungi il percorso fisso
 
-    wifi_data = request.json.get('wifiData', [])  # Usa la funzione per la scansione Wi-Fi
+        # Esegui la scansione Wi-Fi
+        wifi_data = scan_wifi()
 
-    if wifi_data:
-        save_data_to_file(wifi_data, filename=json_filename)  # Usa la funzione per salvare i dati nel file
-        return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
-    else:
-        return jsonify({"message": "Nessun dato Wi-Fi trovato. Il file non è stato creato."}), 400
+        if wifi_data:
+            save_data_to_file(wifi_data, filename=json_filename)
+            return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
+        else:
+            return jsonify({"error": "Nessun dato Wi-Fi trovato. Non è stato possibile salvare."}), 400
+    except Exception as e:
+        print(f"Errore durante la scansione: {str(e)}")  # Log per debug
+        return jsonify({"error": str(e)}), 500
+
+
 
 # Rotta di base
 @app.route('/')
@@ -206,3 +213,5 @@ if __name__ == '__main__':
     # Configura il server Flask per ascoltare su tutte le interfacce e la porta 5001 con SSL
     ssl_context = ('certs/cert.pem', 'certs/key.pem')
     app.run(debug=True, host="0.0.0.0", port=5001, ssl_context=ssl_context)
+
+

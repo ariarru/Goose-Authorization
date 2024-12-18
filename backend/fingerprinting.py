@@ -141,6 +141,7 @@ def prepare_data(df):
     df.fillna(0, inplace=True)
     le = LabelEncoder()
     df['room'] = le.fit_transform(df['room'])
+    
     X = df.drop(columns=['room'])  
     y = df['room']
     return X, y, le
