@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.wifi.ScanResult;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -336,5 +337,58 @@ public class GooseRequest {
         } catch (JSONException e) {
             Log.e("GOOSE REQUEST", "Error creating JSON", e);
         }
+    }
+
+
+
+
+    //da cancellare
+    public void sendWIFIscanFingerprint(List<ScannedWifiEntity> datas, String room){
+        String fingerprinturl = "/api/scansione";
+
+        // Creare l'oggetto JSON da inviare
+        JSONObject jsonBody = new JSONObject();
+        JSONObject wifiData = new JSONObject();
+
+        try {
+            // Convertire la lista di ScannedWifiEntity nel formato atteso dal backend
+            for(int i = 0; i < datas.size(); i++) {
+                JSONObject wifiAP = new JSONObject();
+                Map<String, String> data = datas.get(i).toStringMap();
+                for(Map.Entry<String, String> entry : data.entrySet()) {
+                    wifiAP.put(entry.getKey(), entry.getValue());
+                }
+                wifiData.put("ap" + i, wifiAP);
+            }
+
+            jsonBody.put("filename", room);
+            jsonBody.put("wifiData", wifiData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url + fingerprinturl,
+                jsonBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("WiFi Scan", "Submitted: " + response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("WiFi Scan", "Error: " + error.getMessage());
+                    }
+                }
+        );
+
+        queue.add(jsonObjectRequest);
+        Log.i("WiFi Scan", "Submitted");
+
     }
 }

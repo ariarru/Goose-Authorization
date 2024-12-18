@@ -28,8 +28,11 @@ import com.example.gooseapp.sensors.ScannedWifiEntity;
 import com.example.gooseapp.sensors.ScannerBLE;
 import com.example.gooseapp.sensors.ScannerWIFI;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /*
 * Ogni 3 secondi effettua richiesta backend
@@ -50,7 +53,7 @@ public class BackgroundService extends Service {
     private static final String CHANNEL_SOUND_ID = "GOOSE_SOUND";
     private static final String CHANNEL_LIGHT_ID = "GOOSE_LIGHT";
 
-    private ScannerWIFI scannerWIFI;
+    private static ScannerWIFI scannerWIFI;
     private ScannerBLE scannerBLE;
     private GooseRequest gooseRequest;
     private android.os.Handler handler;
@@ -110,16 +113,16 @@ public class BackgroundService extends Service {
         
         // Initialize handler and runnable for periodic scanning
         handler = new android.os.Handler();
-        scanRunnable = new Runnable() {
+       /* scanRunnable = new Runnable() {
             @Override
             public void run() {
                 scannerWIFI.backgroundMeasureWifi();
-                handler.postDelayed(this, SCAN_INTERVAL);
+                  handler.postDelayed(this, SCAN_INTERVAL);
             }
-        };
+        };*/
         
         // Start periodic scanning
-        handler.post(scanRunnable);
+       // handler.post(scanRunnable);
         
         return Service.START_STICKY;
     }
@@ -264,6 +267,42 @@ public class BackgroundService extends Service {
             cameraManager.setTorchMode(cameraId, false);
         } catch (CameraAccessException e) {
             Log.e("GOOSE LIGHT", "Failed to access camera", e);
+        }
+    }
+
+
+
+
+
+
+
+    /// da cancellare
+    private static String room;
+    public static void submitWifiScan(String selectedRoom) {
+        room = selectedRoom;
+        Log.i("GOOSE SCANS", "inside submitWifi, with " + room);
+        scannerWIFI.wifi();
+    }
+
+
+    public void manageWifiScans2(List<ScanResult> results){
+        Log.i("GOOSE SCANS", "inside manageWifiScans2");
+        if (!results.isEmpty()) {
+            List<ScannedWifiEntity> scannedList = new ArrayList<ScannedWifiEntity>();
+            for (ScanResult scanResult : results) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ScannedWifiEntity swe = new ScannedWifiEntity(
+                            scanResult.getWifiSsid(),
+                            scanResult.getApMldMacAddress(),
+                            scanResult.level
+                    );
+                    scannedList.add(swe);
+                }
+            }
+            sendBasicNotification("Sending to Goose Request", "sending data +"+this.room);
+            gooseRequest.sendWIFIscanFingerprint(scannedList, this.room);
+        } else {
+            System.out.println("No Wi-Fi networks found.");
         }
     }
 }

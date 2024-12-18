@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -16,12 +18,12 @@ import com.example.gooseapp.R
 import com.example.gooseapp.sensors.SensorHelper
 import com.example.gooseapp.service.BackgroundService
 
-
 class HomeActivity : AppCompatActivity() {
 
     private val sensorHelper = SensorHelper()
-
-    private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var roomSpinner: Spinner
+    private lateinit var submitScanButton: Button
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,9 +76,33 @@ class HomeActivity : AppCompatActivity() {
         getLocationButton.setOnClickListener {
             scan()
         }
+
+        // Room Spinner Setup
+        roomSpinner = findViewById(R.id.roomSpinner)
+        val rooms = arrayOf("Select Room", "E1", "E2", "Uffici", "Garden", "Dipartimento")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rooms)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        roomSpinner.adapter = adapter
+
+        // Submit Scan Button
+        submitScanButton = findViewById(R.id.submitScanButton)
+        submitScanButton.setOnClickListener {
+            submitWifiScan()
+        }
     }
 
-//TODO: metti observable object
+    private fun submitWifiScan(){
+        val selectedRoom = roomSpinner.selectedItem.toString()
+        if ("Select Room" == selectedRoom) {
+            Toast.makeText(this, "Please select a room", Toast.LENGTH_SHORT).show()
+            return
+        }
+        Toast.makeText(this, "Sending scan command", Toast.LENGTH_SHORT).show()
+        BackgroundService.submitWifiScan(selectedRoom)
+
+    }
+
+    //TODO: metti observable object
     @RequiresApi(Build.VERSION_CODES.R)
     private fun scan() {
         //shared preferences

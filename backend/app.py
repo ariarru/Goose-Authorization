@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from fingerprinting import fingerprinting  
 from controllo_dispositivi import controllo_dispositivi
-from supporto.scansione_rete import scan_wifi, save_data_to_file
+from supporto.scansione_rete import save_data_to_file
 from supabase import create_client, Client
 from access import handle_login, LoginError
 
@@ -189,7 +189,7 @@ def scan_and_save():
     # Crea il percorso completo aggiungendo la cartella fissa
     json_filename = os.path.join('backend', 'rilevazioni', filename_only)  # percorso fisso + nome file
 
-    wifi_data = scan_wifi()  # Usa la funzione per la scansione Wi-Fi
+    wifi_data = request.json.get('wifiData', [])  # Usa la funzione per la scansione Wi-Fi
 
     if wifi_data:
         save_data_to_file(wifi_data, filename=json_filename)  # Usa la funzione per salvare i dati nel file

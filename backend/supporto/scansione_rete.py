@@ -1,3 +1,4 @@
+from hmac import new
 import time
 import json
 import os
@@ -46,11 +47,13 @@ def save_data_to_file(wifi_data, filename):
         else:
             # Se non esiste, inizializza la struttura del file JSON
             json_data = {}
+            print("File non esistente, inizializzazione del file JSON...")
 
         # Determina il prossimo numero per la nuova rilevazione
         last_key = max([int(key.replace("rilevazione", "")) for key in json_data.keys()] + [0])
+        print("last_key", last_key)
         new_key = f"rilevazione{last_key + 1}"
-
+        print("new_key", new_key)
         # Aggiunge i dati della nuova scansione
         json_data[new_key] = {
             "wifi_data": {f"AP{i+1}": {
@@ -60,9 +63,20 @@ def save_data_to_file(wifi_data, filename):
             } for i, data in enumerate(wifi_data)}
         }
 
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
         # Salva i dati nel file JSON
-        with open(filename, 'w') as f:
-            json.dump(json_data, f, indent=4)
+        try:
+            with open(filename, 'w') as f:
+                json.dump(json_data, f, indent=4)
+            print(f"Dati salvati correttamente in {filename}")
+        except IOError as e:
+            print(f"Errore di I/O durante il salvataggio dei dati: {e}")
+        except json.JSONEncodeError as e:
+            print(f"Errore di codifica JSON: {e}")
+        except Exception as e:
+            print(f"Errore inatteso durante il salvataggio dei dati: {e}")
 
     except Exception as e:
         print("Errore durante il salvataggio dei dati nel file:", e)
