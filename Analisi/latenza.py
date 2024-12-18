@@ -1,4 +1,3 @@
-import json
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -8,16 +7,15 @@ def read_latency_data(file_path):
     try:
         with open(file_path, 'r') as file:
             for line in file:
-                # Carica ogni riga come oggetto JSON
                 try:
-                    data = json.loads(line)
-                    latencies.append(data['latency'])
-                except json.JSONDecodeError:
-                    print(f"Errore nel decodificare la riga: {line}")
+                    # Prova a convertire ogni riga in un numero float
+                    latency = float(line.strip())  # rimuove gli spazi vuoti alla fine e all'inizio
+                    latencies.append(latency)
+                except ValueError:
+                    print(f"Errore nel convertire la riga in un numero: {line}")
     except FileNotFoundError:
         print("Il file non esiste.")
     return latencies
-
 
 # Funzione per fare l'analisi statistica
 def analyze_latencies(latencies):
@@ -41,7 +39,6 @@ def analyze_latencies(latencies):
 
     return mean_latency, median_latency, std_dev_latency, min_latency, max_latency
 
-
 # Funzione per visualizzare un grafico delle latenze
 def plot_latencies(latencies):
     if len(latencies) == 0:
@@ -59,7 +56,7 @@ def plot_latencies(latencies):
     plt.show()
 
 # Percorso del file
-file_path = '..\GooseApp\app\src\main\java\com\example\gooseapp\service\val_latency.json'  # Modifica questo con il percorso corretto del tuo file
+file_path = r'C:\Users\claud\Documents\Goose-Authorization\Analisi\latenza.txt'  
 
 # Leggi i dati di latenza dal file
 latencies = read_latency_data(file_path)
