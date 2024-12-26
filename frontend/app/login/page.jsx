@@ -11,7 +11,7 @@ export default async function LoginPage(){
     if(data.session) {
       redirect("/stage");
     } else if(error){
-        alert(error);
+        console.log(error);
     }
     
     return(

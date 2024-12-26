@@ -9,7 +9,9 @@ export default function RoomCardEdit({roomInfo}){
     const [editMode, setEditMode] = useState(false);
     const [name, setName] = useState(roomInfo.name);
     const [floor, setFloor] = useState(roomInfo.floor);
-    const [isRestricted, setIsRestricted] = useState(false);
+    const [isRestricted, setIsRestricted] = useState(roomInfo.restriction);
+
+
 
     async function saveEdits(){
         setEditMode(false);

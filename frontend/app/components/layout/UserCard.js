@@ -10,11 +10,12 @@ export default function UserCard({userInfo}){
 
     async function delete_user(){
         const result = await deleteUser(userInfo.user_id);
+        console.log(result);
         if(result){
-            alert("User sucessfully removed")
-            router.refresh();
+            alert("User sucessfully removed");
+            window.location.reload();
         } else {
-            alert("User not removed due to error")
+            alert("User not removed due to error");
         }
     }
 

@@ -21,7 +21,6 @@ export async function deleteUser(userId){
 
     if(session){
         const result = await supabase.rpc("delete_user", {_user_id: userId});
-        console.log(result);
         result.error ? console.log(result.error) : 0;
         return true;
     } else{
@@ -44,7 +43,6 @@ export async function addNewRoom(name, vertices, piano, restricted){
         };
 
         let data = {_piano: piano, _room_name: name, _vertices: geometry, _is_restricted: restricted};
-        console.log(data);
         const result = await supabase.rpc("insert_room", data);
         console.log(result);
 
@@ -122,7 +120,6 @@ export async function deleteDevFromRoom(id, room){
     const session = await supabase.auth.getSession();
     if(session){
         const {data, error} = await supabase.rpc("remove_dev_from_room", {dev_id:id, _room_id: room}); 
-        console.log("data", data)
         console.log("error", error)
         return error ? error : true;
     } else{
