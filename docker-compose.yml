@@ -30,7 +30,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./backend:/backend  # Assicurati che il percorso sulla macchina host sia corretto
+      - ./backend:/backend  
   
 
 
