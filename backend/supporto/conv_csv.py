@@ -71,7 +71,6 @@ df = df[cols]
 
 # Salva il DataFrame in un file CSV
 csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'wifi_data_with_rooms.csv')
-# Salva il DataFrame in un file CSV
 df.to_csv(csv_path, index=False)
 
 print("CSV generato con successo.")
