@@ -10,7 +10,6 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
     const supabase = createServer();
 
     var result = await supabase.rpc("get_users_from_room_id", {id: roomId});
-    console.log(result);
     const users = result.data;
     result = await supabase.rpc("get_devices_from_room_id", {id: roomId});
     const devices = result.data;
@@ -47,7 +46,7 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
                 </div>
                 {users?.map(u => (
                     <div className="flex flex-row gap-3 py-1 px-3 rounded bg-gray-300 ml-[-4px] text-left items-center" key={u.user_id + roomId}>
-                        <p className="text-gray-700 text-sm" key={u.user_id}>{u.username} - {u.notification_preference}</p>
+                        <p className="text-gray-700 text-sm" key={u.user_id}>{u.username}</p>
                         <RemoveUser id={u.user_id} room={roomId} key={u.username}/>
                     </div>
                 ))}

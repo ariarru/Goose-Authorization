@@ -14,8 +14,6 @@ export default async function DeviceStage(){
 
     const devices = await supabase.rpc("get_all_categories");
 
-    console.log("devices", devices);
-
     return(
         <StageContainer>
             <Card>

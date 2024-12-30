@@ -4,7 +4,6 @@ import UserCard from '../layout/UserCard';
 import { redirect } from 'next/navigation';
 
 export default async function ManageUsers({children}){
-    //TODO: aggiungi dispositivo utente
 
     const supabase = createServer();
 
