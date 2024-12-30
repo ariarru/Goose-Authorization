@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: cla01/frontend-image:latest  # Usa l'immagine del tuo frontend  cla01/
+          image: cla01/frontend-image:latest  
           ports:
             - containerPort: 3001  # Porta su cui il frontend ascolta
           env:

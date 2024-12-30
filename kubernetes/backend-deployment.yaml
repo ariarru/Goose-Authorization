@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1 #FORSE AUMENTA A 2
+  replicas: 1 
   selector:
     matchLabels:
       app: backend
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: cla01/backend-image:latest  # Sostituisci con l'immagine Docker effettiva cla01/backend-image:latest
+          image: cla01/backend-image:latest  
           ports:
             - containerPort: 5001
           resources:
@@ -28,7 +28,7 @@ spec:
               cpu: "1"         # CPU massima consentita
           envFrom:
             - configMapRef:
-                name: env-local-config  # Assicurati che il nome della ConfigMap sia corretto
+                name: env-local-config  
 ---
 apiVersion: v1
 kind: ConfigMap
