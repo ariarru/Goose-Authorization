@@ -29,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        Toast.makeText(this, "Background measuring is not used right now", Toast.LENGTH_SHORT).show()
 
         // Abilita il pulsante "Up" nella barra superiore
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

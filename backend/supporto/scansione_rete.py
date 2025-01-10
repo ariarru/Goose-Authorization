@@ -59,11 +59,7 @@ def save_data_to_file(wifi_data, filename):
         
         # Aggiunge i dati della nuova scansione
         json_data[new_key] = {
-            "wifi_data": {f"AP{i+1}": {
-                "SSID": data["SSID"],
-                "MAC": data["MAC"],
-                "RSSI": data["RSSI"]
-            } for i, data in enumerate(wifi_data)}
+            "wifi_data": wifi_data
         }
 
         # Salva i dati nel file JSON

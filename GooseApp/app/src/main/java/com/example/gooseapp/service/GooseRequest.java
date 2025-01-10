@@ -2,9 +2,7 @@ package com.example.gooseapp.service;
 
 import static java.lang.Integer.parseInt;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.wifi.ScanResult;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -19,6 +17,7 @@ import com.example.gooseapp.activity.MainActivity;
 import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,8 +27,9 @@ import java.util.Map;
 
 public class GooseRequest {
 
-    private static final String url= "https://172.20.10.3:5001";
-            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla
+    private static final String url= "https://130.136.201.215:5001";
+            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla //192.168.1.168 hotspot mac //130.136.201.215 hotspot con almawifi?
+
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
     private static final String loginUrl = "/api/login";
@@ -43,12 +43,12 @@ public class GooseRequest {
     private static final int MAX_RETRIES = 2;
 
     public GooseRequest(Context context, MainActivity activity){
-        this.queue = this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
+        queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
         this.activity = activity;
     }
 
     public GooseRequest(Context context, BackgroundService service){
-        this.queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
+        queue = Volley.newRequestQueue(context, new CustomSSLSocketFactory());
 
         this.backgroundService = service;
     }
@@ -358,15 +358,16 @@ public class GooseRequest {
                 for(Map.Entry<String, String> entry : data.entrySet()) {
                     wifiAP.put(entry.getKey(), entry.getValue());
                 }
-                wifiData.put("ap" + i, wifiAP);
+                wifiData.put("AP" + i, wifiAP);
             }
 
-            jsonBody.put("filename", room);
+            jsonBody.put("filename", room+".json");
             jsonBody.put("wifiData", wifiData);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        Log.i("GOOSE TRY SCANS", jsonBody.toString());
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

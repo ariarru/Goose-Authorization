@@ -2692,5 +2692,39 @@
                 "RSSI": -32
             }
         }
+    },
+    "rilevazione32": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-67",
+                "SSID": "\"eduroam\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-68",
+                "SSID": "\"ALMAWIFI\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-78",
+                "SSID": "\"TIM-45424657\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-56",
+                "SSID": "\"admstaff\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-60",
+                "SSID": "\"ESPresso\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-32",
+                "SSID": "\"MacBook Pro di Ari\"",
+                "MAC": "Not Present"
+            }
+        }
     }
 }

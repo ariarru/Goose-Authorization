@@ -5,16 +5,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
 
 import com.example.gooseapp.service.BackgroundService;
 
 import java.util.List;
+
 
 public class ScannerWIFI {
 
@@ -75,6 +78,10 @@ public class ScannerWIFI {
                         scanCallback = new WifiManager.ScanResultsCallback() {
                             @Override
                             public void onScanResultsAvailable() {
+                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    Log.e("GOOSE SIGNAL WIFI", "I don' have wifi permission");
+                                    return;
+                                }
                                 List<ScanResult> results = wifiManager.getScanResults();
                                 if (results != null && !results.isEmpty()) {
                                     backgroundService.manageWifiScans(results);
@@ -107,6 +114,10 @@ public class ScannerWIFI {
     private void handleWifiSuccess() {
         if (checkWifiPermissions()) {
             Log.i("GOOSE SIGNAL WIFI", "successfully scanned Wi-Fi");
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.e("GOOSE SIGNAL WIFI", "I don' have wifi permission");
+                return;
+            }
             List<ScanResult> results = wifiManager.getScanResults();
             if (results != null && !results.isEmpty()) {
                 backgroundService.manageWifiScans(results);
@@ -146,6 +157,10 @@ public class ScannerWIFI {
                 boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
                 if (success) {
                     isWiFiScanning = false;
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        Log.e("GOOSE SIGNAL WIFI", "I don' have wifi permission");
+                        return;
+                    }
                     List<ScanResult> results = wifiManager.getScanResults();
                     backgroundService.manageWifiScans2(results);
                 } else {

@@ -4,6 +4,10 @@ FROM python:3.12-slim
 # Imposta la cartella di lavoro all'interno del container
 WORKDIR /backend
 
+# Imposta variabili di ambiente per Python per unbuffered logging
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
 # Copia il file requirements.txt dalla cartella backend al container
 COPY requirements.txt /backend/requirements.txt
 
@@ -24,4 +28,4 @@ ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
 # Comando per eseguire l'applicazione Flask
-CMD ["python", "app.py"]
+CMD ["python", "-u", "app.py"]

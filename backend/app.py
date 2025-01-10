@@ -179,6 +179,7 @@ def get_urls():
 
 @app.route('/api/scansione', methods=['POST'])
 def scan_and_save():
+       
     try:
         # Ottieni il nome del file direttamente dal corpo della richiesta
         filename_only = request.json.get('filename')
@@ -188,12 +189,14 @@ def scan_and_save():
             return jsonify({"error": "Il nome del file è richiesto."}), 400
 
         # Creazione percorso del file (può essere relativo o assoluto)
-        json_filename = os.path.join('backend', 'rilevazioni', filename_only)  # Aggiungi il percorso fisso
-
+        json_filename = os.path.join('.', 'rilevazioni', filename_only)  # Aggiungi il percorso fisso
+        print("prima e tutto ok")
         # Esegui la scansione Wi-Fi
-        wifi_data = scan_wifi()
+        #wifi_data = scan_wifi()
+        wifi_data = request.json.get('wifiData')
 
         if wifi_data:
+            print("Here e tutto ok")
             save_data_to_file(wifi_data, filename=json_filename)
             return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
         else:
