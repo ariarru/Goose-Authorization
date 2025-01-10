@@ -55,11 +55,11 @@ export async function addNewRoom(name, vertices, piano, restricted){
 export async function deleteRoom(roomId){
     const supabase = createClient();
     const session = await supabase.auth.getSession();
-
+    
     if(session){
-        const result = await supabase.rpc("delete_room", {_room_id: roomId});
-        result.error ? console.log(result.error) : 0;
-        return result;
+        const {data, error} = await supabase.rpc("delete_room", {_room_id: roomId});
+        console.log(error);
+        return error ? error : true;
     } else{
         return null;
     }
@@ -191,12 +191,12 @@ export async function updateRoomNotificationType(roomId, notificationType) {
     const session = await supabase.auth.getSession();
 
     if(session){
-        const result = await supabase.rpc("update_room_notification_type", {
+        const {data, error} = await supabase.rpc("update_notif_preference", {
             _room_id: roomId, 
             _notification_type: notificationType
         });
-        result.error ? console.log(result.error) : 0;
-        return result;
+        error ? console.log(error) : 0;
+        return error ? false : true;
     } else{
         return null;
     }

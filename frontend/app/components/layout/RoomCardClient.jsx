@@ -1,13 +1,13 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import { updateRoomStatus } from '../admin-stage/adminServerActions';
+import { updateRoomStatus, deleteRoom } from '../admin-stage/adminServerActions';
 
 export default function RoomCardClient({id}){
     const router = useRouter();
 
     async function del(){
         const result = await deleteRoom(id);
-        if(result){
+        if(result == true){
             alert("Room deleted");
             router.refresh();
         } else {
@@ -27,9 +27,7 @@ export default function RoomCardClient({id}){
 
     return(
         <div className="flex flex-row gap-1">
-            <form onSubmit={(e)=> {e.preventDefault; del;}}>
-             <button type="submit" className='rounded bg-rose-400 text-white px-4 py-1 hover:bg-red-600'>Delete</button>
-            </form>
+            <button onClick={(ev)=> {ev.preventDefault; del();}} className='rounded bg-rose-400 text-white px-4 py-1 hover:bg-red-600'>Delete</button>
             <button onClick={(e)=> {e.preventDefault; removeRest();}} className='rounded bg-[#dc2f02]/50 text-white px-4 py-1 hover:bg-[#dc2f02] text-sm'>Remove restriction</button>
         </div>
     )

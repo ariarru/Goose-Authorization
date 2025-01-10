@@ -1,7 +1,6 @@
 import Card from "../layout/Card";
 
 export default function ManageDevices({children}){
-    console.log('children', children);
     return(
     <div>
         <p className="text-3xl text-center text-gray-400 pt-2">Your devices:</p>

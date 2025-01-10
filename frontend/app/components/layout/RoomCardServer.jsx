@@ -14,13 +14,15 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
     result = await supabase.rpc("get_devices_from_room_id", {id: roomId});
     const devices = result.data;
     result = await supabase.rpc("get_notif", {_room_id: roomId});
-    
     const currentNotificationType = result.data.length > 0 ? result.data[0] : "popup";
     
-    async function handleNotificationChange(event) {
+    const handle = async (formData) => {
         'use server'
-        const newType = event.target.value;
-        await updateRoomNotificationType(roomId, newType);
+        const newType = formData.get('notificationType');
+        const res = await updateRoomNotificationType(roomId, newType);
+        if(res == true){
+            console.log("Successfully updated!")
+        }
     }
     
     return(
@@ -55,18 +57,25 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
             <div className="flex flex-col gap-1">
                 <div className="flex flex-row gap-2 align-middle items-center mb-2">
                     <p className="text-gray-400">Notification Type</p>
-                    <select 
-                        className="bg-gray-300 rounded px-2 py-1 text-sm text-gray-700"
-                        value={currentNotificationType}
-                        onChange={handleNotificationChange}
-                    >
-                        <option value="popup">Popup</option>
-                        <option value="lights">Lights</option>
-                        <option value="sound">Sound</option>
-                    </select>
+                    <form action={handle}>
+                        <select 
+                            name="notificationType" 
+                            defaultValue={currentNotificationType}
+                            className="bg-gray-300 rounded px-2 py-1 text-sm text-gray-700"
+                        >
+                            <option value="popup">Popup</option>
+                            <option value="lights">Lights</option>
+                            <option value="sound">Sound</option>
+                        </select>
+                        <button 
+                            type="submit" 
+                            className="ml-2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm"
+                        >
+                            Update
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    )
-
+    );
 }
