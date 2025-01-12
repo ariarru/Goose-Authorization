@@ -80,7 +80,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Room Spinner Setup
         roomSpinner = findViewById(R.id.roomSpinner)
-        val rooms = arrayOf("Select Room", "E1", "E2", "Uffici", "Garden", "Dipartimento")
+        val rooms = arrayOf("Select Room", "Office", "R&S", "Bathroom", "Hallway", "Labs", "Storage", "Coffee Room")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rooms)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         roomSpinner.adapter = adapter

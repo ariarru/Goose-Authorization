@@ -4,7 +4,7 @@ import RemoveDevices from "../admin-stage/RemoveDevices";
 import RemoveUser from "../admin-stage/RemoveUser";
 import AddDevicesBtn from "../admin-stage/AddDeviceBtn";
 import AddUserBtn from "../admin-stage/AddUserBtn";
-import { updateRoomNotificationType } from "../admin-stage/adminServerActions";
+import EditNotification from "../admin-stage/EditNotification";
 
 export default async function RoomCardServer({roomId, allDevs, allUsers}){
     const supabase = createServer();
@@ -16,15 +16,8 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
     result = await supabase.rpc("get_notif", {_room_id: roomId});
     const currentNotificationType = result.data.length > 0 ? result.data[0] : "popup";
     
-    const handle = async (formData) => {
-        'use server'
-        const newType = formData.get('notificationType');
-        const res = await updateRoomNotificationType(roomId, newType);
-        if(res == true){
-            console.log("Successfully updated!")
-        }
-    }
-    
+
+
     return(
         <div>
             <div className="flex flex-col gap-1 mb-2">
@@ -55,26 +48,7 @@ export default async function RoomCardServer({roomId, allDevs, allUsers}){
             </div>
 
             <div className="flex flex-col gap-1">
-                <div className="flex flex-row gap-2 align-middle items-center mb-2">
-                    <p className="text-gray-400">Notification Type</p>
-                    <form action={handle}>
-                        <select 
-                            name="notificationType" 
-                            defaultValue={currentNotificationType}
-                            className="bg-gray-300 rounded px-2 py-1 text-sm text-gray-700"
-                        >
-                            <option value="popup">Popup</option>
-                            <option value="lights">Lights</option>
-                            <option value="sound">Sound</option>
-                        </select>
-                        <button 
-                            type="submit" 
-                            className="ml-2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm"
-                        >
-                            Update
-                        </button>
-                    </form>
-                </div>
+               <EditNotification id={roomId} currentType={currentNotificationType}/>
             </div>
         </div>
     );

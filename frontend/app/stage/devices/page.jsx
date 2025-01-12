@@ -12,12 +12,12 @@ export default async function DeviceStage(){
         redirect("./");
     } 
 
-    const devices = await supabase.rpc("get_all_categories");
+    const devices = await supabase.rpc("select_safety_devices");
 
     return(
         <StageContainer>
             <Card>
-                <ManageDevices>{devices.data}</ManageDevices>
+                <ManageDevices data={devices.data}></ManageDevices>
             </Card>
         </StageContainer>
         

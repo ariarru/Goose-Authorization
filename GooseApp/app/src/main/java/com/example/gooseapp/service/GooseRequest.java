@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class GooseRequest {
 
-    private static final String url= "https://172.20.10.3:5001";
+    private static final String url= "https://192.168.1.225:5001";
             //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla //192.168.1.168 hotspot mac //130.136.201.215 hotspot con almawifi?
 
     private static final String fingerprintUrl = "/api/fingerprint";

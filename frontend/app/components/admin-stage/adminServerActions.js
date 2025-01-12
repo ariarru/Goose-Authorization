@@ -202,6 +202,83 @@ export async function updateRoomNotificationType(roomId, notificationType) {
     }
 }
 
+//devices
+
+export async function insertDevice(deviceData) {
+  const supabase = createClient();
+  
+  try {
+    const { data, error } = await supabase.rpc("insert_p_safety_device", {
+        p_category: deviceData.category,
+      p_device_s_name: deviceData.name, 
+      p_mac: deviceData.macAddress, 
+      
+    });
+
+    if (error) throw error;
+
+    return { success: true, device: data };
+  } catch (error) {
+    console.error("Error inserting device:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
+export async function updateDevice(deviceId, deviceData) {
+  const supabase = createClient();
+  
+  try {
+    const { data, error } = await supabase.rpc("update_safety_device", {
+      p_category: deviceData.category,
+      p_device_s_id: deviceId, 
+      p_device_s_name: deviceData.name, 
+      p_mac: deviceData.macAddress 
+    });
+
+    if (error) throw error;
+
+    return { success: true, device: data };
+  } catch (error) {
+    console.error("Error updating device:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
+export async function deleteDevice(deviceId) {
+  const supabase = createClient();
+  
+  try {
+    const { error, data } = await supabase.rpc("delete_safety_device", { p_device_s_id: deviceId });
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting device:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
+export async function fetchDevices() {
+  const supabase = createClient();
+  
+  try {
+    // Fetch all devices from the devices table
+    const { data, error } = await supabase.rpc("select_safety_devices");
+
+    if (error) throw error;
+
+    return { success: true, devices: data };
+  } catch (error) {
+    console.error("Error fetching devices:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
 //bonus
 export async function getPositionPeople(){
     const supabase = createClient();
