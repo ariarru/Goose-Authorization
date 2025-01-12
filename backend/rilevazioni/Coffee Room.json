@@ -1840,5 +1840,113 @@
                 "MAC": "Not Present"
             }
         }
+    },
+    "rilevazione29": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-73",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-83",
+                "SSID": "\"Vodafone-C00700115\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-59",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-74",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-87",
+                "SSID": "\"TIM-30420627\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-82",
+                "SSID": "\"TP-Link_Dom 2.4\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-78",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-81",
+                "SSID": "\"GUEST-FASTWEB-UNUR7L\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-86",
+                "SSID": "\"TIM-26702496\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-49",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione30": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-73",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-83",
+                "SSID": "\"Vodafone-C00700115\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-59",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-74",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-87",
+                "SSID": "\"TIM-30420627\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-82",
+                "SSID": "\"TP-Link_Dom 2.4\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-78",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-81",
+                "SSID": "\"GUEST-FASTWEB-UNUR7L\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-86",
+                "SSID": "\"TIM-26702496\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-49",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
     }
 }
