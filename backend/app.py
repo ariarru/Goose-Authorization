@@ -63,23 +63,26 @@ def fingerprint():
         print(f"Fingerprinting result: {result}")
         
         # Distinguere tra ROOM_NOT_FOUND, UNAUTHORIZED_USER e il risultato normale
-        if isinstance(result, int):  # ROOM_NOT_FOUND o UNAUTHORIZED_USER restituisce un intero
-            if result == 41:  # UNAUTHORIZED_USER
+        if isinstance(result, tuple):  # ROOM_NOT_FOUND o UNAUTHORIZED_USER restituisce un intero
+            if result[0] == 41:  # Se il primo elemento della tupla è UNAUTHORIZED_USER
+                # Se si tratta di un errore UNAUTHORIZED_USER, estrai predicted_room e notif_type
+                predicted_room, notif_type = result[1], result[2]
                 print(f"Unauthorized access attempt by user {user_id}")
                 return jsonify({
                     "error": "Unauthorized access: User does not have permission for this room",
-                    "code": result
+                    "code": result[0],
+                    "predicted_room": predicted_room,
+                    "notif_type": notif_type
                 }), 400
-            return jsonify({
-                "result": result,
-            })
-        elif isinstance(result, tuple):  # Caso normale con room_id, room_name e contr_ble
+            
+        else:  # Caso normale con room_id, room_name e contr_ble
             room_id, room_name, contr_ble = result
             return jsonify({
                 "predicted_room": room_id,
                 "room_name": room_name,
                 "contr_ble": contr_ble
             })
+        
     except Exception as e:
         print(f"Error in fingerprint endpoint: {str(e)}")
         import traceback

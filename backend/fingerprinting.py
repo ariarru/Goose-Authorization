@@ -42,6 +42,13 @@ def recupero_dati():
     response = supabase.table("Rooms").select("room_name, vertices, rilevazione").execute()
     return response.data
 
+def recupera_Noti_preferenza(room_id):
+        # Query alla tabella "Room_Authorizations" per recuperare il tipo di notifica per quella stanza 
+        response = supabase.table("Notification").select("notification_preference").eq("room_id", room_id).execute()
+        if len(response.data) ==0:
+            return "popup"
+        return response.data
+
 
 
 # Funzione per controllare se l'utente esiste nel database
@@ -221,7 +228,8 @@ def fingerprinting(json_data, user_id):
     print("query:", queryResult)
     if queryResult.data == False:
         result, new_room_id = access_log(user_id, room_id)
-        return Codes.UNAUTHORIZED_USER.value
+        notif_type = recupera_Noti_preferenza(room_id)
+        return Codes.UNAUTHORIZED_USER.value, predicted_room, notif_type
 
     result, new_room_id = access_log(user_id, room_id)
     print(result)
