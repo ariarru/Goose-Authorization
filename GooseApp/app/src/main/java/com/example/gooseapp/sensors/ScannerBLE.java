@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.gooseapp.service.BackgroundService;
 
@@ -77,6 +78,8 @@ public class ScannerBLE {
         }
     };
 
+    private static final int REQUEST_BLUETOOTH_PERMISSIONS = 1001;
+
     public ScannerBLE(Context context, BackgroundService service) {
         this.bleContext = context;
         this.service = service;
@@ -85,6 +88,25 @@ public class ScannerBLE {
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
     }
 
+    private boolean checkBluetoothPermissions() {
+        return ContextCompat.checkSelfPermission(bleContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
+               ContextCompat.checkSelfPermission(bleContext, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestBluetoothPermissions() {
+        if (bleContext instanceof android.app.Activity) {
+            ActivityCompat.requestPermissions(
+                (android.app.Activity) bleContext, 
+                new String[]{
+                    Manifest.permission.BLUETOOTH_SCAN, 
+                    Manifest.permission.BLUETOOTH_CONNECT
+                }, 
+                REQUEST_BLUETOOTH_PERMISSIONS
+            );
+        } else {
+            Log.e("BLE SIGNAL", "Cannot request Bluetooth permissions: context is not an Activity");
+        }
+    }
 
     @SuppressWarnings("MissingPermission")
     public void backgroundMeasureBLE() {
@@ -97,11 +119,10 @@ public class ScannerBLE {
             }
 
             // Verifica i permessi
-            if (ActivityCompat.checkSelfPermission(bleContext, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(bleContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-
+            if (!checkBluetoothPermissions()) {
                 Log.e("BLE SIGNAL", "Non ho i permessi bluetooth");
-                service.sendBasicNotification("ERROR in BLE measuring", "I need bluetooth permissions");// Notifica il service del fallimento
+                requestBluetoothPermissions();
+                service.sendBasicNotification("ERROR in BLE measuring", "I need bluetooth permissions");
                 return;
             }
 
@@ -147,9 +168,4 @@ public class ScannerBLE {
             Log.i("GOOSE SIGNAL BLE", "Scansione BLE interrotta manualmente");
         }
     }
-
-
-
-
-
 }

@@ -113,16 +113,16 @@ public class BackgroundService extends Service {
         
         // Initialize handler and runnable for periodic scanning
         handler = new android.os.Handler();
-       /* scanRunnable = new Runnable() {
+        scanRunnable = new Runnable() {
             @Override
             public void run() {
                 scannerWIFI.backgroundMeasureWifi();
                   handler.postDelayed(this, SCAN_INTERVAL);
             }
-        };*/
+        };
         
         // Start periodic scanning
-       // handler.post(scanRunnable);
+        handler.post(scanRunnable);
         
         return Service.START_STICKY;
     }

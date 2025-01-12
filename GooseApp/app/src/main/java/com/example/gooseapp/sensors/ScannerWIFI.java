@@ -51,7 +51,7 @@ public class ScannerWIFI {
         this.backgroundService = backgroundService;
         // Inizializzazione manager
         wifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
-       // this.context.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        this.context.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         Log.i("GOOSE SIGNAL WIFI", "Scanner WIFI initialized");
     }
 
@@ -71,31 +71,7 @@ public class ScannerWIFI {
 
             // Check all required permissions
             if (checkWifiPermissions()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    // For Android 10 and above, use WifiManager.startScan() with callback
-                    WifiManager.ScanResultsCallback scanCallback = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                        scanCallback = new WifiManager.ScanResultsCallback() {
-                            @Override
-                            public void onScanResultsAvailable() {
-                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    Log.e("GOOSE SIGNAL WIFI", "I don' have wifi permission");
-                                    return;
-                                }
-                                List<ScanResult> results = wifiManager.getScanResults();
-                                if (results != null && !results.isEmpty()) {
-                                    backgroundService.manageWifiScans(results);
-                                } else {
-                                    Log.w("GOOSE SIGNAL WIFI", "No WiFi networks found");
-                                }
-                            }
-                        };
-                    }
-                  //  wifiManager.startScan(scanCallback);
-                } else {
-                    // For older Android versions
-                    wifiManager.startScan();
-                }
+                wifiManager.startScan();
                 isWiFiScanning = true;
                 Log.i("GOOSE SIGNAL WIFI", "start scanning Wi-Fi");
             } else {
@@ -173,7 +149,7 @@ public class ScannerWIFI {
 
     public void wifi(){
         Log.i("GOOSE SCANS", "inside wifi()");
-        this.context.registerReceiver(wifiReceiver2, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifiManager.startScan();
+       // this.context.registerReceiver(wifiReceiver2, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+       // wifiManager.startScan();
     }
 }

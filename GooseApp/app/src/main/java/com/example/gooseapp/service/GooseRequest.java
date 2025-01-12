@@ -28,7 +28,6 @@ import java.util.Map;
 public class GooseRequest {
 
     private static final String url= "https://192.168.1.225:5001";
-            //"https://192.168.1.225:5001"; //casa "https://172.20.10.3:5001" //hotspot "192.168.1.19:5001"; //cla //192.168.1.168 hotspot mac //130.136.201.215 hotspot con almawifi?
 
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
@@ -173,7 +172,7 @@ public class GooseRequest {
                                     JSONObject errorObj = new JSONObject(jsonError);
                                     if (errorObj.has("code")) {
                                         BackgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
-
+                                        Log.e("GOOSE REQUEST", "Ritornato errore con codice 41");
                                         //LATENZA: Memorizziamo il tempo di fine prima di inviare la notifica accesso non autorizzato
                                         long endTime = System.currentTimeMillis();
                                         //LATENZA: Calcola la latenza e Crea il dato di latenza come oggetto JSON

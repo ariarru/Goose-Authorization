@@ -1,5 +1,6 @@
 package com.example.gooseapp.activity
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
@@ -14,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.gooseapp.R
 import com.example.gooseapp.sensors.SensorHelper
 import com.example.gooseapp.service.BackgroundService
@@ -25,11 +27,12 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var roomSpinner: Spinner
     private lateinit var submitScanButton: Button
 
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        Toast.makeText(this, "Background measuring is not used right now", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "Background measuring is not used right now", Toast.LENGTH_SHORT).show()
 
         // Abilita il pulsante "Up" nella barra superiore
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -42,14 +45,23 @@ class HomeActivity : AppCompatActivity() {
         if(!sensorHelper.hasLocationPermission(applicationContext, this)){
             Toast.makeText(applicationContext, "I don't have any location permission, try again", Toast.LENGTH_LONG).show()
         }
-        if(!sensorHelper.hasBluetoothPermission(applicationContext, this)){
+        if(!sensorHelper.hasBluetoothPermission(applicationContext, this)) {
             Toast.makeText(applicationContext, "I don't have any bluetooth permission, try again", Toast.LENGTH_LONG).show()
-            /* ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-            94
-        )*/
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.BLUETOOTH_SCAN),
+                94
+            )
+
+
         }
+
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.BLUETOOTH_SCAN),
+            94
+        )
+
         if(!sensorHelper.hasNotificationPermission(applicationContext, this)){
             Toast.makeText(applicationContext, "I need notification permit to continue", Toast.LENGTH_LONG).show()
         }
@@ -62,7 +74,6 @@ class HomeActivity : AppCompatActivity() {
             println("----------------------------------------------")
 
         }
-
 
 
         //shared preferences
@@ -99,7 +110,7 @@ class HomeActivity : AppCompatActivity() {
             return
         }
         Toast.makeText(this, "Sending scan command", Toast.LENGTH_SHORT).show()
-        BackgroundService.submitWifiScan(selectedRoom)
+        //BackgroundService.submitWifiScan(selectedRoom)
 
     }
 

@@ -33,8 +33,8 @@ def fingerprint():
     try:
         # Ottieni i dati dal corpo della richiesta JSON
         data = request.get_json()
-        print("Raw request data:", request.get_data())
-        print("Parsed JSON data:", data)
+        #print("Raw request data:", request.get_data())
+        #print("Parsed JSON data:", data)
 
         # Assicurati che i dati siano corretti
         if 'json_input' not in data or 'user_id' not in data:
@@ -55,8 +55,8 @@ def fingerprint():
 
         # Log dei dati ricevuti
         print(f"Processing request with:")
-        print(f"json_input: {json_input}")
-        print(f"user_id: {user_id}")
+        #print(f"json_input: {json_input}")
+        #print(f"user_id: {user_id}")
 
         # Esegui il calcolo dei dati (o la predizione)
         result = fingerprinting(json_input, user_id)
@@ -190,13 +190,11 @@ def scan_and_save():
 
         # Creazione percorso del file (può essere relativo o assoluto)
         json_filename = os.path.join('.', 'rilevazioni', filename_only)  # Aggiungi il percorso fisso
-        print("prima e tutto ok")
         # Esegui la scansione Wi-Fi
         #wifi_data = scan_wifi()
         wifi_data = request.json.get('wifiData')
 
         if wifi_data:
-            print("Here e tutto ok")
             save_data_to_file(wifi_data, filename=json_filename)
             return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
         else:
