@@ -4940,5 +4940,901 @@
                 "MAC": "Not Present"
             }
         }
+    },
+    "rilevazione79": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-70",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-56",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-69",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-77",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-82",
+                "SSID": "\"Telecom-85274097\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-78",
+                "SSID": "\"Wind3 HUB - 1A3AE4\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-53",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-64",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-46",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione80": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-70",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-56",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-69",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-77",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-82",
+                "SSID": "\"Telecom-85274097\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-78",
+                "SSID": "\"Wind3 HUB - 1A3AE4\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-53",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-64",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-46",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione81": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-77",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-C00700115\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-85",
+                "SSID": "\"FASTWEB-XHX2N9\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-56",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-34391920\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-82",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-76",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-89",
+                "SSID": "\"TIM-73249559\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-81",
+                "SSID": "\"Telecom-85274097\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-83",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-91",
+                "SSID": "\"Wind3 HUB - 1A3AE4\"",
+                "MAC": "Not Present"
+            },
+            "AP12": {
+                "RSSI": "-48",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP13": {
+                "RSSI": "-69",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP14": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP15": {
+                "RSSI": "-82",
+                "SSID": "\"Wind3 HUB-25FDF6\"",
+                "MAC": "Not Present"
+            },
+            "AP16": {
+                "RSSI": "-54",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione82": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-77",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-C00700115\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-85",
+                "SSID": "\"FASTWEB-XHX2N9\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-56",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-34391920\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-82",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-76",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-89",
+                "SSID": "\"TIM-73249559\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-81",
+                "SSID": "\"Telecom-85274097\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-83",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-91",
+                "SSID": "\"Wind3 HUB - 1A3AE4\"",
+                "MAC": "Not Present"
+            },
+            "AP12": {
+                "RSSI": "-48",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP13": {
+                "RSSI": "-69",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP14": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP15": {
+                "RSSI": "-82",
+                "SSID": "\"Wind3 HUB-25FDF6\"",
+                "MAC": "Not Present"
+            },
+            "AP16": {
+                "RSSI": "-54",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione83": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-80",
+                "SSID": "",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-63",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-59",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-87",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-76",
+                "SSID": "\"Tenda_44BA58\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-66",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-56",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-80",
+                "SSID": "\"FASTWEB-3AC985\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-79",
+                "SSID": "\"Wind3 HUB-25FDF6\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-90",
+                "SSID": "\"Vodafone-34166928\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-36",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione84": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-80",
+                "SSID": "",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-63",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-59",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-87",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-76",
+                "SSID": "\"Tenda_44BA58\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-66",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-56",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-80",
+                "SSID": "\"FASTWEB-3AC985\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-79",
+                "SSID": "\"Wind3 HUB-25FDF6\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-90",
+                "SSID": "\"Vodafone-34166928\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-36",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione85": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-60",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-84",
+                "SSID": "\"voUCSRhx4iSCI0MRvzUH2evKisbApf1x\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-85",
+                "SSID": "\"TIM_8sSd5h\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-87",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-76",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-76",
+                "SSID": "\"Wind3 HUB - 1A3AE4\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-57",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-62",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-83",
+                "SSID": "\"FASTWEB-3AC985\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-88",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-50",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione86": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-60",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-84",
+                "SSID": "\"voUCSRhx4iSCI0MRvzUH2evKisbApf1x\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-85",
+                "SSID": "\"TIM_8sSd5h\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-87",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-76",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-76",
+                "SSID": "\"Wind3 HUB - 1A3AE4\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-57",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-62",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-83",
+                "SSID": "\"FASTWEB-3AC985\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-88",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-50",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione87": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-71",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-74",
+                "SSID": "\"Vodafone-C00700115\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-47",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-70",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-80",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-60",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-77",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-68",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-87",
+                "SSID": "\"NETGEAR\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-31",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione88": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-71",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-74",
+                "SSID": "\"Vodafone-C00700115\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-47",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-70",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-80",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-60",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-77",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-68",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-80",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-87",
+                "SSID": "\"NETGEAR\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-31",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione89": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-64",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-83",
+                "SSID": "\"TIM-25308900\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-78",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-80",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-60",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-65",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-44",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-63",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-84",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-82",
+                "SSID": "\"SKYWIFI_8N63A\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-30",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione90": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-64",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-83",
+                "SSID": "\"TIM-25308900\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-78",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-80",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-82",
+                "SSID": "\"Vodafone-Guest\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-60",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-65",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-44",
+                "SSID": "\"DIRECT-6e-HP M209 LaserJet\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-63",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP9": {
+                "RSSI": "-84",
+                "SSID": "\"Vodafone-34640056\"",
+                "MAC": "Not Present"
+            },
+            "AP10": {
+                "RSSI": "-82",
+                "SSID": "\"SKYWIFI_8N63A\"",
+                "MAC": "Not Present"
+            },
+            "AP11": {
+                "RSSI": "-30",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione91": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-65",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-54",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-68",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-88",
+                "SSID": "\"Vodafone-34391920\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-84",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-56",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-78",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-62",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-19",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
+    },
+    "rilevazione92": {
+        "wifi_data": {
+            "AP0": {
+                "RSSI": "-65",
+                "SSID": "\"ALHN-542A\"",
+                "MAC": "Not Present"
+            },
+            "AP1": {
+                "RSSI": "-54",
+                "SSID": "\"OPPO Find X3 Lite 5G\"",
+                "MAC": "Not Present"
+            },
+            "AP2": {
+                "RSSI": "-68",
+                "SSID": "\"filippini2.4ghz\"",
+                "MAC": "Not Present"
+            },
+            "AP3": {
+                "RSSI": "-88",
+                "SSID": "\"Vodafone-34391920\"",
+                "MAC": "Not Present"
+            },
+            "AP4": {
+                "RSSI": "-84",
+                "SSID": "\"TISCALI-4339\"",
+                "MAC": "Not Present"
+            },
+            "AP5": {
+                "RSSI": "-56",
+                "SSID": "\"UniFi Edward Holly\"",
+                "MAC": "Not Present"
+            },
+            "AP6": {
+                "RSSI": "-78",
+                "SSID": "\"FASTWEB-EBF045\"",
+                "MAC": "Not Present"
+            },
+            "AP7": {
+                "RSSI": "-62",
+                "SSID": "\"FASTWEB-BF056F\"",
+                "MAC": "Not Present"
+            },
+            "AP8": {
+                "RSSI": "-19",
+                "SSID": "\"BreakdownClub2\"",
+                "MAC": "Not Present"
+            }
+        }
     }
 }

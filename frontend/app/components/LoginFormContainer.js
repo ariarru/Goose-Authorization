@@ -2,7 +2,6 @@
 import { createClient } from '../utils/supabaseClient';
 import LoginForm from '../components/forms/Login-Form';
 import { useRouter } from 'next/navigation';
-import LoginUserForm from './forms/LoginUserForm';
 
 
 export default function LoginFormContainer(){
@@ -10,7 +9,6 @@ export default function LoginFormContainer(){
     const router = useRouter();
 
         
-    //questo teoricamente è solo per gli amministratori
     async function login(email, pw){
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
@@ -21,27 +19,15 @@ export default function LoginFormContainer(){
           })
 
         if(data){
-            console.log(data)
             alert("Welcome");
-            const session = await supabase.auth.getSession();
-            console.log(session);
             router.push('/stage');
         }
         if(error){
-          alert("Wrong credentials, please retry\n"+error);
+          alert("There has been an error, please retry\n"+error);
           return;
         }
     }
 
-    async function loginUser(username, pw){
-      const {data, error} = await supabase.rpc('login', {_username: username, _password: pw});
-
-      console.log(data);
-      if(!error){
-        router.push('./user');
-      }
-    }
-    
     return(
         <div className='mx-auto h-full flex flex-col items-center gap-10 mt-8 md:flex-row'>
             <section className='flex flex-col'>

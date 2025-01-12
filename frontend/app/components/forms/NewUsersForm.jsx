@@ -36,21 +36,15 @@ export default function NewUsersForm(){
                 <p className="text-gray-400">Create a new user</p>
                 <label htmlFor="username"> Username: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='text' id="username" 
-                    onChange={e => {e.preventDefault(); setUsername(e.target.value)}} value={username} ></input>
+                    onChange={e => {e.preventDefault(); setUsername(e.target.value)}} value={username} />
 
                 <label htmlFor="email"> E-mail: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='text' id="email" 
-                    onChange={e => {e.preventDefault(); setEmail(e.target.value)}} value={email}></input>
+                    onChange={e => {e.preventDefault(); setEmail(e.target.value)}} value={email} />
 
                 <label htmlFor="pw"> First password: </label>
                 <input className='border-2 border-gray-200 rounded m-[-3px]' type='password' id="pw" 
-                    onChange={e => {e.preventDefault();  setFirstPassword(e.target.value)}} value={firstPassword}></input>
-
-                <div className="flex flex-row gap-2 items-center">
-                    <label htmlFor="adminBool">Admin: </label>
-                    <input type="checkbox" id="adminBool" 
-                        onChange={e => {e.preventDefault(); setIsAdmin(e.target.checked)}} checked={isAdmin}></input>
-                </div>
+                    onChange={e => {e.preventDefault();  setFirstPassword(e.target.value)}} value={firstPassword}/>
                 
                 <button type='submit' className={`${btnClasses}`}>Add User</button> 
             </form>
