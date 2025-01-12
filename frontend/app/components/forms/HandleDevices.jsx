@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { deleteDevice } from './adminServerActions';
-import AddNewDeviceForm from './AddNewDeviceForm';
+import { deleteDevice } from '../admin-stage/adminServerActions';
+import AddNewDeviceForm from '../admin-stage/AddNewDeviceForm';
 import Card from '../layout/Card';
 
 export default function HandleDevices({ initialDevices = [] }) {

@@ -1,5 +1,5 @@
 import Card from "../layout/Card";
-import HandleDevices from "./HandleDevices";
+import HandleDevices from "../forms/HandleDevices";
 
 export default function ManageDevices({data}){
 

@@ -52,6 +52,30 @@ export async function addNewRoom(name, vertices, piano, restricted){
     }
 }
 
+export async function addNewRoomFromJson(name, vertices, piano, restricted, json){
+    const supabase = createClient();
+    const session = await supabase.auth.getSession();
+
+    if(session){
+        if (vertices.length > 0 && vertices[0] !== vertices[vertices.length - 1]) {
+            vertices.push(vertices[0]);
+        }
+
+        const geometry = {
+            type: "Polygon",
+            coordinates: [vertices] 
+        };
+
+        let data = {_piano: piano, _room_name: name, _vertices: geometry, _is_restricted: restricted, _rilevazione: json};
+        const result = await supabase.rpc("insert_room_with_rilevazione", data);
+
+        return result;
+    } else{
+        return null;
+    }
+}
+
+
 export async function deleteRoom(roomId){
     const supabase = createClient();
     const session = await supabase.auth.getSession();

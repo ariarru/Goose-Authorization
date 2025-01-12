@@ -5,32 +5,56 @@ import Card from "../layout/Card";
 import ClickOnMapEvent from '../maps/ClickOnMapEvent';
 import dynamic from "next/dynamic";
 import { CircleMarker } from "react-leaflet";
-import { addNewRoom } from "../admin-stage/adminServerActions";
+import { addNewRoom, addNewRoomFromJson } from "../admin-stage/adminServerActions";
 import { useRouter } from "next/navigation";
 
 
-export default function AddRoom(){
 
-    const router =useRouter();
+export default function AddRoom(){
+    const router = useRouter();
     const [hidden, setHidden] = useState(true);
     const [name, setName] = useState('');
     const [floor, setFloor] = useState('');
     const [vertices, setVertices] = useState([]);
     const [isRestricted, setIsRestricted] = useState(false);
-    const [mapText, setMapText] = useState("Show Map")
+    const [mapText, setMapText] = useState("Show Map");
+    const [jsonFile, setJsonFile] = useState(null);
 
     const handleMapClick = (newCoordinate) => {
         setVertices([...vertices, newCoordinate]);
     };
 
+    const handleJsonFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const jsonData = JSON.parse(event.target.result);
+                    setJsonFile(jsonData);
+                } catch (error) {
+                    alert('Invalid JSON file');
+                    setJsonFile(null);
+                }
+            };
+            reader.readAsText(file);
+        }
+    };
+
     async function add(){
+        
         if(!floor){
             alert("Please insert floor")
         }
         if(!name){
             alert("Please insert the room&#39;s name")
         }
-        const result = await addNewRoom(name, vertices, floor, isRestricted);
+        let result = null;
+        if(jsonFile){
+            result = await addNewRoomFromJson(name, vertices, floor, isRestricted, jsonFile);
+        } else {
+            result = await addNewRoom(name, vertices, floor, isRestricted);
+        }
         if(!result.error){
             alert("Room successfully added");
             router.refresh();
@@ -42,11 +66,11 @@ export default function AddRoom(){
         setVertices([]);
         setIsRestricted(false);
         setHidden(true);
-        
+        setJsonFile(null);
     }
 
-    const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
 
+    const MyMap = dynamic(() => import('../maps/MyMap'), {ssr: false});
 
     return(
             <div className={`contents w-full`}>
@@ -66,6 +90,24 @@ export default function AddRoom(){
                                     <input id="restr" type="checkbox" value={isRestricted} checked={isRestricted} className="border-2 rounded border-gray-200 px-1" 
                                         onChange={(e)=> {e.preventDefault(); setIsRestricted(!isRestricted);}}/>
                                 </div>
+                                
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="jsonUpload" className="text-sm">Upload JSON Configuration:</label>
+                                        <input 
+                                            id="jsonUpload" 
+                                            type="file" 
+                                            accept=".json"
+                                            className="border-2 rounded border-gray-200 px-1"
+                                            onChange={(e)=> {e.preventDefault(); handleJsonFileChange(e);}}
+                                            disabled={!isRestricted}
+                                        />
+                                        {jsonFile && (
+                                            <p className="text-xs text-gray-600">
+                                                Uploaded: {jsonFile.name}
+                                            </p>
+                                        )}
+                                    </div>
+                            
                             </div>
                             <div className="inline-block h-[250px] min-h-[1em] w-0.5 self-stretch bg-neutral-100 opacity-100 dark:opacity-50">
 
