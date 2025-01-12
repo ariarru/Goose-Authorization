@@ -191,14 +191,13 @@ def fingerprinting(json_data, user_id):
             current_scan = json_data['wifi_data']
         else:
             print("Formato dati non valido:", json_data)
-            return None, None, None
+            return (Codes.ROOM_NOT_FOUND.value, "Invalid data format", None)
     except Exception as e:
         print(f"Errore nel caricamento dei dati: {e}")
-        return None, None, None
+        return (Codes.ROOM_NOT_FOUND.value, str(e), None)
 
     dati_db = recupero_dati()
     dati_db = [dato for dato in dati_db if dato.get('vertices') is not None]
-
 
     df = load_data()
     X, y, le = prepare_data(df)
@@ -216,7 +215,7 @@ def fingerprinting(json_data, user_id):
         print(f"Room ID trovato: {room_id}")
     else:
         print("Nessuna stanza trovata con questo nome")
-        return None, None, None
+        return (Codes.ROOM_NOT_FOUND.value, "No room found", None)
     
     #se l'utente non può essere in quella stanza interrompi exec.
     print(user_id, room_id)
@@ -229,7 +228,7 @@ def fingerprinting(json_data, user_id):
     if queryResult.data == False:
         result, new_room_id = access_log(user_id, room_id)
         notif_type = recupera_Noti_preferenza(room_id)
-        return Codes.UNAUTHORIZED_USER.value, predicted_room, room_id, notif_type
+        return (Codes.UNAUTHORIZED_USER.value, predicted_room, room_id, notif_type)
 
     result, new_room_id = access_log(user_id, room_id)
     print(result)
@@ -237,4 +236,4 @@ def fingerprinting(json_data, user_id):
     contr_ble = contr_disp(new_room_id)
     print("Devo controllare i BLE?:", contr_ble)  
     
-    return new_room_id, predicted_room, contr_ble
+    return (new_room_id, predicted_room, contr_ble)

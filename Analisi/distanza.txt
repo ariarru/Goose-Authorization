@@ -1,2 +1,14 @@
 Device: 42:C0:2E:20:42:3B, RSSI: -69, Distanza stimata: 1.00 metri
 Device: 1D:60:B8:07:D7:80, RSSI: -57, Distanza stimata: 0.33 metri
+Device: 15:FB:4D:03:A9:C3, RSSI: -60, Distanza stimata: 0.44 metri
+Device: 65:46:A1:1F:6D:19, RSSI: -46, Distanza stimata: 0.12 metri
+Device: D6:1B:81:5D:5A:6E, RSSI: -56, Distanza stimata: 0.30 metri
+Device: 66:07:BE:4D:0E:DF, RSSI: -46, Distanza stimata: 0.12 metri
+Device: 15:FB:4D:03:A9:C3, RSSI: -60, Distanza stimata: 0.44 metri
+Device: D6:1B:81:5D:5A:6E, RSSI: -52, Distanza stimata: 0.21 metri
+Device: D6:1B:81:5D:5A:6E, RSSI: -56, Distanza stimata: 0.30 metri
+Device: 15:FB:4D:03:A9:C3, RSSI: -60, Distanza stimata: 0.44 metri
+Device: 65:46:A1:1F:6D:19, RSSI: -46, Distanza stimata: 0.12 metri
+Device: 5A:BF:20:8D:87:CE, RSSI: -46, Distanza stimata: 0.12 metri
+Device: 42:E6:47:E9:B8:4C, RSSI: -46, Distanza stimata: 0.12 metri
+Device: 66:07:BE:4D:0E:DF, RSSI: -46, Distanza stimata: 0.12 metri

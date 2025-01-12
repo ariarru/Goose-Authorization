@@ -33,8 +33,6 @@ def fingerprint():
     try:
         # Ottieni i dati dal corpo della richiesta JSON
         data = request.get_json()
-        #print("Raw request data:", request.get_data())
-        #print("Parsed JSON data:", data)
 
         # Assicurati che i dati siano corretti
         if 'json_input' not in data or 'user_id' not in data:
@@ -55,34 +53,39 @@ def fingerprint():
 
         # Log dei dati ricevuti
         print(f"Processing request with:")
-        #print(f"json_input: {json_input}")
-        #print(f"user_id: {user_id}")
 
         # Esegui il calcolo dei dati (o la predizione)
         result = fingerprinting(json_input, user_id)
         print(f"Fingerprinting result: {result}")
         
-        # Distinguere tra ROOM_NOT_FOUND, UNAUTHORIZED_USER e il risultato normale
-        if isinstance(result, tuple):  # ROOM_NOT_FOUND o UNAUTHORIZED_USER restituisce un intero
-            if result[0] == 41:  # Se il primo elemento della tupla è UNAUTHORIZED_USER
-                # Se si tratta di un errore UNAUTHORIZED_USER, estrai predicted_room e notif_type
-                predicted_room, id, notif_type = result[1], result[2]
-                print(f"Unauthorized access attempt by user {user_id}")
-                return jsonify({
-                    "error": "Unauthorized access: User does not have permission for this room",
-                    "code": result[0],
-                    "predicted_room": predicted_room,
-                    "room_id": id,
-                    "notif_type": notif_type
-                }), 400
-            
-        else:  # Caso normale con room_id, room_name e contr_ble
+        # Handle different result types
+        if len(result) == 3:  # Normal case
             room_id, room_name, contr_ble = result
             return jsonify({
                 "predicted_room": room_id,
                 "room_name": room_name,
                 "contr_ble": contr_ble
             })
+        
+        elif len(result) == 4:  # Unauthorized case
+            code, predicted_room, room_id, notif_type = result
+            return jsonify({
+                "error": "Unauthorized access: User does not have permission for this room",
+                "code": code,
+                "predicted_room": predicted_room,
+                "room_id": room_id,
+                "notif_type": notif_type[0]['notification_preference']
+            }), 400
+        
+        elif len(result) == 2:  # Error case
+            code, message = result
+            return jsonify({
+                "error": message,
+                "code": code
+            }), 400
+        
+        else:
+            return jsonify({"error": "Unexpected result from fingerprinting"}), 500
         
     except Exception as e:
         print(f"Error in fingerprint endpoint: {str(e)}")
@@ -218,5 +221,3 @@ if __name__ == '__main__':
     # Configura il server Flask per ascoltare su tutte le interfacce e la porta 5001 con SSL
     ssl_context = ('certs/cert.pem', 'certs/key.pem')
     app.run(debug=True, host="0.0.0.0", port=5001, ssl_context=ssl_context)
-
-

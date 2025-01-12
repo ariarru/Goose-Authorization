@@ -170,13 +170,15 @@ public class GooseRequest {
                                 try {
                                     String jsonError = new String(error.networkResponse.data);
                                     JSONObject errorObj = new JSONObject(jsonError);
+
                                     if (errorObj.has("code")) {
                                         Log.e("GOOSE REQUEST", "Ritornato errore con codice 41");
                                         String room = errorObj.getString("predicted_room");
+                                        Log.i("GOOSE ERROR", "room");
                                         int id = errorObj.getInt("room_id");
                                         backgroundService.saveData(id, room);
                                         String type = errorObj.getString("notif_type");
-
+                                        Log.i("GOOSE ERROR", type);
                                         switch (type){
                                             case "popup": backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
                                             break;
