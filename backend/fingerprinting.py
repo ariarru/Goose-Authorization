@@ -229,7 +229,7 @@ def fingerprinting(json_data, user_id):
     if queryResult.data == False:
         result, new_room_id = access_log(user_id, room_id)
         notif_type = recupera_Noti_preferenza(room_id)
-        return Codes.UNAUTHORIZED_USER.value, predicted_room, notif_type
+        return Codes.UNAUTHORIZED_USER.value, predicted_room, room_id, notif_type
 
     result, new_room_id = access_log(user_id, room_id)
     print(result)

@@ -171,8 +171,23 @@ public class GooseRequest {
                                     String jsonError = new String(error.networkResponse.data);
                                     JSONObject errorObj = new JSONObject(jsonError);
                                     if (errorObj.has("code")) {
-                                        BackgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
                                         Log.e("GOOSE REQUEST", "Ritornato errore con codice 41");
+                                        String room = errorObj.getString("predicted_room");
+                                        int id = errorObj.getInt("room_id");
+                                        backgroundService.saveData(id, room);
+                                        String type = errorObj.getString("notif_type");
+
+                                        switch (type){
+                                            case "popup": backgroundService.sendBasicNotification("NOT AUTHORIZED", "User not authorized to enter the room");
+                                            break;
+                                            case "lights": backgroundService.sendLightNotification("NOT AUTHORIZED", "User not authorized to enter the room");
+                                                break;
+                                            case "sound": backgroundService.sendSoundNotification("NOT AUTHORIZED", "User not authorized to enter the room");
+                                                break;
+                                        }
+
+
+
                                         //LATENZA: Memorizziamo il tempo di fine prima di inviare la notifica accesso non autorizzato
                                         long endTime = System.currentTimeMillis();
                                         //LATENZA: Calcola la latenza e Crea il dato di latenza come oggetto JSON
