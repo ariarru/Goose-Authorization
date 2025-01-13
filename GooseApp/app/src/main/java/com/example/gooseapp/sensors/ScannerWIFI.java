@@ -149,7 +149,7 @@ public class ScannerWIFI {
 
     public void wifi(){
         Log.i("GOOSE SCANS", "inside wifi()");
-       // this.context.registerReceiver(wifiReceiver2, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-       // wifiManager.startScan();
+        this.context.registerReceiver(wifiReceiver2, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        wifiManager.startScan();
     }
 }

@@ -110,7 +110,7 @@ class HomeActivity : AppCompatActivity() {
             return
         }
         Toast.makeText(this, "Sending scan command", Toast.LENGTH_SHORT).show()
-        //BackgroundService.submitWifiScan(selectedRoom)
+        BackgroundService.submitWifiScan(selectedRoom)
 
     }
 
