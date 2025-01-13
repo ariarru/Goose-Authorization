@@ -139,7 +139,7 @@ def access_log(user_id, room_id):
 
 # Carica i dati per la previsione della stanza
 def load_data():
-    df = pd.read_csv('/backend/wifi_data_with_rooms.csv')
+    df = pd.read_csv('/backend/ssid_wifi_data_with_rooms.csv')
     return df
 
 
@@ -167,7 +167,7 @@ def train_model(X, y):
 # Predici la stanza basata sulla scansione attuale
 def predict_room(model, le, json_data):
     wifi_data = json_data['wifi_data']
-    input_data = {info['MAC']: info['RSSI'] for info in wifi_data.values()}
+    input_data = {info['SSID']: info['RSSI'] for info in wifi_data.values()}
 
     input_df = pd.DataFrame(columns=model.feature_names_in_)
     for col in model.feature_names_in_:
