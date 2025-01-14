@@ -112,17 +112,17 @@ public class BackgroundService extends Service {
         gooseRequest = new GooseRequest(this, this);
         
         // Initialize handler and runnable for periodic scanning
-        /*handler = new android.os.Handler();
+        handler = new android.os.Handler();
         scanRunnable = new Runnable() {
             @Override
             public void run() {
                 scannerWIFI.backgroundMeasureWifi();
                   handler.postDelayed(this, SCAN_INTERVAL);
             }
-        };*/
+        };
         
         // Start periodic scanning
-        //handler.post(scanRunnable);
+        handler.post(scanRunnable);
         
         return Service.START_STICKY;
     }
@@ -270,39 +270,4 @@ public class BackgroundService extends Service {
         }
     }
 
-
-
-
-
-
-
-    /// da cancellare
-    private static String room;
-    public static void submitWifiScan(String selectedRoom) {
-        room = selectedRoom;
-        Log.i("GOOSE SCANS", "inside submitWifi, with " + room);
-        scannerWIFI.wifi();
-    }
-
-
-    public void manageWifiScans2(List<ScanResult> results){
-        Log.i("GOOSE SCANS", "inside manageWifiScans2");
-        if (!results.isEmpty()) {
-            List<ScannedWifiEntity> scannedList = new ArrayList<ScannedWifiEntity>();
-            for (ScanResult scanResult : results) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    ScannedWifiEntity swe = new ScannedWifiEntity(
-                            scanResult.getWifiSsid(),
-                            scanResult.getApMldMacAddress(),
-                            scanResult.level
-                    );
-                    scannedList.add(swe);
-                }
-            }
-            sendBasicNotification("Sending to Goose Request", "sending data +"+this.room);
-            gooseRequest.sendWIFIscanFingerprint(scannedList, this.room);
-        } else {
-            System.out.println("No Wi-Fi networks found.");
-        }
-    }
 }

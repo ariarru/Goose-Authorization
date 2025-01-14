@@ -90,14 +90,8 @@ def insert_funz(user_id, room_id):
 def access_log(user_id, room_id):
     new_room_id = room_id
     msg = None
-    presenza = supabase.table("Access_Logs")\
-        .select("*")\
-        .eq("user_id", user_id)\
-        .order("log_id", desc=True)\
-        .limit(1)\
-        .execute()
-    
-       
+    presenza = supabase.table("Access_Logs").select("*").eq("user_id", user_id).order("log_id", desc=True).limit(1).execute()
+    print("presenza: ", presenza.data)
     # Caso1: l'utente non ha un registro attivo
     if not presenza.data: 
         # Inserisci un nuovo record per la stanza in entrata
@@ -110,9 +104,7 @@ def access_log(user_id, room_id):
 
     
     # Caso3: L'utente è attualmente in una stanza diversa
-    elif presenza.data and \
-        (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and \
-        (presenza.data[0].get("room_id") != room_id):
+    elif presenza.data and (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and (presenza.data[0].get("room_id") != room_id):
       
         new_room_id = presenza.data[0].get("room_id")
 
@@ -128,9 +120,7 @@ def access_log(user_id, room_id):
             msg = "Errore nell'aggiornamento del record: " 
    
     #Caso4: L'utente è nella stessa stanza
-    elif presenza.data and \
-         (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and \
-         (presenza.data[0].get("room_id") == room_id):
+    elif presenza.data and (presenza.data[0].get("timestamp") is not None and presenza.data[0].get("returned_time") is None) and (presenza.data[0].get("room_id") == room_id):
 
         msg = "L'utente è già nella stanza specificata."
 
@@ -206,6 +196,7 @@ def fingerprinting(json_data, user_id):
     predicted_room = predict_room(model, le, json_data)
     print(f"La stanza prevista è: {predicted_room}")
     
+    
     # Query per ottenere il room_id
     query = supabase.table("Rooms").select("room_id").eq("room_name", predicted_room).execute()
     
@@ -216,6 +207,7 @@ def fingerprinting(json_data, user_id):
     else:
         print("Nessuna stanza trovata con questo nome")
         return (Codes.ROOM_NOT_FOUND.value, "No room found", None)
+    
     
     #se l'utente non può essere in quella stanza interrompi exec.
     print(user_id, room_id)

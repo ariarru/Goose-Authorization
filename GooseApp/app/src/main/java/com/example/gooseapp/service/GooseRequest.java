@@ -260,8 +260,6 @@ public class GooseRequest {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
-                            Log.i("GOOSE RESPONSE", response.toString());
                             try {
                                 int responseValue = response.getInt("response");
                                 String type = response.getJSONArray("notif_type").getJSONObject(0).getString("notification_preference");

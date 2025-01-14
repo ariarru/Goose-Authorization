@@ -62,28 +62,4 @@
         android:textColor="@android:color/darker_gray"
         android:layout_gravity="center_horizontal" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-    <Spinner
-        android:id="@+id/roomSpinner"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:padding="12dp" />
-
-    <Button
-        android:id="@+id/submitScanButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Submit WiFi Scan"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/indigo"
-        android:layout_gravity="center_horizontal"
-        android:padding="12dp"
-        android:layout_marginTop="16dp" />
-
 </LinearLayout>

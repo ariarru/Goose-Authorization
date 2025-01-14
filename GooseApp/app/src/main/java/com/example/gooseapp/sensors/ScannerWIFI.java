@@ -121,35 +121,4 @@ public class ScannerWIFI {
         context.unregisterReceiver(wifiReceiver); // Deregistra il ricevitore Wi-Fi
     }
 
-
-    // da cancellare
-    private BroadcastReceiver wifiReceiver2 = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Controlla se l'intento ricevuto è per i risultati della scansione Wi-Fi
-            Log.i("GOOSE SCANS", "inside wifiReceiver2");
-
-            if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intent.getAction())) {
-                boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
-                if (success) {
-                    isWiFiScanning = false;
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Log.e("GOOSE SIGNAL WIFI", "I don' have wifi permission");
-                        return;
-                    }
-                    List<ScanResult> results = wifiManager.getScanResults();
-                    backgroundService.manageWifiScans2(results);
-                } else {
-                    handleWifiFailure();
-                }
-            }
-            isWiFiScanning = false;
-        }
-    };
-
-    public void wifi(){
-        Log.i("GOOSE SCANS", "inside wifi()");
-        this.context.registerReceiver(wifiReceiver2, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifiManager.startScan();
-    }
 }

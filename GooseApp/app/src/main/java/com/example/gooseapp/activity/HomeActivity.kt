@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.provider.SyncStateContract.Constants
 import android.util.Log
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -32,7 +33,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        //Toast.makeText(this, "Background measuring is not used right now", Toast.LENGTH_SHORT).show()
 
         // Abilita il pulsante "Up" nella barra superiore
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -71,8 +71,6 @@ class HomeActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(startServiceIntent)
             println("Inviato intent servizio background")
-            println("----------------------------------------------")
-
         }
 
 
@@ -89,32 +87,11 @@ class HomeActivity : AppCompatActivity() {
             scan()
         }
 
-        // Room Spinner Setup
-        roomSpinner = findViewById(R.id.roomSpinner)
-        val rooms = arrayOf("Select Room", "Office", "R&S", "Bathroom", "Hallway", "Labs", "Storage", "Coffee Room")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rooms)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        roomSpinner.adapter = adapter
-
-        // Submit Scan Button
-        submitScanButton = findViewById(R.id.submitScanButton)
-        submitScanButton.setOnClickListener {
-            submitWifiScan()
-        }
-    }
-
-    private fun submitWifiScan(){
-        val selectedRoom = roomSpinner.selectedItem.toString()
-        if ("Select Room" == selectedRoom) {
-            Toast.makeText(this, "Please select a room", Toast.LENGTH_SHORT).show()
-            return
-        }
-        Toast.makeText(this, "Sending scan command", Toast.LENGTH_SHORT).show()
-        BackgroundService.submitWifiScan(selectedRoom)
 
     }
 
-    //TODO: metti observable object
+
+
     @RequiresApi(Build.VERSION_CODES.R)
     private fun scan() {
         //shared preferences
@@ -137,6 +114,12 @@ class HomeActivity : AppCompatActivity() {
                     putString(R.string.username.toString(), "")
                     putBoolean(R.string.logged.toString(), false)
                     apply()
+                }
+                val stopServiceIntent = Intent(this, BackgroundService::class.java)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    stopService(stopServiceIntent)
+                    println("Inviato intent spegnimento servizio background")
+
                 }
                 onBackPressed() // Torna alla schermata precedente
                 true
