@@ -6,10 +6,8 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.provider.SyncStateContract.Constants
 import android.util.Log
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
@@ -25,8 +23,6 @@ class HomeActivity : AppCompatActivity() {
 
     private val sensorHelper = SensorHelper()
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var roomSpinner: Spinner
-    private lateinit var submitScanButton: Button
 
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -89,7 +85,6 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.R)

@@ -42,8 +42,6 @@ public class ScannerBLE {
         @Override
         public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
             super.onScanResult(callbackType, result);
-            // Non facciamo nulla qui, gestiamo tutto in onBatchScanResults
-            // Qui mi servirebbe solo per gestirne uno
             if(result != null) {
                 scanFoundResults = true;
             }

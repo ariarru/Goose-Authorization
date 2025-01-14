@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -58,10 +57,8 @@ public class ScannerWIFI {
     // misura wifi
     public void backgroundMeasureWifi(){
         if(!isWiFiScanning){
-            // Check if WiFi is enabled
             if (!wifiManager.isWifiEnabled()) {
                 wifiManager.setWifiEnabled(true);
-                // Wait a bit for WiFi to initialize
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -69,7 +66,6 @@ public class ScannerWIFI {
                 }
             }
 
-            // Check all required permissions
             if (checkWifiPermissions()) {
                 wifiManager.startScan();
                 isWiFiScanning = true;

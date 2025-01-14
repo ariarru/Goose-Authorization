@@ -53,7 +53,7 @@ for room in rooms:
                     # Aggiungi l'SSID al set
                     ssids.add(ssid)
                     
-                    # Aggiungi il valore RSSI per il MAC address
+                    # Aggiungi il valore RSSI per il SSID
                     temp_data[ssid] = rssi
                 
                 # Aggiungi i dati della stanza alla lista

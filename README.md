@@ -1,1 +1,70 @@
-# Goose-Authorization
+# Goose Authorization Project Description
+
+This document provides an overview of the Goose Authorization project, detailing the technologies and components used across different sections of the application.
+
+## Frontend
+
+The frontend is built using modern web technologies:
+
+- **Framework**: Next.js 14 (React-based framework)
+- **Styling**: TailwindCSS for responsive and utility-first styling
+- **Language**: TypeScript/JavaScript
+- **Key Components**:
+  - Room management interface (RoomCards, RoomCardClient)
+  - Admin dashboard (ManageRooms)
+  - User management interface (UserCard)
+  - Layout components for consistent UI structure
+- **Environment Configuration**: Uses .env.local for environment variables
+- **Build Tools**:
+  - PostCSS for CSS processing
+  - ESLint for code quality
+  - TypeScript for type safety
+- **Containerization**: Docker support via dockerfile
+
+## Backend
+
+The backend is implemented in Python with several key components:
+
+- **Framework**: Flask (Python web framework)
+- **Key Modules**:
+  - access.py: Handles access control logic
+  - app.py: Main application entry point
+  - controllo_dispositivi.py: Device control management
+  - fingerprinting.py: WiFi fingerprinting implementation
+- **Data Storage**:
+  - JSON files for configuration and data storage
+  - CSV files for WiFi data with room mapping
+- **Security**:
+  - Certificate management in /certs directory
+  - Access control implementation
+- **Dependencies**: Managed via requirements.txt
+- **Containerization**: Docker support via dockerfile
+
+## GooseApp
+
+The GooseApp represents the integrated application system:
+
+- **Architecture**: Client-Server architecture
+- **Communication**: REST API endpoints between frontend and backend
+- **Features**:
+  - Room access management
+  - User authorization
+  - Device control
+  - WiFi-based positioning system
+  - Admin dashboard for system management
+- **Security Features**:
+  - Certificate-based security
+  - Access control mechanisms
+  - Device fingerprinting
+- **Data Management**:
+  - Real-time device monitoring
+  - Room status tracking
+  - User permission management
+
+
+## Goose Authorization App
+The GooseApp is an Android application that provides a mobile client to use the Goose Authorization system. Comunicating with the backend via HTTPS, using the *Volley* library.
+
+
+
+The project implements a comprehensive authorization system that combines WiFi fingerprinting technology with traditional access control mechanisms, providing a modern solution for room access management and user authorization.

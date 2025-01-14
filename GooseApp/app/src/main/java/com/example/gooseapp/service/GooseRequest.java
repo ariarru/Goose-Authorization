@@ -17,7 +17,6 @@ import com.example.gooseapp.activity.MainActivity;
 import com.example.gooseapp.sensors.ScannedBLEEntity;
 import com.example.gooseapp.sensors.ScannedWifiEntity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +26,7 @@ import java.util.Map;
 
 public class GooseRequest {
 
-    private static final String url= "https://192.168.1.225:5001";
-
+    private static final String url= "https://192.168.1.225:5001"; //posizione docker nella rete locale // da moficare all'uso
     private static final String fingerprintUrl = "/api/fingerprint";
     private static final String bluetoothUrl = "/api/controlloBle";
     private static final String loginUrl = "/api/login";
@@ -111,10 +109,8 @@ public class GooseRequest {
 
 
     public static void sendWifiScan(List<ScannedWifiEntity> swes, int userId){
-
         //LATENZA: Memorizziamo il tempo di inizio prima di inviare la richiesta
         long startTime = System.currentTimeMillis();
-
 
         try {
             // Creare l'oggetto JSON da inviare
@@ -141,8 +137,6 @@ public class GooseRequest {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.i("GOOSE RESPONSE", "ho ottenuto una risposta dal backend:");
-                            Log.i("GOOSE RESPONSE", response.toString());
                             try {
                                 int roomId = response.getInt("predicted_room");
                                 String roomName = response.getString("room_name");
@@ -353,57 +347,4 @@ public class GooseRequest {
         }
     }
 
-
-
-
-    //da cancellare
-    public void sendWIFIscanFingerprint(List<ScannedWifiEntity> datas, String room){
-        String fingerprinturl = "/api/scansione";
-
-        // Creare l'oggetto JSON da inviare
-        JSONObject jsonBody = new JSONObject();
-        JSONObject wifiData = new JSONObject();
-
-        try {
-            // Convertire la lista di ScannedWifiEntity nel formato atteso dal backend
-            for(int i = 0; i < datas.size(); i++) {
-                JSONObject wifiAP = new JSONObject();
-                Map<String, String> data = datas.get(i).toStringMap();
-                for(Map.Entry<String, String> entry : data.entrySet()) {
-                    wifiAP.put(entry.getKey(), entry.getValue());
-                }
-                wifiData.put("AP" + i, wifiAP);
-            }
-
-            jsonBody.put("filename", room+".json");
-            jsonBody.put("wifiData", wifiData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Log.i("GOOSE TRY SCANS", jsonBody.toString());
-
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url + fingerprinturl,
-                jsonBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i("WiFi Scan", "Submitted: " + response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("WiFi Scan", "Error: " + error.getMessage());
-                    }
-                }
-        );
-
-        queue.add(jsonObjectRequest);
-        Log.i("WiFi Scan", "Submitted");
-
-    }
 }

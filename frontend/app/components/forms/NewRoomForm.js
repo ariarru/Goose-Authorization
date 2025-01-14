@@ -4,8 +4,6 @@ import { useState } from "react";
 export default function NewRoomForm(){
 
     const [name, setName] = useState('');
-    //select categories with checkbox? -> then getDeviceCategories from supabase
-
 
     async function sendData(){
         const result = await addNewRoom();

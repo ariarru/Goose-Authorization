@@ -80,7 +80,7 @@ def tracking(lista_disp):
         distanza = 10 ** ((A - rssi) / (10 * n))  # Formula per stimare la distanza
         print(f"Device: {address}, RSSI: {rssi}, Distanza stimata: {distanza:.2f} metri")
 
-        # Criterio per considerare un dispositivo "posseduto" (esempio: entro 1 metro)
+        # Criterio per considerare un dispositivo "posseduto" (entro 1 metro)
         if distanza <= 1:
             disp_possed.append(address)
 

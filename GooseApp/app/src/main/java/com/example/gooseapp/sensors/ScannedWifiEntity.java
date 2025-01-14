@@ -36,31 +36,4 @@ public class ScannedWifiEntity {
         return map;
     }
 
-    public String getSSIDValue() {
-        return SSIDValue;
-    }
-
-    public void setSSIDValue(String SSIDValue) {
-        this.SSIDValue = SSIDValue;
-    }
-
-    public String getMACValue() {
-        return MACValue;
-    }
-
-    public void setMACValue(String MACValue) {
-        this.MACValue = MACValue;
-    }
-
-    public String getRSSIValue() {
-        return RSSIValue;
-    }
-
-    public void setRSSIValue(String RSSIValue) {
-        this.RSSIValue = RSSIValue;
-    }
-
-
-
-
 }

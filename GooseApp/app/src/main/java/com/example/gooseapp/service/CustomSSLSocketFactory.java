@@ -18,6 +18,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+//Certificato per comunicazione HTTPS
 public class CustomSSLSocketFactory extends HurlStack {
     private final SSLSocketFactory sslSocketFactory;
     private final HostnameVerifier hostnameVerifier;

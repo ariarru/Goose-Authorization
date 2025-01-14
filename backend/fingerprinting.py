@@ -174,7 +174,6 @@ def predict_room(model, le, json_data):
 
 # Funzione principale
 def fingerprinting(json_data, user_id):
-    # Assumi che `json_data` contenga i dati JSON da elaborare.
     try:
         # Estrai i dati wifi dal json_input
         if isinstance(json_data, dict) and 'wifi_data' in json_data:

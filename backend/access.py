@@ -16,7 +16,7 @@ class LoginError(Exception):
 
 def handle_login(username: str, password: str):
     try:
-        # Call the login RPC function
+        # Chiama la function 
         response = supabase.rpc('login', {
             '_username': username,
             '_password': password

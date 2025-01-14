@@ -14,13 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.gooseapp.LoginError
 import com.example.gooseapp.R
 import com.example.gooseapp.service.GooseRequest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.io.OutputStreamWriter
-import java.net.HttpURLConnection
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,16 +59,13 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun login(username: String, password: String) {
-        // Check for empty fields
         if (username.isBlank() || password.isBlank()) {
             throw LoginError.EMPTY_FIELDS
         }
-        // Create JSON request body
         val jsonBody = JSONObject().apply {
             put("username", username)
             put("password", password)
         }
-        // Send request
         val gooseRequest = GooseRequest(this, this)
         gooseRequest.login(jsonBody)
 

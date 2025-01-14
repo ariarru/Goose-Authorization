@@ -17,14 +17,12 @@ CORS(app)  # Abilita CORS per tutte le rotte
 FINGERPRINT_URL="https://localhost:5001/api/fingerprint"
 CONTROLLORBLE_URL="https://localhost:5001/api/controlloBle"
 EFFECT_LOGIN= "https://localhost:5001/api/login"
-SCANSIONE_URL="https://localhost:5001/api/fingerprint"
 '''
 
 FLASK_URL = "https://backend-service:5001"
 FINGERPRINT_URL = f"{FLASK_URL}/api/fingerprint"
 CONTROLLORBLE_URL = f"{FLASK_URL}/api/controlloBle"
 EFFECT_LOGIN = f"{FLASK_URL}/api/login"
-SCANSIONE_URL = f"{FLASK_URL}/api/scansione"
 
 
 @app.route('/api/fingerprint', methods=['POST'])
@@ -54,12 +52,11 @@ def fingerprint():
         # Log dei dati ricevuti
         print(f"Processing request with:")
 
-        # Esegui il calcolo dei dati (o la predizione)
         result = fingerprinting(json_input, user_id)
         print(f"Fingerprinting result: {result}")
         
-        # Handle different result types
-        if len(result) == 3:  # Normal case
+        # Gestisci risultato con diversi tipi
+        if len(result) == 3:  # Caso base
             room_id, room_name, contr_ble = result
             return jsonify({
                 "predicted_room": room_id,
@@ -67,7 +64,7 @@ def fingerprint():
                 "contr_ble": contr_ble
             })
         
-        elif len(result) == 4:  # Unauthorized case
+        elif len(result) == 4:  # Caso non autorizzato
             code, predicted_room, room_id, notif_type = result
             return jsonify({
                 "error": "Unauthorized access: User does not have permission for this room",
@@ -77,7 +74,7 @@ def fingerprint():
                 "notif_type": notif_type[0]['notification_preference']
             }), 400
         
-        elif len(result) == 2:  # Error case
+        elif len(result) == 2:  # Caso errore
             code, message = result
             return jsonify({
                 "error": message,
@@ -124,13 +121,13 @@ def controlloBle():
     
     # Converti room_id in intero
     try:
-        room_id = int(room_id)  # Conversione di room_id in intero
+        room_id = int(room_id) 
     except ValueError:
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
 
     # Converti user_id in intero
     try:
-        user_id = int(user_id)  # Conversione di room_id in intero
+        user_id = int(user_id)
     except ValueError:
         return jsonify({"error": "room_id deve essere un intero valido"}), 400
     
@@ -156,11 +153,9 @@ def login():
         username = data['username']
         password = data['password']
 
-        # Check for empty fields
         if not username or not password:
             return jsonify({"error": "Empty fields not allowed"}), 400
 
-        # Call the login handler from access.py
         result = handle_login(username, password)
         return jsonify(result)
 
@@ -181,35 +176,6 @@ def get_urls():
         "controllo_ble_url": CONTROLLORBLE_URL,
         "login_url": EFFECT_LOGIN
     })
-
-
-
-@app.route('/api/scansione', methods=['POST'])
-def scan_and_save():
-       
-    try:
-        # Ottieni il nome del file direttamente dal corpo della richiesta
-        filename_only = request.json.get('filename')
-        print(f"File richiesto: {filename_only}")
-
-        if not filename_only:
-            return jsonify({"error": "Il nome del file è richiesto."}), 400
-
-        # Creazione percorso del file (può essere relativo o assoluto)
-        json_filename = os.path.join('.', 'rilevazioni', filename_only)  # Aggiungi il percorso fisso
-        # Esegui la scansione Wi-Fi
-        #wifi_data = scan_wifi()
-        wifi_data = request.json.get('wifiData')
-
-        if wifi_data:
-            save_data_to_file(wifi_data, filename=json_filename)
-            return jsonify({"message": f"Dati salvati nel file {json_filename}."}), 200
-        else:
-            return jsonify({"error": "Nessun dato Wi-Fi trovato. Non è stato possibile salvare."}), 400
-    except Exception as e:
-        print(f"Errore durante la scansione: {str(e)}")  # Log per debug
-        return jsonify({"error": str(e)}), 500
-
 
 
 # Rotta di base

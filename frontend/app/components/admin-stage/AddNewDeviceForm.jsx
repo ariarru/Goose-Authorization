@@ -18,6 +18,7 @@ export default function AddNewDeviceForm({
 
   const [errors, setErrors] = useState({});
 
+    // Funzione per validare i campi del modulo prima dell'invio
   const validateForm = () => {
     const newErrors = {};
     
@@ -40,6 +41,7 @@ export default function AddNewDeviceForm({
     return Object.keys(newErrors).length === 0;
   };
 
+    // Gestore per gli input del modulo
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -47,7 +49,6 @@ export default function AddNewDeviceForm({
       [name]: value
     }));
 
-    // Clear specific field error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -66,15 +67,14 @@ export default function AddNewDeviceForm({
     try {
       let result;
       if (initialDevice) {
-        // Update existing device
+
         result = await updateDevice(initialDevice.device_s_id, formData);
       } else {
-        // Insert new device
+                // Inserisce nuovo dispositivo
         result = await insertDevice(formData);
       }
 
       if (result.success) {
-        // Notify parent component about successful device addition/update
         alert('Device updated successfully');
         onDeviceAdded && onDeviceAdded(result.device);
 
@@ -86,7 +86,6 @@ export default function AddNewDeviceForm({
         });
         alert('Device operation successful');
       } else {
-        // Handle error from server
         console.error('Device operation failed:', result.error);
       }
     } catch (error) {

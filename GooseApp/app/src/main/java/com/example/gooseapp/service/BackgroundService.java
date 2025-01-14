@@ -28,11 +28,8 @@ import com.example.gooseapp.sensors.ScannedWifiEntity;
 import com.example.gooseapp.sensors.ScannerBLE;
 import com.example.gooseapp.sensors.ScannerWIFI;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /*
 * Ogni 3 secondi effettua richiesta backend
